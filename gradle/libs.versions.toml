@@ -21,6 +21,9 @@ multiplatformSettings = "1.0.0"
 koin = "3.4.0"
 kstore = "0.6.0"
 sqlDelight = "2.0.0-alpha05"
+decompose_version = "2.0.0-beta-01"
+firebase = "1.8.0"
+kodein = "7.20.1"
 
 [libraries]
 
@@ -37,6 +40,16 @@ insetsx = { module = "com.moriatsushi.insetsx:insetsx", version.ref = "insetsx" 
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
+ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+
+
 composeIcons-featherIcons = { module = "br.com.devsrsouza.compose.icons:feather", version.ref = "composeIcons" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -47,6 +60,10 @@ sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", versi
 sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
+decompose-base = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose_version" }
+decompose-extensions-compose = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose_version" }
+firebase-auth ={module = "dev.gitlive:firebase-auth", version.ref = "firebase"}
+kodein-di ={module = "org.kodein.di:kodein-di", version.ref = "kodein"}
 
 [plugins]
 

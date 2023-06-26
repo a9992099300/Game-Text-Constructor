@@ -25,6 +25,7 @@ kotlin {
     jvm("desktop")
 
     js {
+        //  IR
         browser()
         binaries.executable()
     }
@@ -59,12 +60,19 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.insetsx)
                 implementation(libs.ktor.core)
+                implementation(libs.ktor.json)
+                implementation(libs.ktor.serialization)
+                implementation(libs.ktor.negotiation)
+                implementation(libs.ktor.serialization.kotlinx)
+                implementation(libs.ktor.logging)
                 implementation(libs.composeIcons.featherIcons)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.multiplatformSettings)
                 implementation(libs.koin.core)
                 implementation(libs.kstore)
+                implementation(libs.decompose.base)
+                implementation(libs.kodein.di)
             }
         }
 
@@ -81,7 +89,9 @@ kotlin {
                 implementation(libs.compose.uitooling)
                 implementation(libs.kotlinx.coroutines.android)
                 implementation(libs.ktor.client.okhttp)
+                implementation(libs.ktor.client.android)
                 implementation(libs.sqlDelight.driver.android)
+                implementation(libs.decompose.extensions.compose)
             }
         }
 
@@ -91,13 +101,16 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.sqlDelight.driver.sqlite)
+                implementation(libs.decompose.extensions.compose)
+
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation(compose.web.core)
+                implementation(compose.html.core)
                 implementation(libs.sqlDelight.driver.sqljs)
+                implementation(libs.ktor.client.js)
             }
         }
 
@@ -105,6 +118,7 @@ kotlin {
             dependencies {
                 implementation(libs.ktor.client.darwin)
                 implementation(libs.sqlDelight.driver.native)
+                implementation(libs.ktor.client.ios)
             }
         }
 
@@ -116,7 +130,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 26
         targetSdk = 33
 
         applicationId = "com.a9992099300.gameTextConstructor.androidApp"
@@ -154,22 +168,26 @@ compose.experimental {
 
 libres {
     // https://github.com/Skeptick/libres#setup
+    generatedClassName = "MainRes" // "Res" by default
+    generateNamedArguments = true // false by default
+    baseLocaleLanguageCode = "ru" // "en" by default
+    camelCaseNamesForAppleFramework = true // false by default
 }
 tasks.getByPath("desktopProcessResources").dependsOn("libresGenerateResources")
 tasks.getByPath("desktopSourcesJar").dependsOn("libresGenerateResources")
 tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
 
 buildConfig {
-  // BuildConfig configuration here.
-  // https://github.com/gmazzo/gradle-buildconfig-plugin#usage-in-kts
+    // BuildConfig configuration here.
+    // https://github.com/gmazzo/gradle-buildconfig-plugin#usage-in-kts
 }
 
 sqldelight {
-  databases {
-    create("MyDatabase") {
-      // Database configuration here.
-      // https://cashapp.github.io/sqldelight
-      packageName.set("com.a9992099300.gameTextConstructor.db")
+    databases {
+        create("MyDatabase") {
+            // Database configuration here.
+            // https://cashapp.github.io/sqldelight
+            packageName.set("com.a9992099300.gameTextConstructor.db")
+        }
     }
-  }
 }

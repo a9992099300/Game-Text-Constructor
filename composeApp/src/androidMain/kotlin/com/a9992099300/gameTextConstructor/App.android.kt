@@ -6,8 +6,13 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.a9992099300.gameTextConstructor.di.Inject
+import com.a9992099300.gameTextConstructor.logic.auth.SignInComponentImpl
+import com.a9992099300.gameTextConstructor.theme.AppTheme
+import com.a9992099300.gameTextConstructor.ui.screen.SignScreen
+import com.arkivanov.decompose.defaultComponentContext
 
-class AndroidApp : Application() {
+class AndroidApp : Application(){
     companion object {
         lateinit var INSTANCE: AndroidApp
     }
@@ -15,13 +20,19 @@ class AndroidApp : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
+        Inject.initDI()
     }
 }
 
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { App() }
+        val rootComponent = SignInComponentImpl(defaultComponentContext())
+        setContent {
+            AppTheme {
+                SignScreen(rootComponent)
+            }
+        }
     }
 }
 
