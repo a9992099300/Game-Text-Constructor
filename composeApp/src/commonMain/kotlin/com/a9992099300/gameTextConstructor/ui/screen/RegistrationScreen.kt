@@ -22,15 +22,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.logic.auth.SignInComponent
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
+import com.a9992099300.gameTextConstructor.logic.registration.RegistrationComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonButton
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextField
 
 @Composable
-fun SignScreen(component: SignInComponent) {
+fun RegistrationScreen(component: RegistrationComponent) {
 
     val login by component.login.collectAsState()
     val password by component.password.collectAsState()
@@ -52,7 +52,7 @@ fun SignScreen(component: SignInComponent) {
         ) {
 
             Text(
-                text = MainRes.string.enter_title,
+                text = MainRes.string.registry,
                 modifier = Modifier
                     .fillMaxWidth(),
                 color = Theme.colors.primaryAction,
@@ -82,17 +82,17 @@ fun SignScreen(component: SignInComponent) {
             Spacer(modifier = Modifier.height(24.dp))
 
             CommonButton(
-                onClickButton = component::onSignInClick,
+                onClickButton = component::onRegistrationClick,
                 isLoading = stateUi is StateUi.Loading,
-                text = MainRes.string.enter
+                text = MainRes.string.registry
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             CommonButton(
-                onClickButton = component::onRegistrationClick,
+                onClickButton = component::onBack,
                 isLoading = false,
-                text = MainRes.string.registry
+                text = MainRes.string.back
             )
 
             Text(

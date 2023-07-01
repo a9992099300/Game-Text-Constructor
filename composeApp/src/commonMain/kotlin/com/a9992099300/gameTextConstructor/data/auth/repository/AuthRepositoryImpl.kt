@@ -6,8 +6,13 @@ import com.a9992099300.gameTextConstructor.data.auth.services.AuthService
 class AuthRepositoryImpl(
     private val authService: AuthService
 ): AuthRepository {
-    override suspend fun signIn(email: String, password: String) =
+    override suspend fun registration(email: String, password: String) =
         request {
-            authService.signIn(email, password)
+            authService.registration(email, password)
+        }
+
+    override suspend fun login(email: String, password: String) =
+        request {
+            authService.login(email, password)
         }
 }

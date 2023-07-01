@@ -1,24 +1,21 @@
 package com.a9992099300.gameTextConstructor.data.common.ktor
 
-import com.a9992099300.gameTextConstructor.data.common.ktor.HttpEngineFactory
-import io.ktor.client.*
-//import io.ktor.client.features.*
-//import io.ktor.client.features.json.*
-//import io.ktor.client.features.json.serializer.*
-//import io.ktor.client.features.logging.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.kotlinx.serializer.*
-import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.logging.SIMPLE
+import io.ktor.client.request.header
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.singleton
 
-
-const val ApiKey = "AIzaSyBSg1OrmYOuDpO6FqvLc_gPbQD9PwkGinw"
 
 internal val ktorModule = DI.Module("ktorModule") {
     bind<HttpClient>() with singleton {
@@ -27,10 +24,6 @@ internal val ktorModule = DI.Module("ktorModule") {
                 logger = Logger.SIMPLE
                 level = LogLevel.ALL
             }
-
-//            install(JsonFeature) {
-//                serializer = KotlinxSerializer(json = instance())
-//            }
 
             install(DefaultRequest)
 
@@ -49,11 +42,14 @@ internal val ktorModule = DI.Module("ktorModule") {
 
             defaultRequest {
                 url("https://identitytoolkit.googleapis.com/v1/")
+                url.parameters.append(KEY, KEY_VALUE)
                 header("Content-Type", "application/json; charset=UTF-8")
             }
-//https://rapidapi.com/Josiassejod1-WNU9Fi2D8/api/marvel-vs-capcom-2/
-            //https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]
+
         }
 
     }
 }
+
+const val KEY = "key"
+const val KEY_VALUE = "AIzaSyBSg1OrmYOuDpO6FqvLc_gPbQD9PwkGinw"

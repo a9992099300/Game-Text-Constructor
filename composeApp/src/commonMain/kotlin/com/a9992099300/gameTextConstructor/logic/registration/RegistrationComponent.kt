@@ -1,10 +1,11 @@
-package com.a9992099300.gameTextConstructor.logic.auth
+package com.a9992099300.gameTextConstructor.logic.registration
 
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-interface SignInComponent {
+
+interface RegistrationComponent {
 
     val stateUi: MutableStateFlow<StateUi<Unit>>
 
@@ -16,12 +17,11 @@ interface SignInComponent {
 
     fun onPasswordChanged(password: String)
 
-    fun onSignInClick()
-
     fun onRegistrationClick()
 
-    sealed class Login {
-        object Finished : Login()
-        object Registration : Login()
+    fun onBack()
+
+    sealed class Registration {
+        object Back : Registration()
     }
 }

@@ -1,3 +1,4 @@
+
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -9,12 +10,18 @@ plugins {
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqlDelight)
+
+
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
+
     targetHierarchy.default()
     android {
+        apply(
+            plugin =    "kotlin-parcelize"
+        )
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"
@@ -54,7 +61,7 @@ kotlin {
                 implementation(compose.material)
                 implementation(compose.material3)
                 implementation(libs.libres)
-                implementation(libs.voyager.navigator)
+//                implementation(libs.voyager.navigator)
                 implementation(libs.composeImageLoader)
                 implementation(libs.napier)
                 implementation(libs.kotlinx.coroutines.core)
@@ -73,6 +80,8 @@ kotlin {
                 implementation(libs.kstore)
                 implementation(libs.decompose.base)
                 implementation(libs.kodein.di)
+                implementation(libs.reaktive)
+              //  implementation(libs.essenty)
             }
         }
 
@@ -86,6 +95,7 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.appcompat)
                 implementation(libs.androidx.activityCompose)
+               // implementation(libs.kotlinx.reflect)
                 implementation(libs.compose.uitooling)
                 implementation(libs.kotlinx.coroutines.android)
                 implementation(libs.ktor.client.okhttp)
@@ -119,6 +129,9 @@ kotlin {
                 implementation(libs.ktor.client.darwin)
                 implementation(libs.sqlDelight.driver.native)
                 implementation(libs.ktor.client.ios)
+                implementation(libs.decompose.base)
+                implementation(libs.decompose.extensions.compose.experimental)
+           //     api(libs.essenty)
             }
         }
 
@@ -126,6 +139,7 @@ kotlin {
 }
 
 android {
+
     namespace = "com.a9992099300.gameTextConstructor"
     compileSdk = 33
 

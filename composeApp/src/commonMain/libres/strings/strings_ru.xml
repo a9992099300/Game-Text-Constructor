@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="enter">Вход!</string>
+    <string name="enter">Войти</string>
+    <string name="enter_title">Вход</string>
+    <string name="registry">Регистрация</string>
+    <string name="registry_now">Зарегистрироваться</string>
+    <string name="forgetting_password">Забыли пароль?</string>
+    <string name="your_login">Введите почту</string>
+    <string name="your_password">Введите пароль</string>
+    <string name="back">Назад</string>
     <string name="simple_string">Hello!</string>
     <string name="string_with_arguments">Hello ${name}!</string>
     <plurals name="plural_string">

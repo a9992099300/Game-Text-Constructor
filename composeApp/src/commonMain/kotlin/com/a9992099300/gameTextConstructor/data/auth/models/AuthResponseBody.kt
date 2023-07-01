@@ -11,4 +11,5 @@ data class AuthResponseBody(
     @SerialName("refreshToken") val refreshToken: String,
     @SerialName("expiresIn") val expiresIn: String,
     @SerialName("localId") val localId: String,
+    @SerialName("registered") val registered: Boolean?,
 )

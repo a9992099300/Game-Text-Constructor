@@ -7,8 +7,8 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.theme.AppTheme
-import com.a9992099300.gameTextConstructor.ui.navigation.RootComponent
-import com.a9992099300.gameTextConstructor.ui.navigation.RootComponentImpl
+import com.a9992099300.gameTextConstructor.navigation.RootComponent
+import com.a9992099300.gameTextConstructor.navigation.RootComponentImpl
 import com.a9992099300.gameTextConstructor.ui.navigation.RootContent
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
@@ -20,10 +20,9 @@ fun main() = application {
     val lifecycle = LifecycleRegistry()
     val rootComponent = root(DefaultComponentContext(lifecycle = lifecycle))
 
-
     Window(
         title = "Game Text Constructor",
-        state = rememberWindowState(width = 1600.dp, height = 1600.dp),
+        state = rememberWindowState(width = 1200.dp, height = 800.dp),
         onCloseRequest = ::exitApplication,
     ) {
         //App()

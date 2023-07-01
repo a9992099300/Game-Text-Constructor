@@ -22,8 +22,13 @@ koin = "3.4.0"
 kstore = "0.6.0"
 sqlDelight = "2.0.0-alpha05"
 decompose_version = "2.0.0-beta-01"
+decompose-version-experimental = "2.1.0-compose-experimental-alpha-02"
 firebase = "1.8.0"
 kodein = "7.20.1"
+reaktive-version = "1.2.1"
+essenty-version = "1.1.0"
+reflect-version = "1.8.22"
+
 
 [libraries]
 
@@ -49,10 +54,10 @@ ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "k
 ktor-client-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 
-
 composeIcons-featherIcons = { module = "br.com.devsrsouza.compose.icons:feather", version.ref = "composeIcons" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlinx-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "reflect-version"}
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
@@ -62,8 +67,11 @@ sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", versi
 sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
 decompose-base = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose_version" }
 decompose-extensions-compose = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose_version" }
+decompose-extensions-compose-experimental = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose-version-experimental" }
 firebase-auth ={module = "dev.gitlive:firebase-auth", version.ref = "firebase"}
 kodein-di ={module = "org.kodein.di:kodein-di", version.ref = "kodein"}
+reaktive ={module = "com.badoo.reaktive:reaktive", version.ref = "reaktive-version"}
+essenty ={module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty-version"}
 
 [plugins]
 
@@ -75,3 +83,5 @@ libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
+darwin = { id = "com.arkivanov.parcelize.darwin"}
+parcelize = { id = "kotlin-parcelize"}
