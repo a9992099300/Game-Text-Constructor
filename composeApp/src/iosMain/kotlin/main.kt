@@ -1,12 +1,14 @@
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.ComposeUIViewController
 import com.a9992099300.gameTextConstructor.di.Inject
+import com.a9992099300.gameTextConstructor.di.PlatformConfiguration
 import com.a9992099300.gameTextConstructor.navigation.RootComponent
 import com.a9992099300.gameTextConstructor.navigation.RootComponentImpl
 import com.a9992099300.gameTextConstructor.theme.AppTheme
 import com.a9992099300.gameTextConstructor.ui.screen.MainScreen
 import com.a9992099300.gameTextConstructor.ui.screen.RegistrationScreen
-import com.a9992099300.gameTextConstructor.ui.screen.SignScreen
+import com.a9992099300.gameTextConstructor.ui.screen.LoginScreen
+import com.a9992099300.gameTextConstructor.utils.initLogger
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
@@ -19,7 +21,10 @@ import platform.UIKit.UIViewController
 
 fun MainViewController(): UIViewController {
 
-     Inject.initDI()
+    Inject.initDI(
+        config = PlatformConfiguration()
+    )
+    initLogger()
     val lifecycle = LifecycleRegistry()
     val rootComponent = root(DefaultComponentContext(lifecycle = lifecycle))
 
@@ -43,7 +48,7 @@ fun RootContent(component: RootComponent) {
         animation = stackAnimation(fade()),
     ) {
         when (val child = it.instance) {
-            is RootComponent.Child.SignIn -> SignScreen(child.component)
+            is RootComponent.Child.Login -> LoginScreen(child.component)
             is RootComponent.Child.Main -> MainScreen(child.component)
             is RootComponent.Child.Registration -> RegistrationScreen(child.component)
         }

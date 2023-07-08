@@ -9,6 +9,6 @@ import org.kodein.di.bindProvider
 import org.kodein.di.instance
 
 internal val authModule = DI.Module("authModule") {
-        bindProvider<AuthService>() { AuthServiceImpl(instance()) }
+        bindProvider<AuthService>() { AuthServiceImpl(instance(), instance()) }
         bindProvider<AuthRepository>() { AuthRepositoryImpl(instance()) }
     }

@@ -6,4 +6,6 @@ interface AuthService{
      suspend fun registration(email: String, password: String): AuthResponseBody
 
      suspend fun login(email: String, password: String): AuthResponseBody
+
+     suspend fun saveTokens(body: AuthResponseBody)
 }

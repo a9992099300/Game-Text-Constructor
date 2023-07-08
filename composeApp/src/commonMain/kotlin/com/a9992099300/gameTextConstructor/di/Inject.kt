@@ -4,23 +4,34 @@ import com.a9992099300.gameTextConstructor.data.common.ktor.ktorModule
 import com.a9992099300.gameTextConstructor.di.login.authModule
 import org.kodein.di.DI
 import org.kodein.di.DirectDI
+import org.kodein.di.bind
 import org.kodein.di.direct
 import org.kodein.di.instance
+import org.kodein.di.singleton
 
 object Inject {
 
     private var _di: DirectDI? = null
 
-    private val modules = listOf<DI.Module>(authModule, ktorModule)
-
     val di: DirectDI
         get() = requireNotNull(_di)
 
 
-    fun initDI() {
+    fun initDI(
+        config: PlatformConfiguration
+    ) {
+
+        val platformModule = DI.Module(name = "platformModule",
+            init = {
+                bind<PlatformConfiguration>() with singleton { config }
+
+            })
+
            _di = DI {
                 importAll(
-                    modules
+                    platformModule,
+                    authModule,
+                    ktorModule,
                 )
             }.direct
     }

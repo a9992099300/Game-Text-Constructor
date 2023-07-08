@@ -1,10 +1,10 @@
-package com.a9992099300.gameTextConstructor.logic.auth
+package com.a9992099300.gameTextConstructor.logic.login
 
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-interface SignInComponent {
+interface LogInComponent {
 
     val stateUi: MutableStateFlow<StateUi<Unit>>
 

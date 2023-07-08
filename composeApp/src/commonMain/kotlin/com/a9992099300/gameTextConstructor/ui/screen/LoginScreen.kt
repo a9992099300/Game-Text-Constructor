@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.logic.auth.SignInComponent
+import com.a9992099300.gameTextConstructor.logic.login.LogInComponent
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonButton
@@ -30,7 +30,7 @@ import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextField
 
 @Composable
-fun SignScreen(component: SignInComponent) {
+fun LoginScreen(component: LogInComponent) {
 
     val login by component.login.collectAsState()
     val password by component.password.collectAsState()

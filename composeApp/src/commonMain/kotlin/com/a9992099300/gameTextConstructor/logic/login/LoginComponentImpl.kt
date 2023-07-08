@@ -1,4 +1,4 @@
-package com.a9992099300.gameTextConstructor.logic.auth
+package com.a9992099300.gameTextConstructor.logic.login
 
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.data.auth.repository.AuthRepository
@@ -7,6 +7,7 @@ import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -15,10 +16,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class SignInComponentImpl(
+class LoginComponentImpl(
     private val componentContext: ComponentContext,
     private val registrationClicked: () -> Unit,
-) : ComponentContext by componentContext, SignInComponent {
+) : ComponentContext by componentContext, LogInComponent {
 
     private val authRepository: AuthRepository = instance()
 
@@ -60,10 +61,13 @@ class SignInComponentImpl(
                     password.value
                 )
                 when (result) {
-                    is Result.Success -> stateUi.value = StateUi.Success(Unit)
+                    is Result.Success -> {
+                        result.value?.let { authRepository.saveTokens(it) }
+                        stateUi.value = StateUi.Success(Unit)
+                    }
                     is Result.Empty ->  stateUi.value = StateUi.Empty
                     is Result.Error -> {
-                        println("error ${result.error?.cause?.message}")
+                        Napier.d("error ${result.error?.cause?.message}")
                         stateUi.value = StateUi.Error(result.error?.message ?: "Error")
                     }
                 }

@@ -1,4 +1,4 @@
-package com.a9992099300.gameTextConstructor.logic.auth.models
+package com.a9992099300.gameTextConstructor.logic.login.models
 
 data class AuthViewState(
     val login: String = "",

@@ -1,7 +1,7 @@
 package com.a9992099300.gameTextConstructor.navigation
 
-import com.a9992099300.gameTextConstructor.logic.auth.SignInComponent
-import com.a9992099300.gameTextConstructor.logic.auth.SignInComponentImpl
+import com.a9992099300.gameTextConstructor.logic.login.LogInComponent
+import com.a9992099300.gameTextConstructor.logic.login.LoginComponentImpl
 import com.a9992099300.gameTextConstructor.logic.main.MainComponent
 import com.a9992099300.gameTextConstructor.logic.main.MainComponentImpl
 import com.a9992099300.gameTextConstructor.logic.registration.RegistrationComponent
@@ -21,7 +21,7 @@ import com.badoo.reaktive.base.Consumer
 
 class RootComponentImpl constructor(
     componentContext: ComponentContext,
-    private val signIn: (ComponentContext, Consumer<SignInComponent.Login>) -> SignInComponent,
+    private val login: (ComponentContext, Consumer<LogInComponent.Login>) -> LogInComponent,
     private val main: (ComponentContext, Consumer<MainComponent.Main>) -> MainComponent,
     private val registration: (ComponentContext, Consumer<RegistrationComponent.Registration>) -> RegistrationComponent,
 ) : RootComponent, ComponentContext by componentContext {
@@ -29,11 +29,11 @@ class RootComponentImpl constructor(
         componentContext: ComponentContext,
     ) : this(
         componentContext = componentContext,
-        signIn = { childContext, output ->
-            SignInComponentImpl(
+        login = { childContext, output ->
+            LoginComponentImpl(
                 componentContext = childContext,
                 registrationClicked = {
-                    output.onNext(SignInComponent.Login.Registration)
+                    output.onNext(LogInComponent.Login.Registration)
                 },
             )
         },
@@ -57,7 +57,7 @@ class RootComponentImpl constructor(
     private val stack =
         childStack(
             source = navigation,
-            initialConfiguration = Configuration.SignIn,
+            initialConfiguration = Configuration.Login,
             handleBackButton = true,
             childFactory = ::createChild
         )
@@ -69,8 +69,8 @@ class RootComponentImpl constructor(
         componentContext: ComponentContext
     ): RootComponent.Child =
         when (configuration) {
-            is Configuration.SignIn -> RootComponent.Child.SignIn(
-                signIn(
+            is Configuration.Login -> RootComponent.Child.Login(
+                login(
                     componentContext, Consumer(::loginSuccess)
                 )
             )
@@ -87,10 +87,10 @@ class RootComponentImpl constructor(
             )
         }
 
-    private fun loginSuccess(output: SignInComponent.Login): Unit =
+    private fun loginSuccess(output: LogInComponent.Login): Unit =
         when (output) {
-            is SignInComponent.Login.Finished -> navigation.push(Configuration.SignIn)
-            is SignInComponent.Login.Registration -> navigation.push(Configuration.Registration)
+            is LogInComponent.Login.Finished -> navigation.push(Configuration.Login)
+            is LogInComponent.Login.Registration -> navigation.push(Configuration.Registration)
         }
 
 
@@ -99,7 +99,7 @@ class RootComponentImpl constructor(
 
     private sealed class Configuration : Parcelable {
         @Parcelize
-        object SignIn : Configuration()
+        object Login : Configuration()
 
         @Parcelize
         object Main : Configuration()

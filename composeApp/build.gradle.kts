@@ -61,7 +61,6 @@ kotlin {
                 implementation(compose.material)
                 implementation(compose.material3)
                 implementation(libs.libres)
-//                implementation(libs.voyager.navigator)
                 implementation(libs.composeImageLoader)
                 implementation(libs.napier)
                 implementation(libs.kotlinx.coroutines.core)
@@ -72,16 +71,17 @@ kotlin {
                 implementation(libs.ktor.negotiation)
                 implementation(libs.ktor.serialization.kotlinx)
                 implementation(libs.ktor.logging)
+                implementation(libs.ktor.client.auth)
                 implementation(libs.composeIcons.featherIcons)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.multiplatformSettings)
                 implementation(libs.koin.core)
                 implementation(libs.kstore)
+                implementation(libs.kstore.file)
                 implementation(libs.decompose.base)
                 implementation(libs.kodein.di)
                 implementation(libs.reaktive)
-              //  implementation(libs.essenty)
             }
         }
 
@@ -121,6 +121,7 @@ kotlin {
                 implementation(compose.html.core)
                 implementation(libs.sqlDelight.driver.sqljs)
                 implementation(libs.ktor.client.js)
+                implementation(libs.kstore.storage)
             }
         }
 
@@ -131,7 +132,6 @@ kotlin {
                 implementation(libs.ktor.client.ios)
                 implementation(libs.decompose.base)
                 implementation(libs.decompose.extensions.compose.experimental)
-           //     api(libs.essenty)
             }
         }
 

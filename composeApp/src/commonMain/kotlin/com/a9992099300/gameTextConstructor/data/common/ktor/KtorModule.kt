@@ -1,5 +1,6 @@
 package com.a9992099300.gameTextConstructor.data.common.ktor
 
+import com.a9992099300.gameTextConstructor.di.login.kStoreModule
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
@@ -18,6 +19,7 @@ import org.kodein.di.singleton
 
 
 internal val ktorModule = DI.Module("ktorModule") {
+    importOnce(kStoreModule)
     bind<HttpClient>() with singleton {
         HttpClient(HttpEngineFactory().createEngine()) {
             install(Logging) {
@@ -26,6 +28,20 @@ internal val ktorModule = DI.Module("ktorModule") {
             }
 
             install(DefaultRequest)
+//https://www.appsloveworld.com/coding/ios/337/refresh-auth-token-in-ktor-for-ios-http-client
+// https://github.com/ktorio/ktor-documentation/blob/2.3.2/codeSnippets/snippets/client-auth-oauth-google/src/main/kotlin/com/example/Application.kt
+
+//            install(Auth) {
+//                bearer {
+//                    CoroutineScope(Dispatchers.Default).launch {
+//                        val authData: AuthResponseBody? =
+//                            instance<KStore<SavedAuth>>().get()?.firstOrNull()
+//                        BearerTokens(
+//                            authData?.idToken ?: "",
+//                            authData?.refreshToken ?: "")
+//                    }
+//                }
+//            }
 
             install(ContentNegotiation) {
                 json(Json {

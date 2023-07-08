@@ -7,4 +7,6 @@ interface AuthRepository {
     suspend fun registration(email: String, password: String): Result<AuthResponseBody?>
 
     suspend fun login(email: String, password: String): Result<AuthResponseBody?>
+
+    suspend fun saveTokens(body: AuthResponseBody): Result<Unit?>
 }
