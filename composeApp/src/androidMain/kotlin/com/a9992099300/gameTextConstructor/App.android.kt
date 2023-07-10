@@ -85,8 +85,10 @@ fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
             is RootComponent.Child.Login -> LoginScreen(child.component)
             is RootComponent.Child.Main -> MainScreen(child.component)
             is RootComponent.Child.Registration -> RegistrationScreen(child.component)
+            is RootComponent.Child.RootConstructor -> {
+                 // переход на сайт: создать свою книгу
+             }
         }
-
     }
 }
 

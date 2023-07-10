@@ -1,5 +1,7 @@
 package com.a9992099300.gameTextConstructor.navigation
 
+import com.a9992099300.gameTextConstructor.logic.constructor.RootConstructorComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.RootConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.login.LogInComponent
 import com.a9992099300.gameTextConstructor.logic.login.LoginComponentImpl
 import com.a9992099300.gameTextConstructor.logic.main.MainComponent
@@ -7,13 +9,13 @@ import com.a9992099300.gameTextConstructor.logic.main.MainComponentImpl
 import com.a9992099300.gameTextConstructor.logic.registration.RegistrationComponent
 import com.a9992099300.gameTextConstructor.logic.registration.RegistrationComponentImpl
 import com.a9992099300.gameTextConstructor.utils.Consumer
-
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
@@ -23,6 +25,7 @@ class RootComponentImpl constructor(
     componentContext: ComponentContext,
     private val login: (ComponentContext, Consumer<LogInComponent.Login>) -> LogInComponent,
     private val main: (ComponentContext, Consumer<MainComponent.Main>) -> MainComponent,
+    private val constructor: (ComponentContext, Consumer<MainComponent.Main>) -> RootConstructorComponent,
     private val registration: (ComponentContext, Consumer<RegistrationComponent.Registration>) -> RegistrationComponent,
 ) : RootComponent, ComponentContext by componentContext {
     constructor(
@@ -35,10 +38,21 @@ class RootComponentImpl constructor(
                 registrationClicked = {
                     output.onNext(LogInComponent.Login.Registration)
                 },
+                openMain = {
+                    output.onNext(LogInComponent.Login.Main)
+                },
+                openRootConstructor = {
+                    output.onNext(LogInComponent.Login.RootConstructor)
+                }
             )
         },
         main = { childContext, output ->
             MainComponentImpl(
+                componentContext = childContext
+            )
+        },
+        constructor = { childContext, output ->
+            RootConstructorComponentImpl(
                 componentContext = childContext
             )
         },
@@ -79,6 +93,10 @@ class RootComponentImpl constructor(
                 main(componentContext, Consumer(::exit))
             )
 
+            is Configuration.RootConstructor -> RootComponent.Child.RootConstructor(
+                constructor(componentContext, Consumer(::exit))
+            )
+
             is Configuration.Registration -> RootComponent.Child.Registration(
                 registration(
                     componentContext,
@@ -89,20 +107,23 @@ class RootComponentImpl constructor(
 
     private fun loginSuccess(output: LogInComponent.Login): Unit =
         when (output) {
-            is LogInComponent.Login.Finished -> navigation.push(Configuration.Login)
+            is LogInComponent.Login.Main -> navigation.push(Configuration.Main)
+            is LogInComponent.Login.RootConstructor -> navigation.replaceCurrent(Configuration.RootConstructor)
             is LogInComponent.Login.Registration -> navigation.push(Configuration.Registration)
         }
-
 
     private fun <T> exit(output: T): Unit =
         navigation.pop()
 
-    private sealed class Configuration : Parcelable {
+    sealed class Configuration : Parcelable {
         @Parcelize
         object Login : Configuration()
 
         @Parcelize
         object Main : Configuration()
+
+        @Parcelize
+        object RootConstructor : Configuration()
 
         @Parcelize
         object Registration : Configuration()

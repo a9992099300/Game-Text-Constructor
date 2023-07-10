@@ -8,6 +8,9 @@
     <string name="your_login">Введите почту</string>
     <string name="your_password">Введите пароль</string>
     <string name="back">Назад</string>
+    <string name="profile">Профиль</string>
+    <string name="list_books">Список книг</string>
+    <string name="exit">Выход</string>
     <string name="simple_string">Hello!</string>
     <string name="string_with_arguments">Hello ${name}!</string>
     <plurals name="plural_string">

@@ -18,7 +18,7 @@ import org.kodein.di.bind
 import org.kodein.di.singleton
 
 
-internal val ktorModule = DI.Module("ktorModule") {
+internal val ktorModuleDatabase = DI.Module("ktorModuleAuth") {
     importOnce(kStoreModule)
     bind<HttpClient>() with singleton {
         HttpClient(HttpEngineFactory().createEngine()) {
@@ -66,6 +66,3 @@ internal val ktorModule = DI.Module("ktorModule") {
 
     }
 }
-
-const val KEY = "key"
-const val KEY_VALUE = "AIzaSyBSg1OrmYOuDpO6FqvLc_gPbQD9PwkGinw"

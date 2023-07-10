@@ -21,7 +21,9 @@ interface LogInComponent {
     fun onRegistrationClick()
 
     sealed class Login {
-        object Finished : Login()
+        object Main : Login()
+        object RootConstructor : Login()
         object Registration : Login()
+
     }
 }

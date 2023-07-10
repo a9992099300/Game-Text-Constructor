@@ -13,7 +13,7 @@ data class ColorsApp(
     val thirdTextColor: Color,
     val tagColor: Color,
     val tagTextColor: Color,
-    val buttonBackground: Color
+    val textFieldBackground: Color
 )
 
 val palette = ColorsApp(
@@ -26,7 +26,7 @@ val palette = ColorsApp(
     thirdTextColor = Color(0xFFEEF2FB),
     tagColor = Color(0x1844A9F4),
     tagTextColor = Color(0xFF44A9F4),
-    buttonBackground = Color(     0xFFA6A5B1)
+    textFieldBackground = Color(     0xFFA6A5B1)
 )
 
 val LocalColorProvider = staticCompositionLocalOf<ColorsApp> { error("No default implementation") }

@@ -14,11 +14,14 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 class LoginComponentImpl(
     private val componentContext: ComponentContext,
     private val registrationClicked: () -> Unit,
+    private val openMain: () -> Unit,
+    private val openRootConstructor: () -> Unit,
 ) : ComponentContext by componentContext, LogInComponent {
 
     private val authRepository: AuthRepository = instance()
@@ -64,6 +67,9 @@ class LoginComponentImpl(
                     is Result.Success -> {
                         result.value?.let { authRepository.saveTokens(it) }
                         stateUi.value = StateUi.Success(Unit)
+                        withContext(Dispatchers.Main) {
+                            openRootConstructor()
+                        }
                     }
                     is Result.Empty ->  stateUi.value = StateUi.Empty
                     is Result.Error -> {

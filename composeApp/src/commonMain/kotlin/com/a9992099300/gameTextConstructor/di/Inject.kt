@@ -1,6 +1,6 @@
 package com.a9992099300.gameTextConstructor.di
 
-import com.a9992099300.gameTextConstructor.data.common.ktor.ktorModule
+import com.a9992099300.gameTextConstructor.data.common.ktor.ktorModuleAuth
 import com.a9992099300.gameTextConstructor.di.login.authModule
 import org.kodein.di.DI
 import org.kodein.di.DirectDI
@@ -24,14 +24,13 @@ object Inject {
         val platformModule = DI.Module(name = "platformModule",
             init = {
                 bind<PlatformConfiguration>() with singleton { config }
-
             })
 
            _di = DI {
                 importAll(
                     platformModule,
                     authModule,
-                    ktorModule,
+                    ktorModuleAuth,
                 )
             }.direct
     }
