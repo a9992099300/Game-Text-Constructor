@@ -28,6 +28,7 @@ reaktive-version = "1.2.1"
 essenty-version = "1.1.0"
 reflect-version = "1.8.22"
 kstore-version = "0.6.0"
+harawata-version = "1.2.1"
 
 [libraries]
 
@@ -74,6 +75,8 @@ reaktive ={module = "com.badoo.reaktive:reaktive", version.ref = "reaktive-versi
 essenty ={module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty-version"}
 kstore-file ={module = "io.github.xxfast:kstore-file", version.ref = "kstore-version"}
 kstore-storage ={module = "io.github.xxfast:kstore-storage", version.ref = "kstore-version"}
+harawata={module = "net.harawata:appdirs", version.ref = "harawata-version"}
+
 
 
 [plugins]

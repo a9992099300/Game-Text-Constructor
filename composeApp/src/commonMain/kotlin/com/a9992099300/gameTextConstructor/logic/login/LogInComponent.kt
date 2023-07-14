@@ -10,11 +10,13 @@ interface LogInComponent {
 
     val login: StateFlow<String>
 
-    val password: StateFlow<String>
+    val password: StateFlow<Pair<String,Boolean>>
 
     fun onLoginChanged(login: String)
 
     fun onPasswordChanged(password: String)
+
+    fun onVisibleChanged(visible: Boolean)
 
     fun onSignInClick()
 

@@ -112,6 +112,7 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.sqlDelight.driver.sqlite)
                 implementation(libs.decompose.extensions.compose)
+                implementation(libs.harawata)
 
             }
         }

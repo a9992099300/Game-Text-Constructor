@@ -1,7 +1,7 @@
 package com.a9992099300.gameTextConstructor.logic.constructor
 
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponentImpl
-import com.a9992099300.gameTextConstructor.logic.constructor.child.ProfileConstructorComponentImpl
+import com.a9992099300.gameTextConstructor.logic.constructor.profile.ProfileConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.MenuConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.MenuConstructorComponentImpl

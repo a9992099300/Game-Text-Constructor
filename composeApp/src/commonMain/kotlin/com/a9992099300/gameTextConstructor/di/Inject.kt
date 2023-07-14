@@ -1,7 +1,9 @@
 package com.a9992099300.gameTextConstructor.di
 
 import com.a9992099300.gameTextConstructor.data.common.ktor.ktorModuleAuth
+import com.a9992099300.gameTextConstructor.data.common.ktor.ktorModuleDatabase
 import com.a9992099300.gameTextConstructor.di.login.authModule
+import com.a9992099300.gameTextConstructor.di.login.profileModule
 import org.kodein.di.DI
 import org.kodein.di.DirectDI
 import org.kodein.di.bind
@@ -30,7 +32,9 @@ object Inject {
                 importAll(
                     platformModule,
                     authModule,
+                    profileModule,
                     ktorModuleAuth,
+                    ktorModuleDatabase,
                 )
             }.direct
     }

@@ -6,11 +6,15 @@
     <string name="registry_now">Зарегистрироваться</string>
     <string name="forgetting_password">Забыли пароль?</string>
     <string name="your_login">Введите почту</string>
+    <string name="your_name">Введите имя</string>
     <string name="your_password">Введите пароль</string>
     <string name="back">Назад</string>
     <string name="profile">Профиль</string>
+    <string name="profile_edit">Редактирование профиля</string>
+    <string name="save_changed">Сохранить изменения</string>
     <string name="list_books">Список книг</string>
     <string name="exit">Выход</string>
+    <string name="update_data_success">Данные успешно обновлены</string>
     <string name="simple_string">Hello!</string>
     <string name="string_with_arguments">Hello ${name}!</string>
     <plurals name="plural_string">

@@ -20,17 +20,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 @Composable
-fun CommonSnackBar(error: String) {
+fun CommonSnackBar(
+    message: String,
+    imageVector: ImageVector = Icons.Default.Warning,
+) {
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     scope.launch {
-        snackbarHostState.showSnackbar("Error : $error")
+        snackbarHostState.showSnackbar("Error : $message")
     }
-    //   SnackbarHost(hostState = snackbarHostState)
 
     SnackbarHost(
         modifier = Modifier
@@ -51,8 +54,8 @@ fun CommonSnackBar(error: String) {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(imageVector = Icons.Default.Warning, contentDescription = "")
-                    Text(text = "Error : $error")
+                    Icon(imageVector = imageVector, contentDescription = "")
+                    Text(text = "Error : $message")
                 }
             }
         }

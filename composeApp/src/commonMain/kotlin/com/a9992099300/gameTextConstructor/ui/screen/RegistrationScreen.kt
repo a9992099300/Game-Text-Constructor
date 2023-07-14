@@ -18,6 +18,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,7 +30,7 @@ import com.a9992099300.gameTextConstructor.logic.registration.RegistrationCompon
 import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonButton
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
-import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextField
+import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextFieldOutline
 
 @Composable
 fun RegistrationScreen(component: RegistrationComponent) {
@@ -39,7 +42,7 @@ fun RegistrationScreen(component: RegistrationComponent) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Theme.colors.primaryBackground),
+            .background(Theme.colors.secondaryBackground),
         contentAlignment = Alignment.Center,
     ) {
         Column(
@@ -57,13 +60,19 @@ fun RegistrationScreen(component: RegistrationComponent) {
                     .fillMaxWidth(),
                 color = Theme.colors.primaryAction,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium,
-                fontSize = 24.sp
+                style = TextStyle(
+                    fontSize = 28.sp,
+                    shadow = Shadow(
+                        color = Theme.colors.primaryBackground,
+                        offset = Offset(0f, 2f),
+                        blurRadius = 3f
+                    )
+                )
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            CommonTextField(
+            CommonTextFieldOutline(
                 text = login,
                 hint = MainRes.string.your_login,
                 enabled = stateUi !is StateUi.Loading,
@@ -72,7 +81,7 @@ fun RegistrationScreen(component: RegistrationComponent) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            CommonTextField(
+            CommonTextFieldOutline(
                 text = password,
                 hint = MainRes.string.your_password,
                 enabled = stateUi !is StateUi.Loading,

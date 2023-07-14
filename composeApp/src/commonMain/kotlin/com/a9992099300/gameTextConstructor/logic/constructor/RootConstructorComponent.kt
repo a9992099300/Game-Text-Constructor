@@ -1,7 +1,7 @@
 package com.a9992099300.gameTextConstructor.logic.constructor
 
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponent
-import com.a9992099300.gameTextConstructor.logic.constructor.child.ProfileConstructorComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.profile.ProfileConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.MenuConstructorComponent
 import com.arkivanov.decompose.router.stack.ChildStack

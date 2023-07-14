@@ -31,7 +31,7 @@ class LoginComponentImpl(
 
     override val login = MutableStateFlow("")
 
-    override val password = MutableStateFlow("")
+    override val password = MutableStateFlow(Pair("", true))
 
     private val signInRetainedInstance =
         instanceKeeper.getOrCreate { SignInRetainedInstance(Dispatchers.Default) }
@@ -41,7 +41,11 @@ class LoginComponentImpl(
     }
 
     override fun onPasswordChanged(password: String) {
-        this.password.value = password
+        this.password.value = this.password.value.copy(first = password)
+    }
+
+    override fun onVisibleChanged(visible: Boolean) {
+        this.password.value = this.password.value.copy(second = visible)
     }
 
     override fun onSignInClick() {
@@ -61,7 +65,7 @@ class LoginComponentImpl(
             scope.launch {
                 val result = authRepository.login(
                     login.value,
-                    password.value
+                    password.value.first
                 )
                 when (result) {
                     is Result.Success -> {

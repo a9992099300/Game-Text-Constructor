@@ -36,9 +36,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.plus
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.scale
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
-import log
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,7 +63,6 @@ fun MenuConstructorScreen(
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
 
-    Napier.d(message = "component $component", tag = log)
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -107,15 +104,13 @@ fun MenuConstructorScreen(
                 ) {
                     when (val child = it.instance) {
                         is RootConstructorComponent.Child.ListBooks -> {
-                            Napier.d(message = "ListBooks", tag = log)
                             ListBooksScreen(child.component)
                         }
                         is RootConstructorComponent.Child.Book -> {
-                            Napier.d(message = "Book", tag = log)
+
                         }
                         is RootConstructorComponent.Child.Profile -> {
                             ProfileScreen(child.component)
-                            Napier.d(message = "Profile", tag = log)
                         }
                     }
                 }

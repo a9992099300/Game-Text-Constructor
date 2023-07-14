@@ -18,9 +18,9 @@ import org.kodein.di.bind
 import org.kodein.di.singleton
 
 
-internal val ktorModuleDatabase = DI.Module("ktorModuleAuth") {
+internal val ktorModuleDatabase = DI.Module("ktorModuleDatabase") {
     importOnce(kStoreModule)
-    bind<HttpClient>() with singleton {
+    bind<HttpClient>(tag = "database") with singleton {
         HttpClient(HttpEngineFactory().createEngine()) {
             install(Logging) {
                 logger = Logger.SIMPLE
@@ -28,21 +28,6 @@ internal val ktorModuleDatabase = DI.Module("ktorModuleAuth") {
             }
 
             install(DefaultRequest)
-//https://www.appsloveworld.com/coding/ios/337/refresh-auth-token-in-ktor-for-ios-http-client
-// https://github.com/ktorio/ktor-documentation/blob/2.3.2/codeSnippets/snippets/client-auth-oauth-google/src/main/kotlin/com/example/Application.kt
-
-//            install(Auth) {
-//                bearer {
-//                    CoroutineScope(Dispatchers.Default).launch {
-//                        val authData: AuthResponseBody? =
-//                            instance<KStore<SavedAuth>>().get()?.firstOrNull()
-//                        BearerTokens(
-//                            authData?.idToken ?: "",
-//                            authData?.refreshToken ?: "")
-//                    }
-//                }
-//            }
-
             install(ContentNegotiation) {
                 json(Json {
                     isLenient = true
@@ -57,12 +42,11 @@ internal val ktorModuleDatabase = DI.Module("ktorModuleAuth") {
             }
 
             defaultRequest {
-                url("https://identitytoolkit.googleapis.com/v1/")
-                url.parameters.append(KEY, KEY_VALUE)
+                url("https://game-text-constructor-default-rtdb.europe-west1.firebasedatabase.app/")
                 header("Content-Type", "application/json; charset=UTF-8")
             }
-
         }
-
     }
 }
+
+const val AUTH = "auth"

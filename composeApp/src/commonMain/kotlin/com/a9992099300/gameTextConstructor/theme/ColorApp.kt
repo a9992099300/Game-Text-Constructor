@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 
 data class ColorsApp(
     val primaryBackground: Color,
+    val secondaryBackground: Color,
     val primaryAction: Color,
     val primaryTextColor: Color,
     val hintTextColor: Color,
@@ -18,7 +19,8 @@ data class ColorsApp(
 
 val palette = ColorsApp(
     primaryBackground = Color(0xFF26252d),
-    primaryAction = Color(0xFFFd77d31),
+    secondaryBackground = Color(0xFFe6e0ec),
+    primaryAction = Color(0xFF3b3946), //Color(0xFFFd77d31),
     primaryTextColor = Color(0xFF050B18),
     hintTextColor = Color(0xFF696C75),
     highlightTextColor = Color(0xFFF4D144),
