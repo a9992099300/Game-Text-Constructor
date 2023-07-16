@@ -4,4 +4,5 @@ import io.ktor.client.HttpClient
 
 interface HttpClientWrapper {
     val addToken: HttpClient
+    fun logout()
 }

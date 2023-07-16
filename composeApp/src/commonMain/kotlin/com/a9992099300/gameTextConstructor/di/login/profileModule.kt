@@ -13,5 +13,5 @@ import org.kodein.di.instance
 internal val profileModule = DI.Module("profileModule") {
         bindProvider<UserService>() { UserServiceImpl(instance()) }
         bindProvider<UserRepository>() { UserRepositoryImpl(instance(), instance()) }
-        bindProvider<HttpClientWrapper>() { HttpClientWrapperImpl(instance(), instance(tag = "database")) }
+        bindProvider<HttpClientWrapper>() { HttpClientWrapperImpl(instance(), instance(tag = "database"), instance()) }
     }

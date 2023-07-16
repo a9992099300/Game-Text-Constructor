@@ -1,3 +1,6 @@
 package com.a9992099300.gameTextConstructor.di
 
-actual class PlatformConfiguration
+import androidx.compose.ui.window.ApplicationScope
+
+actual class PlatformConfiguration constructor(
+    val applicationScope: ApplicationScope)

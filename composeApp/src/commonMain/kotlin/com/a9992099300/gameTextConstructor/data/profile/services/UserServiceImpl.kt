@@ -10,8 +10,6 @@ import io.ktor.client.request.setBody
 import io.ktor.http.path
 
 
-const val log = "myLogCommon"
-
 class UserServiceImpl(
     private val httpClient: HttpClientWrapper,
 ) : UserService {

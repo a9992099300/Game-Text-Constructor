@@ -1,6 +1,8 @@
 package com.a9992099300.gameTextConstructor.data.common.ktor
 
 import com.a9992099300.gameTextConstructor.data.common.SavedAuth
+import com.a9992099300.gameTextConstructor.di.PlatformConfiguration
+import com.a9992099300.gameTextConstructor.finish
 import io.github.xxfast.kstore.KStore
 import io.ktor.client.HttpClient
 import io.ktor.http.parameters
@@ -10,6 +12,7 @@ import kotlinx.coroutines.launch
 class HttpClientWrapperImpl(
     private val store: KStore<SavedAuth>,
     private val httpClient: HttpClient,
+    private val platformConfiguration: PlatformConfiguration
 ) : HttpClientWrapper {
     var token = ""
 
@@ -22,6 +25,13 @@ class HttpClientWrapperImpl(
     override val addToken = httpClient.apply {
         parameters {
             append(AUTH, token)
+        }
+    }
+
+    override fun logout() {
+        MainScope().launch {
+            store.delete()
+            finish(platformConfiguration)
         }
     }
 

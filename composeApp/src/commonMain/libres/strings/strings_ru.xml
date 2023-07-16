@@ -16,7 +16,7 @@
     <string name="exit">Выход</string>
     <string name="update_data_success">Данные успешно обновлены</string>
     <string name="simple_string">Hello!</string>
-    <string name="string_with_arguments">Hello ${name}!</string>
+    <string name="string_with_arguments">Добро пожаловать, ${name}!</string>
     <plurals name="plural_string">
         <item quantity="one">resource</item>
         <item quantity="other">resources</item>

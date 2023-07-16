@@ -8,6 +8,8 @@ import com.a9992099300.gameTextConstructor.logic.main.MainComponent
 import com.a9992099300.gameTextConstructor.logic.main.MainComponentImpl
 import com.a9992099300.gameTextConstructor.logic.registration.RegistrationComponent
 import com.a9992099300.gameTextConstructor.logic.registration.RegistrationComponentImpl
+import com.a9992099300.gameTextConstructor.logic.splash.SplashComponent
+import com.a9992099300.gameTextConstructor.logic.splash.SplashComponentImpl
 import com.a9992099300.gameTextConstructor.utils.Consumer
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -25,6 +27,7 @@ class RootComponentImpl constructor(
     componentContext: ComponentContext,
     private val login: (ComponentContext, Consumer<LogInComponent.Login>) -> LogInComponent,
     private val main: (ComponentContext, Consumer<MainComponent.Main>) -> MainComponent,
+    private val splash: (ComponentContext, Consumer<SplashComponent.Splash>) -> SplashComponent,
     private val constructor: (ComponentContext, Consumer<MainComponent.Main>) -> RootConstructorComponent,
     private val registration: (ComponentContext, Consumer<RegistrationComponent.Registration>) -> RegistrationComponent,
 ) : RootComponent, ComponentContext by componentContext {
@@ -51,6 +54,17 @@ class RootComponentImpl constructor(
                 componentContext = childContext
             )
         },
+        splash = { childContext, output ->
+            SplashComponentImpl(
+                componentContext = childContext,
+                openMain = {
+                    output.onNext(SplashComponent.Splash.Main)
+                },
+                openLogin = {
+                    output.onNext(SplashComponent.Splash.Login)
+                }
+            )
+        },
         constructor = { childContext, output ->
             RootConstructorComponentImpl(
                 componentContext = childContext
@@ -71,7 +85,7 @@ class RootComponentImpl constructor(
     private val stack =
         childStack(
             source = navigation,
-            initialConfiguration = Configuration.Login,
+            initialConfiguration = Configuration.Splash,
             handleBackButton = true,
             childFactory = ::createChild
         )
@@ -88,7 +102,11 @@ class RootComponentImpl constructor(
                     componentContext, Consumer(::loginSuccess)
                 )
             )
-
+            is Configuration.Splash -> RootComponent.Child.Splash(
+                splash(
+                    componentContext, Consumer(::splashFinished)
+                )
+            )
             is Configuration.Main -> RootComponent.Child.Main(
                 main(componentContext, Consumer(::exit))
             )
@@ -112,6 +130,12 @@ class RootComponentImpl constructor(
             is LogInComponent.Login.Registration -> navigation.push(Configuration.Registration)
         }
 
+    private fun splashFinished(output: SplashComponent.Splash): Unit =
+        when (output) {
+            is SplashComponent.Splash.Login -> navigation.replaceCurrent(Configuration.Login)
+            is SplashComponent.Splash.Main -> navigation.replaceCurrent(Configuration.RootConstructor)
+        }
+
     private fun <T> exit(output: T): Unit =
         navigation.pop()
 
@@ -121,6 +145,9 @@ class RootComponentImpl constructor(
 
         @Parcelize
         object Main : Configuration()
+
+        @Parcelize
+        object Splash : Configuration()
 
         @Parcelize
         object RootConstructor : Configuration()

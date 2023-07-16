@@ -46,6 +46,7 @@ fun MenuConstructorScreen(
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
 // icons to mimic drawer destinations
     val items = listOf(
         ItemModel.Profile(
@@ -99,17 +100,17 @@ fun MenuConstructorScreen(
                 horizontalAlignment = Alignment.Start
             ) {
                 Children(
-                    stack = component.childStack,
+                    stack = component.pageStack,
                     animation = stackAnimation(fade() + scale()),
                 ) {
                     when (val child = it.instance) {
-                        is RootConstructorComponent.Child.ListBooks -> {
+                        is RootConstructorComponent.Page.ListBooks -> {
                             ListBooksScreen(child.component)
                         }
-                        is RootConstructorComponent.Child.Book -> {
+                        is RootConstructorComponent.Page.Book -> {
 
                         }
-                        is RootConstructorComponent.Child.Profile -> {
+                        is RootConstructorComponent.Page.Profile -> {
                             ProfileScreen(child.component)
                         }
                     }

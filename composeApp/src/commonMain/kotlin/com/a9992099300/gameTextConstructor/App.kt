@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,13 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.a9992099300.gameTextConstructor.di.PlatformConfiguration
 import com.a9992099300.gameTextConstructor.theme.AppTheme
 import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonButton
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextField
-
-@OptIn(ExperimentalMaterial3Api::class)
-
 
 @Composable
 internal fun App() = AppTheme {
@@ -116,3 +113,4 @@ internal fun App() = AppTheme {
 
 internal expect fun openUrl(url: String?)
 
+internal expect fun finish(platformConfiguration: PlatformConfiguration)

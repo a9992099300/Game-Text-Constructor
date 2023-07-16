@@ -9,14 +9,14 @@ import com.arkivanov.decompose.value.Value
 
 interface RootConstructorComponent {
 
-    val childStack: Value<ChildStack<*, Child>>
+    val pageStack: Value<ChildStack<*, Page>>
 
     val menuConstructorComponent: MenuConstructorComponent
 
-    sealed class Child {
-        data class ListBooks(val component: ListBookConstructorComponent) : Child()
-        data class Book(val component: BookConstructorComponent) : Child()
-        data class Profile(val component: ProfileConstructorComponent) : Child()
+    sealed class Page {
+        data class ListBooks(val component: ListBookConstructorComponent) : Page()
+        data class Book(val component: BookConstructorComponent) : Page()
+        data class Profile(val component: ProfileConstructorComponent) : Page()
     }
 
 }

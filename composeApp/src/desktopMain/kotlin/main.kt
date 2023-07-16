@@ -22,7 +22,9 @@ const val log = "myLogDesktop"
 fun main() = application {
 
     Inject.initDI(
-        config = PlatformConfiguration())
+        config = PlatformConfiguration(
+            applicationScope = this
+        ))
     initLogger()
     Napier.d(message = "test log", tag = log)
 

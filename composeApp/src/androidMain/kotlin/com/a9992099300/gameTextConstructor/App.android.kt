@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat.startActivity
 import com.a9992099300.gameTextConstructor.data.auth.models.AuthResponseBody
 import com.a9992099300.gameTextConstructor.data.common.SavedAuth
 import com.a9992099300.gameTextConstructor.di.Inject
@@ -17,9 +18,10 @@ import com.a9992099300.gameTextConstructor.di.PlatformConfiguration
 import com.a9992099300.gameTextConstructor.navigation.RootComponent
 import com.a9992099300.gameTextConstructor.navigation.RootComponentImpl
 import com.a9992099300.gameTextConstructor.theme.AppTheme
+import com.a9992099300.gameTextConstructor.ui.screen.LoginScreen
 import com.a9992099300.gameTextConstructor.ui.screen.MainScreen
 import com.a9992099300.gameTextConstructor.ui.screen.RegistrationScreen
-import com.a9992099300.gameTextConstructor.ui.screen.LoginScreen
+import com.a9992099300.gameTextConstructor.ui.screen.SplashScreen
 import com.a9992099300.gameTextConstructor.utils.initLogger
 import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
@@ -85,6 +87,7 @@ fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
             is RootComponent.Child.Login -> LoginScreen(child.component)
             is RootComponent.Child.Main -> MainScreen(child.component)
             is RootComponent.Child.Registration -> RegistrationScreen(child.component)
+            is RootComponent.Child.Splash -> SplashScreen(child.component)
             is RootComponent.Child.RootConstructor -> {
                  // переход на сайт: создать свою книгу
              }
@@ -100,4 +103,11 @@ internal actual fun openUrl(url: String?) {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
     AndroidApp.INSTANCE.startActivity(intent)
+}
+
+internal actual fun finish(platformConfiguration: PlatformConfiguration) {
+    val homeIntent = Intent(Intent.ACTION_MAIN)
+    homeIntent.addCategory(Intent.CATEGORY_HOME)
+    homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+    startActivity(platformConfiguration.context, homeIntent, null)
 }
