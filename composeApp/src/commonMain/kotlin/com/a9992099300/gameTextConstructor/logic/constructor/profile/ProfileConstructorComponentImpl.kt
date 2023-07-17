@@ -1,6 +1,5 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.profile
 
-import com.a9992099300.gameTextConstructor.data.auth.services.log
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.data.profile.models.ProfileDataModel
 import com.a9992099300.gameTextConstructor.data.profile.repository.UserRepository
@@ -9,7 +8,6 @@ import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -66,15 +64,13 @@ class ProfileConstructorComponentImpl(
             }
         }
 
-        private fun workWithResult(result: Result<ProfileDataModel>) {
+        private suspend fun workWithResult(result: Result<ProfileDataModel>) {
             when (result) {
                 is Result.Success -> {
                     stateUi.value = StateUi.Success(result.value)
-                    name.tryEmit(result.value.name)
+                    name.emit(result.value.name)
                 }
-                is Result.Empty -> stateUi.value = StateUi.Empty
                 is Result.Error -> {
-                    Napier.d("error ${result.error?.cause?.message}", tag = log)
                     stateUi.value = StateUi.Error(result.error?.message ?: "Error")
                 }
             }

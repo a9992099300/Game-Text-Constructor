@@ -1,4 +1,4 @@
-package com.a9992099300.gameTextConstructor.navigation
+package com.a9992099300.gameTextConstructor.logic.root
 
 import com.a9992099300.gameTextConstructor.logic.login.LogInComponent
 import com.a9992099300.gameTextConstructor.logic.main.MainComponent

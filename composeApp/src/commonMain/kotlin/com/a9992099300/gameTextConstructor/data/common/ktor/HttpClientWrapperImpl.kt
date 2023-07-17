@@ -14,11 +14,14 @@ class HttpClientWrapperImpl(
     private val httpClient: HttpClient,
     private val platformConfiguration: PlatformConfiguration
 ) : HttpClientWrapper {
-    var token = ""
+    private var token = ""
+    private var localId = ""
 
     init {
         MainScope().launch {
-            token = store.get()?.firstOrNull()?.idToken ?: ""
+            val authData = store.get()?.firstOrNull()
+            token = authData?.idToken ?: ""
+            localId = authData?.localId ?: ""
         }
     }
 

@@ -1,6 +1,5 @@
 package com.a9992099300.gameTextConstructor.data.common.ktor
 
-import com.a9992099300.gameTextConstructor.di.login.kStoreModule
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
@@ -19,7 +18,6 @@ import org.kodein.di.singleton
 
 
 internal val ktorModuleDatabase = DI.Module("ktorModuleDatabase") {
-    importOnce(kStoreModule)
     bind<HttpClient>(tag = "database") with singleton {
         HttpClient(HttpEngineFactory().createEngine()) {
             install(Logging) {

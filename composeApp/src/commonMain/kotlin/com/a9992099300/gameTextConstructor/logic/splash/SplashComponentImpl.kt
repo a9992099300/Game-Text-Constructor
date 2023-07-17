@@ -12,7 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,12 +53,11 @@ class SplashComponentImpl(
                 is Result.Success -> {
                     stateUi.value = StateUi.Success(Unit)
                     name.emit(result.value.name)
-                    delay(1500)
+               //     delay(1500) задержку добавить после добавления анимации
                     withContext(Dispatchers.Main) {
                         openMain()
                     }
                 }
-                is Result.Empty -> stateUi.value = StateUi.Empty
                 is Result.Error -> {
                     withContext(Dispatchers.Main) {
                         openLogin()

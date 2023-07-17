@@ -77,7 +77,6 @@ class RegistrationComponentImpl (
                 )
                 when (result) {
                     is Result.Success -> stateUi.value = StateUi.Success(Unit)
-                    is Result.Empty ->  stateUi.value = StateUi.Empty
                     is Result.Error ->  stateUi.value = StateUi.Error(result.error?.message ?: "Error")
                 }
             }

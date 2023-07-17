@@ -1,9 +1,9 @@
 @file:Suppress("EXPERIMENTAL_API_USAGE")
 
-package com.a9992099300.gameTextConstructor.ui.navigation
+package com.a9992099300.gameTextConstructor.ui.root
 
 import androidx.compose.runtime.Composable
-import com.a9992099300.gameTextConstructor.navigation.RootComponent
+import com.a9992099300.gameTextConstructor.logic.root.RootComponent
 import com.a9992099300.gameTextConstructor.ui.screen.MainScreen
 import com.a9992099300.gameTextConstructor.ui.screen.RegistrationScreen
 import com.a9992099300.gameTextConstructor.ui.screen.LoginScreen

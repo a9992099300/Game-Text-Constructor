@@ -31,7 +31,9 @@ fun CommonButton(
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
     ) {
         if (isLoading) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(
+                color = Theme.colors.secondaryTextColor
+            )
         } else {
             Text(
                 text,

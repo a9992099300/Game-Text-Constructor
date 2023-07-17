@@ -17,6 +17,8 @@
     <string name="update_data_success">Данные успешно обновлены</string>
     <string name="simple_string">Hello!</string>
     <string name="string_with_arguments">Добро пожаловать, ${name}!</string>
+    <string name="add_book">Добавить книгу</string>
+    <string name="list_your_books">Список Ваших книг</string>
     <plurals name="plural_string">
         <item quantity="one">resource</item>
         <item quantity="other">resources</item>

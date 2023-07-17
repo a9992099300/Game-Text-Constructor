@@ -8,9 +8,9 @@ import androidx.compose.ui.window.rememberWindowState
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.di.PlatformConfiguration
 import com.a9992099300.gameTextConstructor.theme.AppTheme
-import com.a9992099300.gameTextConstructor.navigation.RootComponent
-import com.a9992099300.gameTextConstructor.navigation.RootComponentImpl
-import com.a9992099300.gameTextConstructor.ui.navigation.RootContent
+import com.a9992099300.gameTextConstructor.logic.root.RootComponent
+import com.a9992099300.gameTextConstructor.logic.registration.RootComponentImpl
+import com.a9992099300.gameTextConstructor.ui.root.RootContent
 import com.a9992099300.gameTextConstructor.utils.initLogger
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext

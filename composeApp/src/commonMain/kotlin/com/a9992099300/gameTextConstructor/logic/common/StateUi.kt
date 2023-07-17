@@ -7,8 +7,6 @@ sealed class StateUi<out T> {
 
     open class Error(val messageError: String) : StateUi<Nothing>()
 
-    object Empty : StateUi<Nothing>()
-
     object Initial : StateUi<Nothing>()
 
     object Loading : StateUi<Nothing>()

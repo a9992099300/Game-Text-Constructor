@@ -7,7 +7,6 @@ import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -75,9 +74,7 @@ class LoginComponentImpl(
                             openRootConstructor()
                         }
                     }
-                    is Result.Empty ->  stateUi.value = StateUi.Empty
                     is Result.Error -> {
-                        Napier.d("error ${result.error?.cause?.message}")
                         stateUi.value = StateUi.Error(result.error?.message ?: "Error")
                     }
                 }

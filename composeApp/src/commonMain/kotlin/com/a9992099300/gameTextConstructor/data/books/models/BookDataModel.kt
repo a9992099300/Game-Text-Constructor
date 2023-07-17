@@ -1,4 +1,4 @@
-package com.a9992099300.gameTextConstructor.data.profile.models
+package com.a9992099300.gameTextConstructor.data.books.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

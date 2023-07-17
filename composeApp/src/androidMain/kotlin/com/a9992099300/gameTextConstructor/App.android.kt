@@ -15,8 +15,8 @@ import com.a9992099300.gameTextConstructor.data.common.SavedAuth
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.di.Inject.instance
 import com.a9992099300.gameTextConstructor.di.PlatformConfiguration
-import com.a9992099300.gameTextConstructor.navigation.RootComponent
-import com.a9992099300.gameTextConstructor.navigation.RootComponentImpl
+import com.a9992099300.gameTextConstructor.logic.root.RootComponent
+import com.a9992099300.gameTextConstructor.logic.registration.RootComponentImpl
 import com.a9992099300.gameTextConstructor.theme.AppTheme
 import com.a9992099300.gameTextConstructor.ui.screen.LoginScreen
 import com.a9992099300.gameTextConstructor.ui.screen.MainScreen
