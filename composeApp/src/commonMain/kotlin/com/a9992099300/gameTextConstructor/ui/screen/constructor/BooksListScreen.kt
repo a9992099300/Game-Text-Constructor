@@ -16,20 +16,16 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.a9992099300.gameTextConstructor.MainRes
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
@@ -38,6 +34,7 @@ import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonBookCard
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonPlusCard
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
+import com.a9992099300.gameTextConstructor.ui.widgets.HeaderText
 
 @Composable
 fun ListBooksScreen(component: ListBookConstructorComponent) {
@@ -60,6 +57,7 @@ fun ListBooksScreen(component: ListBookConstructorComponent) {
                     component,
                     stateUi
                 )
+
                 BooksListContent(
                     books,
                     stateUi,
@@ -71,12 +69,14 @@ fun ListBooksScreen(component: ListBookConstructorComponent) {
                 is StateUi.Error -> {
                     CommonSnackBar((stateUi as StateUi.Error).messageError)
                 }
+
                 is StateUi.Loading -> {
                     CircularProgressIndicator(
                         color = Theme.colors.primaryBackground,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 else -> {}
             }
         }
@@ -113,7 +113,9 @@ private fun BooksListContent(
         item {
             if (stateUi is StateUi.Success) {
                 CommonPlusCard(
-                    modifier = Modifier,
+                    modifier = Modifier.clickable{
+                        component.createNewBook()
+                    },
                     component
                 )
             }
@@ -132,12 +134,9 @@ private fun BooksListHeader(
             .wrapContentHeight()
             .padding(16.dp, 0.dp, 16.dp, 0.dp)
     ) {
-        Text(
+
+        HeaderText(
             text = MainRes.string.list_your_books,
-            color = Theme.colors.primaryAction,
-            textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.body1,
-            fontSize = 20.sp
         )
 
         Spacer(modifier = Modifier.weight(1f))

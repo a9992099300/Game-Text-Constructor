@@ -9,9 +9,13 @@ interface ListBookConstructorComponent {
     val stateUi: StateFlow<StateUi<Unit>>
 
     val books: StateFlow<List<BookDataModel>>
+
+  //  val dialog: Value<ChildSlot<*, CreateBookConstructorComponent>>
     fun getBooksList()
 
-    sealed class ListBook {
-        object CreateNewBook : ListBook()
+    fun createNewBook()
+
+    sealed class Child {
+        object CreateNewBook : Child()
     }
 }

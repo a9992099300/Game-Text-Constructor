@@ -12,30 +12,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.data.profile.models.ProfileDataModel
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
-import com.a9992099300.gameTextConstructor.logic.constructor.profile.ProfileConstructorComponent
-import com.a9992099300.gameTextConstructor.theme.Theme
+import com.a9992099300.gameTextConstructor.logic.constructor.createBook.CreateBookConstructorComponent
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonButton
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextFieldOutline
+import com.a9992099300.gameTextConstructor.ui.widgets.HeaderText
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("SuspiciousIndentation")
 @Composable
-fun ProfileScreen(component: ProfileConstructorComponent) {
+fun CreateBookScreen(component: CreateBookConstructorComponent) {
 
-    val name by component.name.collectAsState()
     val stateUi by component.stateUi.collectAsState()
 
     Card(
@@ -55,37 +51,24 @@ fun ProfileScreen(component: ProfileConstructorComponent) {
                 horizontalAlignment = Alignment.Start
             ) {
 
-                Text(
-                    text = MainRes.string.profile_edit,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    color = Theme.colors.primaryAction,
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 24.sp
+                HeaderText(
+                    text = MainRes.string.new_book,
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        CommonTextFieldOutline(
-                            text = name,
-                            hint = MainRes.string.your_name,
-                            enabled = stateUi !is StateUi.Loading,
-                            onValueChanged = component::onNameChanged,
-                        )
-                    }
+                    CommonTextFieldOutline(
+                        text = "",
+                        hint = MainRes.string.title_book,
+                        onValueChanged = {
 
+                        },
+                    )
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Column(
@@ -95,11 +78,8 @@ fun ProfileScreen(component: ProfileConstructorComponent) {
                         verticalArrangement = Arrangement.Center
                     ) {
                         CommonTextFieldOutline(
-                            text = if (stateUi is StateUi.Success) {
-                                (stateUi as StateUi.Success<ProfileDataModel>).value.email
-                            } else "",
-                            hint = MainRes.string.your_login,
-                            enabled = false,
+                            text = "",
+                            hint = MainRes.string.title_book,
                             onValueChanged = {
 
                             },
@@ -107,15 +87,43 @@ fun ProfileScreen(component: ProfileConstructorComponent) {
                     }
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                CommonTextFieldOutline(
+                    text = "",
+                    height = 256,
+                    hint = MainRes.string.description_book,
+                    onValueChanged = {
 
-                CommonButton(
-                    onClickButton = component::onSaveChanged,
-                    isLoading = stateUi is StateUi.Loading,
-                    text = MainRes.string.save_changed
+                    },
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.weight(1f))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CommonButton(
+                        onClickButton = {
+                            component.onBackClicked()
+                        },
+                        isLoading = stateUi is StateUi.Loading,
+                        text = MainRes.string.cancel,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    CommonButton(
+                        onClickButton = {
+
+                        },
+                        isLoading = stateUi is StateUi.Loading,
+                        text = MainRes.string.save,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
             }
         }
     }

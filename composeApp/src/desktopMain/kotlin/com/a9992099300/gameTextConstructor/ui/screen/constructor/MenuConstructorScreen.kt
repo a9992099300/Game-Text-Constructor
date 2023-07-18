@@ -47,7 +47,6 @@ fun MenuConstructorScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-// icons to mimic drawer destinations
     val items = listOf(
         ItemModel.Profile(
             MainRes.string.profile,
@@ -70,8 +69,6 @@ fun MenuConstructorScreen(
             ModalDrawerSheet(
                 modifier = Modifier.offset((30).dp, 0.dp),
                 drawerShape = ShapeDefaults.Medium,
-            //    drawerContainerColor = Theme.colors.textFieldBackground,
-            //    drawerContentColor = Theme.colors.primaryAction
             ) {
                 Spacer(Modifier.height(12.dp))
                 items.forEach { item ->
@@ -112,6 +109,10 @@ fun MenuConstructorScreen(
                         }
                         is RootConstructorComponent.Page.Profile -> {
                             ProfileScreen(child.component)
+                        }
+
+                        is RootConstructorComponent.Page.CreateBook -> {
+                            CreateBookScreen(child.component)
                         }
                     }
                 }

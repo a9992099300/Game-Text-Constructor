@@ -1,4 +1,4 @@
-package com.a9992099300.gameTextConstructor.logic.registration
+package com.a9992099300.gameTextConstructor.logic.root
 
 import com.a9992099300.gameTextConstructor.logic.constructor.RootConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.RootConstructorComponentImpl
@@ -6,7 +6,8 @@ import com.a9992099300.gameTextConstructor.logic.login.LogInComponent
 import com.a9992099300.gameTextConstructor.logic.login.LoginComponentImpl
 import com.a9992099300.gameTextConstructor.logic.main.MainComponent
 import com.a9992099300.gameTextConstructor.logic.main.MainComponentImpl
-import com.a9992099300.gameTextConstructor.logic.root.RootComponent
+import com.a9992099300.gameTextConstructor.logic.registration.RegistrationComponent
+import com.a9992099300.gameTextConstructor.logic.registration.RegistrationComponentImpl
 import com.a9992099300.gameTextConstructor.logic.splash.SplashComponent
 import com.a9992099300.gameTextConstructor.logic.splash.SplashComponentImpl
 import com.a9992099300.gameTextConstructor.utils.Consumer

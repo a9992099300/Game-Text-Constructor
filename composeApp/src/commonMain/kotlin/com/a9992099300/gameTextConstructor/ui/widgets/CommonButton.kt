@@ -17,10 +17,11 @@ import com.a9992099300.gameTextConstructor.theme.Theme
 fun CommonButton(
     onClickButton: () -> Unit,
     isLoading: Boolean,
-    text: String
+    text: String,
+    modifier: Modifier = Modifier
 ) {
     Button(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
         onClick = onClickButton,

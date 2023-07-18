@@ -8,6 +8,8 @@ import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -18,9 +20,12 @@ import kotlin.coroutines.CoroutineContext
 
 class ListBookConstructorComponentImpl(
     componentContext: ComponentContext,
+    private val onNewBook: () -> Unit
 ): ComponentContext by componentContext, ListBookConstructorComponent {
 
     private val booksListRepository: BooksRepository = Inject.instance()
+
+//    private val dialogNavigation = SlotNavigation<DialogConfig>()
 
     override val stateUi: MutableStateFlow<StateUi<Unit>> =
         MutableStateFlow(StateUi.Initial)
@@ -28,8 +33,33 @@ class ListBookConstructorComponentImpl(
     override val books: MutableStateFlow<List<BookDataModel>> =
         MutableStateFlow(listOf())
 
+
+//    private val _dialog =
+//        childSlot(
+//            source = dialogNavigation,
+//            // persistent = false, // Disable navigation state saving, if needed
+//            handleBackButton = true, // Close the dialog on back button press
+//        ) { config, componentContext ->
+//            CreateBookConstructorComponentImpl(
+//                componentContext = componentContext,
+//                message = config.message,
+//                onDismissed = dialogNavigation::dismiss,
+//            )
+//        }
+//
+//    override val dialog: Value<ChildSlot<*, CreateBookConstructorComponent>> = _dialog
+//
+//    private fun showDialog(message: String) {
+//        dialogNavigation.activate(DialogConfig(message = message))
+//    }
+//
+
     override fun getBooksList() {
         booksListRetainedInstance.getBooksList()
+    }
+
+    override fun createNewBook() {
+        onNewBook()
     }
 
     private val booksListRetainedInstance =
@@ -63,4 +93,8 @@ class ListBookConstructorComponentImpl(
         }
     }
 
+    @Parcelize
+    private data class DialogConfig(
+        val message: String,
+    ) : Parcelable
 }

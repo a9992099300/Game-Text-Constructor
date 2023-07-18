@@ -1,6 +1,5 @@
 package com.a9992099300.gameTextConstructor.ui.widgets
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,9 +36,7 @@ fun CommonPlusCard(
         ) {
 
             Icon(
-                modifier = Modifier.size(50.dp).clickable {
-                   // component.getBooksList()
-                },
+                modifier = Modifier.size(50.dp),
                 imageVector = Icons.Default.Add, contentDescription = null,
                 tint = Theme.colors.primaryAction,
             )

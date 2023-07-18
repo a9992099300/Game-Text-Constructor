@@ -3,6 +3,8 @@ package com.a9992099300.gameTextConstructor.logic.constructor
 import com.a9992099300.gameTextConstructor.data.common.ktor.HttpClientWrapper
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponentImpl
+import com.a9992099300.gameTextConstructor.logic.constructor.createBook.CreateBookConstructorComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.createBook.CreateBookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.MenuConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.MenuConstructorComponentImpl
@@ -13,6 +15,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
@@ -26,7 +29,18 @@ class RootConstructorComponentImpl constructor(
 
     private fun listBooks(componentContext: ComponentContext): ListBookConstructorComponentImpl =
         ListBookConstructorComponentImpl(
-            componentContext = componentContext
+            componentContext = componentContext,
+            onNewBook = {
+                createNewBook()
+            }
+        )
+
+    private fun createNewBook(componentContext: ComponentContext): CreateBookConstructorComponent =
+        CreateBookConstructorComponentImpl(
+            componentContext = componentContext,
+            onBack = {
+                popBack()
+            }
         )
 
     private fun book(componentContext: ComponentContext): BookConstructorComponentImpl =
@@ -46,12 +60,14 @@ class RootConstructorComponentImpl constructor(
                 when (it) {
                     is ItemModel.Profile -> navigation.bringToFront(Configuration.Profile)
                     is ItemModel.ListBooks -> navigation.bringToFront(Configuration.ListBooks)
-                    else -> {
-                        httpClientWrapper.logout()
-                    }
+                    is ItemModel.Exit ->  httpClientWrapper.logout()
                 }
             }
         )
+
+    private fun createNewBook(): Unit = navigation.bringToFront(Configuration.CreateBook)
+
+    private fun popBack(): Unit = navigation.pop()
 
     private val stack =
         childStack(
@@ -80,6 +96,10 @@ class RootConstructorComponentImpl constructor(
                 profile(componentContext)
             )
 
+            is Configuration.CreateBook -> RootConstructorComponent.Page.CreateBook(
+                createNewBook(componentContext)
+            )
+
         }
 
     private sealed class Configuration : Parcelable {
@@ -92,6 +112,9 @@ class RootConstructorComponentImpl constructor(
 
         @Parcelize
         object Book : Configuration()
+
+        @Parcelize
+        object CreateBook : Configuration()
 
     }
 }

@@ -9,6 +9,8 @@
     <string name="your_name">Введите имя</string>
     <string name="your_password">Введите пароль</string>
     <string name="back">Назад</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
     <string name="profile">Профиль</string>
     <string name="profile_edit">Редактирование профиля</string>
     <string name="save_changed">Сохранить изменения</string>
@@ -19,6 +21,10 @@
     <string name="string_with_arguments">Добро пожаловать, ${name}!</string>
     <string name="add_book">Добавить книгу</string>
     <string name="list_your_books">Список Ваших книг</string>
+    <string name="new_book">Новая книга</string>
+    <string name="title_book">Название книги</string>
+    <string name="description_book">Описание книги</string>
+    <string name="category_book">Категория книги</string>
     <plurals name="plural_string">
         <item quantity="one">resource</item>
         <item quantity="other">resources</item>

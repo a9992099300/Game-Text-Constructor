@@ -20,13 +20,14 @@ fun CommonTextFieldOutline(
     hint: String,
     enabled: Boolean = true,
     isSecure: Boolean = false,
+    height: Int = 56,
     trailingIcon: @Composable () -> Unit = {},
     onValueChanged: (String) -> Unit,
 ) {
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp),
+            .height(height.dp),
         value = text,
         onValueChange = {
             onValueChanged.invoke(it)

@@ -3,7 +3,7 @@ import androidx.compose.ui.window.ComposeUIViewController
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.di.PlatformConfiguration
 import com.a9992099300.gameTextConstructor.logic.root.RootComponent
-import com.a9992099300.gameTextConstructor.logic.registration.RootComponentImpl
+import com.a9992099300.gameTextConstructor.logic.root.RootComponentImpl
 import com.a9992099300.gameTextConstructor.theme.AppTheme
 import com.a9992099300.gameTextConstructor.ui.screen.MainScreen
 import com.a9992099300.gameTextConstructor.ui.screen.RegistrationScreen
