@@ -15,7 +15,7 @@ class UserRepositoryImpl(
     private val store: KStore<SavedAuth>
 ) : UserRepository {
 
-    override suspend fun updateUserInfo(name: String) =
+    override suspend fun updateUserInfo(name: String): Result<ProfileDataModel> =
         request {
             val authData = store.get()
             Napier.d(message = "authData $authData", tag = log)

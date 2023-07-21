@@ -5,6 +5,8 @@ import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.createBook.CreateBookConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.createBook.CreateBookConstructorComponentImpl
+import com.a9992099300.gameTextConstructor.logic.constructor.editBook.EditBookConstructorComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.editBook.EditBookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.MenuConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.MenuConstructorComponentImpl
@@ -30,16 +32,39 @@ class RootConstructorComponentImpl constructor(
     private fun listBooks(componentContext: ComponentContext): ListBookConstructorComponentImpl =
         ListBookConstructorComponentImpl(
             componentContext = componentContext,
-            onNewBook = {
+            onCreateBook = {
                 createNewBook()
+            },
+            onEditBook = {
+                editNewBook(it)
             }
         )
 
-    private fun createNewBook(componentContext: ComponentContext): CreateBookConstructorComponent =
+    private fun createNewBook(
+        componentContext: ComponentContext
+    ): CreateBookConstructorComponent =
         CreateBookConstructorComponentImpl(
             componentContext = componentContext,
             onBack = {
                 popBack()
+            },
+            onBookEdit = {
+                onBookEdited()
+            }
+        )
+
+    private fun editBook(
+        componentContext: ComponentContext,
+        config: Configuration.EditBook
+    ): EditBookConstructorComponent =
+        EditBookConstructorComponentImpl(
+            componentContext = componentContext,
+            bookId = config.bookId,
+            onBack = {
+                popBack()
+            },
+            onBookEdit = {
+                onBookEdited()
             }
         )
 
@@ -60,14 +85,22 @@ class RootConstructorComponentImpl constructor(
                 when (it) {
                     is ItemModel.Profile -> navigation.bringToFront(Configuration.Profile)
                     is ItemModel.ListBooks -> navigation.bringToFront(Configuration.ListBooks)
-                    is ItemModel.Exit ->  httpClientWrapper.logout()
+                    is ItemModel.Exit -> httpClientWrapper.logout()
                 }
             }
         )
 
     private fun createNewBook(): Unit = navigation.bringToFront(Configuration.CreateBook)
 
+    private fun editNewBook(bookId: String): Unit =
+        navigation.bringToFront(Configuration.EditBook(bookId = bookId))
+
     private fun popBack(): Unit = navigation.pop()
+
+    private fun onBookEdited(): Unit = navigation.pop {
+        (stack.value.active.instance as? RootConstructorComponent.Page.ListBooks)
+            ?.component?.getBooksList()
+    }
 
     private val stack =
         childStack(
@@ -100,6 +133,10 @@ class RootConstructorComponentImpl constructor(
                 createNewBook(componentContext)
             )
 
+            is Configuration.EditBook -> RootConstructorComponent.Page.EditBook(
+                editBook(componentContext, configuration)
+            )
+
         }
 
     private sealed class Configuration : Parcelable {
@@ -115,6 +152,9 @@ class RootConstructorComponentImpl constructor(
 
         @Parcelize
         object CreateBook : Configuration()
+
+        @Parcelize
+        data class EditBook(val bookId: String) : Configuration()
 
     }
 }

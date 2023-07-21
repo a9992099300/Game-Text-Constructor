@@ -43,7 +43,11 @@ object Inject {
             }.direct
     }
 
-    inline fun<reified T> instance(): T{
-        return di.instance()
+    inline fun<reified T> instance(tag: String? = null): T{
+        return  if (tag == null) {
+            di.instance()
+        } else {
+            di.instance(tag)
+        }
     }
 }

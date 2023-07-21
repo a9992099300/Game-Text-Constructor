@@ -12,5 +12,4 @@ data class BookDataModel(
     @SerialName("category")  val category: String,
     @SerialName("imageUrl")  val imageUrl: String,
     @SerialName("createdDate")  val createdDate: String,
-    @SerialName("likes")  val likes: Int,
 )

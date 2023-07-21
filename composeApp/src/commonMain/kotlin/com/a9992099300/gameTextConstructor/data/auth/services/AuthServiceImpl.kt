@@ -6,7 +6,6 @@ import com.a9992099300.gameTextConstructor.data.common.SavedAuth
 import io.github.aakira.napier.Napier
 import io.github.xxfast.kstore.KStore
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.path
@@ -17,7 +16,7 @@ class AuthServiceImpl(
     private val httpClient: HttpClient,
     private val store: KStore<SavedAuth>
 ) : AuthService {
-    override suspend fun registration(email: String, password: String): AuthResponseBody =
+    override suspend fun registration(email: String, password: String) =
         httpClient.post {
             url {
                 path("accounts:signUp")
@@ -29,10 +28,10 @@ class AuthServiceImpl(
                     )
                 )
             }
-        }.body()
+        }
 
 
-    override suspend fun login(email: String, password: String): AuthResponseBody =
+    override suspend fun login(email: String, password: String) =
         httpClient.post {
             url {
                 path("accounts:signInWithPassword")
@@ -44,7 +43,7 @@ class AuthServiceImpl(
                     )
                 )
             }
-        }.body()
+        }
 
     override suspend fun saveTokens(body: AuthResponseBody) {
         Napier.d(message = "saveTokens log $body", tag = log)

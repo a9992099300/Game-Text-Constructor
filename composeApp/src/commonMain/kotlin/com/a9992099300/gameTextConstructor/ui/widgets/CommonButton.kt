@@ -16,7 +16,7 @@ import com.a9992099300.gameTextConstructor.theme.Theme
 @Composable
 fun CommonButton(
     onClickButton: () -> Unit,
-    isLoading: Boolean,
+    isLoading: Boolean = false,
     text: String,
     modifier: Modifier = Modifier
 ) {

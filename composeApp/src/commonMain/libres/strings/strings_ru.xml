@@ -19,7 +19,9 @@
     <string name="update_data_success">Данные успешно обновлены</string>
     <string name="simple_string">Hello!</string>
     <string name="string_with_arguments">Добро пожаловать, ${name}!</string>
+    <string name="max_string">Максимальный размер ${size} символа!</string>
     <string name="add_book">Добавить книгу</string>
+    <string name="edit_book">Редактирование книги</string>
     <string name="list_your_books">Список Ваших книг</string>
     <string name="new_book">Новая книга</string>
     <string name="title_book">Название книги</string>
@@ -29,4 +31,8 @@
         <item quantity="one">resource</item>
         <item quantity="other">resources</item>
     </plurals>
+    <string name="roman">Роман</string>
+    <string name="horror">Ужасы</string>
+    <string name="adventure">Приключения</string>
+    <string name="other">Другое</string>
 </resources>

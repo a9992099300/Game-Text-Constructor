@@ -105,9 +105,10 @@ private fun BooksListContent(
         ) { book ->
             CommonBookCard(
                 modifier = Modifier.clickable {
-
+                    component.editBook(book.bookId)
                 },
                 book = book,
+                component,
             )
         }
         item {

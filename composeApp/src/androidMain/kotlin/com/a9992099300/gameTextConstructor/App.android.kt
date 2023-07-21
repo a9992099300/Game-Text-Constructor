@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat.startActivity
 import com.a9992099300.gameTextConstructor.data.auth.models.AuthResponseBody
@@ -29,11 +30,16 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.plus
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.scale
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
+import com.seiko.imageloader.ImageLoader
+import com.seiko.imageloader.LocalImageLoader
+import com.seiko.imageloader.cache.memory.maxSizePercent
+import com.seiko.imageloader.component.setupDefaultComponents
 import io.github.aakira.napier.Napier
 import io.github.xxfast.kstore.KStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okio.Path.Companion.toOkioPath
 
 
 const val log = "myLogAndroid"
@@ -69,8 +75,34 @@ class AppActivity : ComponentActivity() {
             )
 
         setContent {
-            AppTheme {
-                RootContent(component = root, modifier = Modifier.fillMaxSize())
+            CompositionLocalProvider(
+                LocalImageLoader provides generateImageLoader(), // or remember { generateImageLoader() }
+            ) {
+                AppTheme {
+                    RootContent(component = root, modifier = Modifier.fillMaxSize())
+                }
+            }
+
+        }
+    }
+
+    private fun generateImageLoader(): ImageLoader {
+        return ImageLoader {
+            //   commonConfig()
+            components {
+                setupDefaultComponents(
+                    applicationContext
+                )
+            }
+            interceptor {
+                memoryCacheConfig {
+                    // Set the max size to 25% of the app's available memory.
+                    maxSizePercent(applicationContext, 0.25)
+                }
+                diskCacheConfig {
+                    directory(cacheDir.resolve("image_cache").toOkioPath())
+                    maxSizeBytes(512L * 1024 * 1024) // 512MB
+                }
             }
         }
     }
@@ -80,7 +112,7 @@ class AppActivity : ComponentActivity() {
 fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
     Children(
         stack = component.childStack,
-        modifier = modifier ,
+        modifier = modifier,
         animation = stackAnimation(fade() + scale()),
     ) {
         when (val child = it.instance) {
@@ -89,8 +121,8 @@ fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
             is RootComponent.Child.Registration -> RegistrationScreen(child.component)
             is RootComponent.Child.Splash -> SplashScreen(child.component)
             is RootComponent.Child.RootConstructor -> {
-                 // переход на сайт: создать свою книгу
-             }
+                // переход на сайт: создать свою книгу
+            }
         }
     }
 }

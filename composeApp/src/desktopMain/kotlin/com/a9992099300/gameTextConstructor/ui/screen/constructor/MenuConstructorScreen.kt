@@ -112,7 +112,10 @@ fun MenuConstructorScreen(
                         }
 
                         is RootConstructorComponent.Page.CreateBook -> {
-                            CreateBookScreen(child.component)
+                            CreateBookScreen(child.component) }
+
+                        is RootConstructorComponent.Page.EditBook -> {
+                            EditBookScreen(child.component)
                         }
                     }
                 }

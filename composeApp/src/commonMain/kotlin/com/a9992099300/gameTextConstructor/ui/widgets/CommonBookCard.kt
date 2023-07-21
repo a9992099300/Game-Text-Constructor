@@ -1,7 +1,5 @@
 package com.a9992099300.gameTextConstructor.ui.widgets
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,26 +18,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.theme.Theme
+import com.seiko.imageloader.rememberAsyncImagePainter
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.layout.ContentScale
+import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookConstructorComponent
+import com.a9992099300.gameTextConstructor.utils.DEFAULT_IMAGE_BOOK
 
 
 @Composable
 fun CommonBookCard(
     modifier: Modifier,
     book: BookDataModel,
+    component: ListBookConstructorComponent
 ) {
     Card(
-        modifier = modifier.height(400.dp)
+        modifier = modifier.height(400.dp),
+        shape =  RoundedCornerShape(10.dp),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 16.dp)
         ) {
-            Box( //image
+            val painter = rememberAsyncImagePainter(
+                url =  DEFAULT_IMAGE_BOOK,
+            )
+            Image(
+                painter = painter,
                 modifier = Modifier
                     .height(150.dp)
-                    .fillMaxWidth()
-                    .background(
-                        color = Theme.colors.secondaryBackground
-                    )
+                    .fillMaxWidth(),
+                contentScale = ContentScale.FillWidth ,
+                contentDescription = null
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -50,6 +59,7 @@ fun CommonBookCard(
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
+                    .padding(16.dp, 0.dp, 16.dp, 0.dp),
             ) {
                 Text(
                     text = book.description,
@@ -62,11 +72,11 @@ fun CommonBookCard(
     }
 }
 
-
 @Composable
 private fun PostHeader(book: BookDataModel) {
     Column(
         modifier = Modifier.fillMaxWidth()
+            .padding(16.dp, 0.dp, 16.dp, 0.dp),
     ) {
         Text(
             text = book.title,

@@ -2,19 +2,36 @@ package com.a9992099300.gameTextConstructor.data.common
 
 import com.a9992099300.gameTextConstructor.data.auth.services.log
 import io.github.aakira.napier.Napier
+import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
 
-inline fun <R>request(
+suspend inline fun <reified R>request(
+    request: () -> HttpResponse?
+) : Result<R> =
+    try {
+        val result = request()
+        if (result?.status?.value == 200) {
+            Result.Success(result.body())
+        } else {
+            Result.Error(result?.body())
+        }
+    } catch (e: Exception) {
+        Napier.d("Exception ${e}", tag = log)
+        Result.Error(e)
+    }
+
+inline fun <reified R> simpleRequest(
     request: () -> R?
 ) : Result<R> =
     try {
         val result = request()
-        if (result == null) {
-            Result.Error(IllegalArgumentException())
+        if (result != null) {
+            Result.Success(result)
         } else {
-            Result.Success(request()!!)
+            Result.Error(IllegalArgumentException())
         }
     } catch (e: Exception) {
-        Napier.d("Exception ${e}", tag = log)
+        Napier.d("Exception ${e} mes ${e.message} cause ${e.cause}", tag = log)
         Result.Error(e)
     }
 

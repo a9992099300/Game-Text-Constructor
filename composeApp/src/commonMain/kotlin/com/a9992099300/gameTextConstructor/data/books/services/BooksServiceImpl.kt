@@ -3,6 +3,7 @@ package com.a9992099300.gameTextConstructor.data.books.services
 import com.a9992099300.gameTextConstructor.data.common.ktor.HttpClientWrapper
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.setBody
@@ -31,13 +32,38 @@ class BooksServiceImpl(
         return books.toList()
     }
 
-    override suspend fun addBook(userId: String, model: BookDataModel): BookDataModel =
+    override suspend fun getBook(userId: String, bookId: String) =
+         httpClient.addToken.get {
+        url {
+            path("users/${userId}/books/${bookId}/.json")
+        }
+    }
+
+    override suspend fun addBook(userId: String, model: BookDataModel) =
         httpClient.addToken.patch {
             url {
-                path("users/${userId}/books/book_${model.bookId}.json")
+                path("users/${userId}/books/${model.bookId}.json")
                 setBody(
                     model
                 )
             }
-        }.body()
+        }
+
+    override suspend fun editBook(userId: String, model: BookDataModel) =
+        httpClient.addToken.patch {
+            url {
+                path("users/${userId}/books/${model.bookId}.json")
+                setBody(
+                    model
+                )
+            }
+        }
+
+    override suspend fun deleteBook(userId: String, bookId: String) =
+        httpClient.addToken.delete {
+            url {
+                path("users/${userId}/books/${bookId}.json")
+            }
+        }
+
 }

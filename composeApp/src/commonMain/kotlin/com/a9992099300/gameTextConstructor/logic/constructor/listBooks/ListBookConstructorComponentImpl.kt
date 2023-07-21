@@ -10,25 +10,29 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import com.seiko.imageloader.ImageLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class ListBookConstructorComponentImpl(
     componentContext: ComponentContext,
-    private val onNewBook: () -> Unit
+    private val onCreateBook: () -> Unit,
+    private val onEditBook: (String) -> Unit,
 ): ComponentContext by componentContext, ListBookConstructorComponent {
 
-    private val booksListRepository: BooksRepository = Inject.instance()
-
-//    private val dialogNavigation = SlotNavigation<DialogConfig>()
+    private val booksRepository: BooksRepository = Inject.instance()
 
     override val stateUi: MutableStateFlow<StateUi<Unit>> =
         MutableStateFlow(StateUi.Initial)
+
+    override val imageLoader: MutableStateFlow<ImageLoader?> =
+    MutableStateFlow(null)
 
     override val books: MutableStateFlow<List<BookDataModel>> =
         MutableStateFlow(listOf())
@@ -59,7 +63,11 @@ class ListBookConstructorComponentImpl(
     }
 
     override fun createNewBook() {
-        onNewBook()
+        onCreateBook()
+    }
+
+    override fun editBook(bookId: String) {
+        onEditBook(bookId)
     }
 
     private val booksListRetainedInstance =
@@ -69,6 +77,7 @@ class ListBookConstructorComponentImpl(
         // The scope survives Android configuration changes
 
         private val scope = CoroutineScope(mainContext + SupervisorJob())
+
         init {
             getBooksList()
         }
@@ -76,13 +85,15 @@ class ListBookConstructorComponentImpl(
         fun getBooksList() {
             scope.launch {
                 stateUi.value = StateUi.Loading
-                when (val result = booksListRepository.getBooksList()) {
+                when (val result = booksRepository.getBooksList()) {
                     is Result.Success -> {
                         stateUi.value = StateUi.Success(Unit)
                         books.value = result.value
                     }
                     is Result.Error -> {
                         stateUi.value = StateUi.Error(result.error?.message ?: "Error")
+                        delay(1500)
+                        stateUi.value = StateUi.Success(Unit)
                     }
                 }
             }

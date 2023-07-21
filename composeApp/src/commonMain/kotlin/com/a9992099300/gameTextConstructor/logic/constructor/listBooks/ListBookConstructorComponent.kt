@@ -2,6 +2,7 @@ package com.a9992099300.gameTextConstructor.logic.constructor.listBooks
 
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
+import com.seiko.imageloader.ImageLoader
 import kotlinx.coroutines.flow.StateFlow
 
 interface ListBookConstructorComponent {
@@ -10,12 +11,12 @@ interface ListBookConstructorComponent {
 
     val books: StateFlow<List<BookDataModel>>
 
-  //  val dialog: Value<ChildSlot<*, CreateBookConstructorComponent>>
+    val imageLoader: StateFlow<ImageLoader?>
+
     fun getBooksList()
 
     fun createNewBook()
 
-    sealed class Child {
-        object CreateNewBook : Child()
-    }
+    fun editBook(bookId: String)
+
 }
