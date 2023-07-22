@@ -18,7 +18,7 @@ interface CreateBookConstructorComponent {
 
     fun changeDescription(description: String)
 
-    fun editBook()
+    fun addBook()
 
     fun onBackClicked()
 

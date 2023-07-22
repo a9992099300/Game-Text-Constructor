@@ -15,7 +15,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -92,8 +91,6 @@ class ListBookConstructorComponentImpl(
                     }
                     is Result.Error -> {
                         stateUi.value = StateUi.Error(result.error?.message ?: "Error")
-                        delay(1500)
-                        stateUi.value = StateUi.Success(Unit)
                     }
                 }
             }

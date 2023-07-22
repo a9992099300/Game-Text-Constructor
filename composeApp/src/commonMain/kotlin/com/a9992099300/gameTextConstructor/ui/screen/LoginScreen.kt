@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -36,6 +33,9 @@ import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonButton
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextFieldOutline
+import compose.icons.FeatherIcons
+import compose.icons.feathericons.Eye
+import compose.icons.feathericons.EyeOff
 
 @Composable
 fun LoginScreen(component: LogInComponent) {
@@ -97,9 +97,9 @@ fun LoginScreen(component: LogInComponent) {
                             component.onVisibleChanged(!password.second)
                         },
                         imageVector = if (password.second) {
-                            Icons.Outlined.Lock
+                            FeatherIcons.EyeOff
                         } else {
-                            Icons.Default.Face
+                            FeatherIcons.Eye
                         }, contentDescription = "Password hidden",
                         tint = Theme.colors.hintTextColor
                     )

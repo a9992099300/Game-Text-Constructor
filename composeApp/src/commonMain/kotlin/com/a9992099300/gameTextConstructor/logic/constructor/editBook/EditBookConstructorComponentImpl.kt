@@ -9,6 +9,7 @@ import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.ui.screen.models.CategoryUiModel
 import com.a9992099300.gameTextConstructor.utils.Category
 import com.a9992099300.gameTextConstructor.utils.TypeCategory
+import com.a9992099300.gameTextConstructor.utils.allowChangeValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
@@ -47,19 +48,27 @@ class EditBookConstructorComponentImpl(
     }
 
     override fun changeTitle(title: String) {
-        if (title.length < 128) {
-            this.titleBook.value = title
-        } else {
-            stateUi.value = StateUi.Error(MainRes.string.max_string.format("128"))
-        }
+        title.allowChangeValue<Unit>(
+            64,
+            allowSetValue = {
+                this.titleBook.value = title
+            },
+            errorSetValue = { error ->
+                stateUi.value = error
+            }
+        )
     }
 
     override fun changeDescription(description: String) {
-        if (description.length < 1000) {
-            this.descriptionBook.value = description
-        } else {
-            stateUi.value = StateUi.Error(MainRes.string.max_string.format("1000"))
-        }
+        description.allowChangeValue<Unit>(
+            1000,
+            allowSetValue = {
+                this.descriptionBook.value = description
+            },
+            errorSetValue = { error ->
+                stateUi.value = error
+            }
+        )
     }
 
     override fun editBook() {
@@ -67,7 +76,11 @@ class EditBookConstructorComponentImpl(
     }
 
     override fun deleteBook() {
-        createBooksListRetainedInstance.deleteBook()
+        if (dataModel.value?.deletable == true) {
+            createBooksListRetainedInstance.deleteBook()
+        } else {
+           stateUi.value = StateUi.Error(MainRes.string.prohibit_delete_book)
+        }
     }
 
     override fun onBackClicked() {

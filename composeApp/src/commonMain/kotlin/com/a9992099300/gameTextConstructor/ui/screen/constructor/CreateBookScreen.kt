@@ -105,7 +105,7 @@ fun CreateBookScreen(component: CreateBookConstructorComponent) {
 
                     CommonButton(
                         onClickButton = {
-                            component.editBook()
+                            component.addBook()
                         },
                         isLoading = stateUi is StateUi.Loading,
                         text = MainRes.string.save,

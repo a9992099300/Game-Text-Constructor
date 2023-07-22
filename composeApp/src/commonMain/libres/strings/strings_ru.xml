@@ -13,6 +13,7 @@
     <string name="save">Сохранить</string>
     <string name="profile">Профиль</string>
     <string name="profile_edit">Редактирование профиля</string>
+    <string name="scenes_edit">Редактирование сценария</string>
     <string name="save_changed">Сохранить изменения</string>
     <string name="list_books">Список книг</string>
     <string name="exit">Выход</string>
@@ -22,6 +23,7 @@
     <string name="max_string">Максимальный размер ${size} символа!</string>
     <string name="add_book">Добавить книгу</string>
     <string name="edit_book">Редактирование книги</string>
+    <string name="prohibit_delete_book">Нельзя удалить эту книгу</string>
     <string name="list_your_books">Список Ваших книг</string>
     <string name="new_book">Новая книга</string>
     <string name="title_book">Название книги</string>

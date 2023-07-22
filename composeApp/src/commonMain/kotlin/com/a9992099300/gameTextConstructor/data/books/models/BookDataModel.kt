@@ -12,4 +12,5 @@ data class BookDataModel(
     @SerialName("category")  val category: String,
     @SerialName("imageUrl")  val imageUrl: String,
     @SerialName("createdDate")  val createdDate: String,
+    @SerialName("deletable")  val deletable: Boolean,
 )

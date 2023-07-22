@@ -9,7 +9,7 @@ import com.a9992099300.gameTextConstructor.ui.screen.models.BookModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.CategoryUiModel
 import com.a9992099300.gameTextConstructor.utils.Category
 import com.a9992099300.gameTextConstructor.utils.TypeCategory
-import com.a9992099300.gameTextConstructor.utils.sizeAllow
+import com.a9992099300.gameTextConstructor.utils.allowChangeValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
@@ -44,7 +44,7 @@ class CreateBookConstructorComponentImpl(
     }
 
     override fun changeTitle(title: String) {
-        title.sizeAllow<Unit>(
+        title.allowChangeValue<Unit>(
             64,
             allowSetValue = {
                 this.titleBook.value = title
@@ -56,68 +56,74 @@ class CreateBookConstructorComponentImpl(
     }
 
 
-override fun changeDescription(description: String) {
-    if (description.length < 1000) {
-        this.descriptionBook.value = description
-    } else {
-        stateUi.value = StateUi.Error(MainRes.string.max_string.format("1000"))
+    override fun changeDescription(description: String) {
+        description.allowChangeValue<Unit>(
+            1000,
+            allowSetValue = {
+                this.descriptionBook.value = description
+            },
+            errorSetValue = { error ->
+                stateUi.value = error
+            }
+        )
     }
-}
 
-override fun editBook() {
-    createBooksListRetainedInstance.editBook()
-}
+    override fun addBook() {
+        createBooksListRetainedInstance.addBook()
+    }
 
-override fun onBackClicked() {
-    onBack()
-}
+    override fun onBackClicked() {
+        onBack()
+    }
 
-private val createBooksListRetainedInstance =
-    instanceKeeper.getOrCreate { CreateBooksListRetainedInstance(Dispatchers.Default) }
+    private val createBooksListRetainedInstance =
+        instanceKeeper.getOrCreate { CreateBooksListRetainedInstance(Dispatchers.Default) }
 
-inner class CreateBooksListRetainedInstance(mainContext: CoroutineContext) :
-    InstanceKeeper.Instance {
+    inner class CreateBooksListRetainedInstance(mainContext: CoroutineContext) :
+        InstanceKeeper.Instance {
 
-    private val scope = CoroutineScope(mainContext + SupervisorJob())
-    fun chooseCategory(type: TypeCategory) {
-        scope.launch {
-            stateCategory.value = Category.listDefaultCategory.map {
-                val model = if (it.typeCategory == type) {
-                    it.copy(selected = true)
-                } else {
-                    it
+        private val scope = CoroutineScope(mainContext + SupervisorJob())
+        fun chooseCategory(type: TypeCategory) {
+            scope.launch {
+                stateCategory.value = Category.listDefaultCategory.map {
+                    val model = if (it.typeCategory == type) {
+                        it.copy(selected = true)
+                    } else {
+                        it
+                    }
+                    model
                 }
-                model
             }
         }
-    }
 
-    fun editBook() {
-        scope.launch {
-            stateUi.value = StateUi.Loading
-            val result = booksRepository.addBook(
-                BookModel(
-                    title = titleBook.value,
-                    description = descriptionBook.value,
-                    category = stateCategory.value.find {
-                        it.selected
-                    }?.title ?: MainRes.string.other
+        fun addBook() {
+            scope.launch {
+                stateUi.value = StateUi.Loading
+                val result = booksRepository.addBook(
+                    BookModel(
+                        title = titleBook.value,
+                        description = descriptionBook.value,
+                        category = stateCategory.value.find {
+                            it.selected
+                        }?.title ?: MainRes.string.other
+                    )
                 )
-            )
-            when (result) {
-                is Result.Success -> {
-                    withContext(Dispatchers.Main) {
-                        onBookEdit()
+                when (result) {
+                    is Result.Success -> {
+                        withContext(Dispatchers.Main) {
+                            onBookEdit()
+                        }
+                    }
+
+                    is Result.Error -> {
+                        stateUi.value = StateUi.Error(result.error?.message ?: "")
                     }
                 }
-
-                is Result.Error -> stateUi.value = StateUi.Error(result.error?.message ?: "")
             }
         }
-    }
 
-    override fun onDestroy() {
-        scope.cancel()
+        override fun onDestroy() {
+            scope.cancel()
+        }
     }
-}
 }

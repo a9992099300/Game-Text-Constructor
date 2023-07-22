@@ -22,7 +22,6 @@ import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.LocalImageLoader
 import com.seiko.imageloader.cache.memory.maxSizePercent
 import com.seiko.imageloader.component.setupDefaultComponents
-import io.github.aakira.napier.Napier
 import okio.Path.Companion.toOkioPath
 import java.io.File
 
@@ -35,7 +34,6 @@ fun main() = application {
             applicationScope = this
         ))
     initLogger()
-    Napier.d(message = "test log", tag = log)
 
     val lifecycle = LifecycleRegistry()
     val rootComponent = root(DefaultComponentContext(lifecycle = lifecycle))
@@ -61,9 +59,7 @@ fun main() = application {
 
 private fun generateImageLoader(): ImageLoader {
     return ImageLoader {
-     //   commonConfig()
         components {
-            // add(ImageIODecoder.Factory())
             setupDefaultComponents()
         }
         interceptor {

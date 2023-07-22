@@ -13,10 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
@@ -35,6 +35,8 @@ import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextFieldOutline
 import com.a9992099300.gameTextConstructor.ui.widgets.HeaderText
 import com.a9992099300.gameTextConstructor.utils.TypeCategory
+import compose.icons.FeatherIcons
+import compose.icons.feathericons.Save
 
 @Suppress("SuspiciousIndentation")
 @Composable
@@ -104,22 +106,11 @@ fun EditBookScreen(component: EditBookConstructorComponent) {
                         onClickButton = {
                             component.onBackClicked()
                         },
-                        text = MainRes.string.cancel,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    CommonButton(
-                        onClickButton = {
-                            component.editBook()
-                        },
-                        isLoading = stateUi is StateUi.Loading,
-                        text = MainRes.string.save,
-                        modifier = Modifier.weight(1f)
+                        text = MainRes.string.scenes_edit,
+                        modifier = Modifier.weight(1f),
+                        isLoading = stateUi is StateUi.Loading
                     )
                 }
-
             }
         }
     }
@@ -167,10 +158,38 @@ private fun EditBookHeader(
         Spacer(modifier = Modifier.weight(1f))
 
         Icon(
-            modifier = Modifier.size(24.dp).clickable {
+            modifier = Modifier
+                .padding(16.dp, 0.dp)
+                .size(24.dp)
+                .clickable {
+                component.onBackClicked()
+            },
+            imageVector = Icons.Default.ArrowBack,
+            contentDescription = Icons.Default.ArrowBack.name,
+            tint = Theme.colors.primaryAction,
+        )
+
+        Icon(
+            modifier = Modifier
+                .padding(16.dp, 0.dp)
+                .size(24.dp)
+                .clickable {
+                component.editBook()
+            },
+            imageVector = FeatherIcons.Save,
+            contentDescription = FeatherIcons.Save.name,
+            tint = Theme.colors.primaryAction,
+        )
+
+        Icon(
+            modifier = Modifier
+                .padding(16.dp, 0.dp)
+                .size(24.dp)
+                .clickable {
                   component.deleteBook()
             },
-            imageVector = Icons.Default.Delete, contentDescription = null,
+            imageVector = Icons.Default.Delete,
+            contentDescription = Icons.Default.Delete.name,
             tint = Theme.colors.primaryAction,
         )
     }

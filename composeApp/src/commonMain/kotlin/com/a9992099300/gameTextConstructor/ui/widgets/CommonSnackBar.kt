@@ -3,8 +3,11 @@ package com.a9992099300.gameTextConstructor.ui.widgets
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -41,21 +44,29 @@ fun CommonSnackBar(
             .fillMaxWidth(),
         hostState = snackbarHostState,
         snackbar = { snackbarData: SnackbarData ->
-            Card(
-                shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(2.dp, Color.White),
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
             ) {
-                Column(
-                    modifier = Modifier.padding(8.dp)
-                        .align(Alignment.CenterHorizontally),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Spacer(modifier = Modifier.weight(1f))
+                Card(
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(2.dp, Color.White),
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .wrapContentWidth()
+                        .widthIn(0.dp, 600.dp),
                 ) {
-                    Icon(imageVector = imageVector, contentDescription = "")
-                    Text(text = "Error : $message")
+                    Column(
+                        modifier = Modifier.padding(8.dp)
+                            .align(Alignment.CenterHorizontally),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(imageVector = imageVector, contentDescription = "")
+                        Text(text = "Error : $message")
+                    }
                 }
             }
         }

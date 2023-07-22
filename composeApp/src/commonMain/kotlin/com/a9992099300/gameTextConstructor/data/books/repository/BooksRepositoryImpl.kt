@@ -47,7 +47,8 @@ class BooksRepositoryImpl(
                     description = model.description,
                     category = model.category,
                     imageUrl = "",
-                    createdDate = date.toString()
+                    createdDate = date.toString(),
+                    deletable = true
                 )
             )
         }
