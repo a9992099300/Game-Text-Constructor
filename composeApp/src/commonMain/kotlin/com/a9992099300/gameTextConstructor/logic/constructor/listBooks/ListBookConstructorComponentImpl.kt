@@ -10,7 +10,6 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.seiko.imageloader.ImageLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,15 +22,13 @@ class ListBookConstructorComponentImpl(
     componentContext: ComponentContext,
     private val onCreateBook: () -> Unit,
     private val onEditBook: (String) -> Unit,
+    override val onBack: () -> Unit,
 ): ComponentContext by componentContext, ListBookConstructorComponent {
 
     private val booksRepository: BooksRepository = Inject.instance()
 
     override val stateUi: MutableStateFlow<StateUi<Unit>> =
         MutableStateFlow(StateUi.Initial)
-
-    override val imageLoader: MutableStateFlow<ImageLoader?> =
-    MutableStateFlow(null)
 
     override val books: MutableStateFlow<List<BookDataModel>> =
         MutableStateFlow(listOf())

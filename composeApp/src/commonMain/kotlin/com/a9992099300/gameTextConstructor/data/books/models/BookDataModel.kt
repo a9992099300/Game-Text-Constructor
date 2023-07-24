@@ -1,5 +1,6 @@
 package com.a9992099300.gameTextConstructor.data.books.models
 
+import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,4 +14,15 @@ data class BookDataModel(
     @SerialName("imageUrl")  val imageUrl: String,
     @SerialName("createdDate")  val createdDate: String,
     @SerialName("deletable")  val deletable: Boolean,
-)
+) {
+    fun mapToUI() = BookUiModel(
+        this.bookId,
+        this.userIdOwner,
+        this.title,
+        this.description,
+        this.category,
+        this.imageUrl,
+        this.createdDate,
+        this.deletable
+    )
+}

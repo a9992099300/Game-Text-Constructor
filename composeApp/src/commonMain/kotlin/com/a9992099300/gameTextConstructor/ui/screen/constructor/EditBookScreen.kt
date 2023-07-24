@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.a9992099300.gameTextConstructor.MainRes
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
+import com.a9992099300.gameTextConstructor.logic.common.StateUi.Companion.ERROR_DESCRIPTION
+import com.a9992099300.gameTextConstructor.logic.common.StateUi.Companion.ERROR_TITLE
 import com.a9992099300.gameTextConstructor.logic.constructor.editBook.EditBookConstructorComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonButton
@@ -43,10 +45,7 @@ import compose.icons.feathericons.Save
 fun EditBookScreen(component: EditBookConstructorComponent) {
 
     val stateUi by component.stateUi.collectAsState()
-
-    val titleBook by component.titleBook.collectAsState()
-
-    val descriptionBook by component.descriptionBook.collectAsState()
+    val model by component.uiModel.collectAsState()
 
     Card(
         modifier = Modifier
@@ -66,17 +65,17 @@ fun EditBookScreen(component: EditBookConstructorComponent) {
             ) {
                 EditBookHeader(
                     component,
-                    stateUi
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 CommonTextFieldOutline(
-                    text = titleBook,
+                    text = model.title,
                     hint = MainRes.string.title_book,
                     onValueChanged = {
                         component.changeTitle(it)
                     },
+                    isError = (stateUi as? StateUi.Error)?.codeError == ERROR_TITLE
                 )
 
                 ChooseCategory(
@@ -87,12 +86,13 @@ fun EditBookScreen(component: EditBookConstructorComponent) {
                 )
 
                 CommonTextFieldOutline(
-                    text = descriptionBook,
+                    text = model.description,
                     height = 256,
                     hint = MainRes.string.description_book,
                     onValueChanged = {
                         component.changeDescription(it)
                     },
+                    isError = (stateUi as? StateUi.Error)?.codeError == ERROR_DESCRIPTION
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -116,7 +116,14 @@ fun EditBookScreen(component: EditBookConstructorComponent) {
     }
 
     if (stateUi is StateUi.Error) {
-        CommonSnackBar((stateUi as StateUi.Error).messageError)
+        CommonSnackBar(
+            (stateUi as StateUi.Error).messageError,
+            dismissSnack = {
+                component.closeSnack()
+            }
+        )
+
+
     }
 }
 
@@ -142,7 +149,6 @@ fun ChooseCategory(component: EditBookConstructorComponent, onClickCategory:(Typ
 @Composable
 private fun EditBookHeader(
     component: EditBookConstructorComponent,
-    stateUi: StateUi<Unit>,
 ) {
     Row(
         modifier = Modifier

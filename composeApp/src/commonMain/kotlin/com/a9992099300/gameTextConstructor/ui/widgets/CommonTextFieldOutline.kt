@@ -20,6 +20,7 @@ fun CommonTextFieldOutline(
     hint: String,
     enabled: Boolean = true,
     isSecure: Boolean = false,
+    isError: Boolean = false,
     height: Int = 56,
     trailingIcon: @Composable () -> Unit = {},
     onValueChanged: (String) -> Unit,
@@ -47,7 +48,8 @@ fun CommonTextFieldOutline(
         colors = androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors(
             textColor = Theme.colors.primaryTextColor,
             cursorColor = Theme.colors.primaryTextColor,
-            focusedBorderColor = Theme.colors.primaryBackground
-        )
+            focusedBorderColor = Theme.colors.primaryBackground,
+        ),
+        isError = isError
     )
 }

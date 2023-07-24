@@ -1,18 +1,15 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.editBook
 
-import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
-import com.a9992099300.gameTextConstructor.logic.common.StateUi
+import com.a9992099300.gameTextConstructor.logic.base.BaseComponent
+import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.CategoryUiModel
 import com.a9992099300.gameTextConstructor.utils.TypeCategory
 import kotlinx.coroutines.flow.StateFlow
 
-interface EditBookConstructorComponent {
+interface EditBookConstructorComponent: BaseComponent<Unit> {
 
-    val stateUi: StateFlow<StateUi<Unit>>
     val stateCategory: StateFlow<List<CategoryUiModel>>
-    val titleBook: StateFlow<String>
-    val descriptionBook: StateFlow<String>
-    val dataModel: StateFlow<BookDataModel?>
+    val uiModel: StateFlow<BookUiModel>
 
     fun chooseCategory(type: TypeCategory)
 
@@ -23,7 +20,5 @@ interface EditBookConstructorComponent {
     fun editBook()
 
     fun deleteBook()
-
-    fun onBackClicked()
 
 }

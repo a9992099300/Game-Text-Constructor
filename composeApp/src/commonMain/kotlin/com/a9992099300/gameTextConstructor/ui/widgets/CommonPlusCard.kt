@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -28,7 +29,10 @@ fun CommonPlusCard(
     modifier: Modifier,
     component: ListBookConstructorComponent
 ) {
-    Card(modifier = modifier.height(400.dp)) {
+    Card(
+        modifier = modifier.height(400.dp),
+        shape =  RoundedCornerShape(10.dp)
+    ) {
         Column(
             modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.Center,

@@ -29,6 +29,8 @@
     <string name="title_book">Название книги</string>
     <string name="description_book">Описание книги</string>
     <string name="category_book">Категория книги</string>
+    <string name="close">Закрыть</string>
+    <string name="error">Ошибка</string>
     <plurals name="plural_string">
         <item quantity="one">resource</item>
         <item quantity="other">resources</item>

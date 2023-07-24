@@ -1,11 +1,13 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.editBook
 
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.data.books.repository.BooksRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
+import com.a9992099300.gameTextConstructor.logic.common.StateUi.Companion.ERROR_DESCRIPTION
+import com.a9992099300.gameTextConstructor.logic.common.StateUi.Companion.ERROR_TITLE
+import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.CategoryUiModel
 import com.a9992099300.gameTextConstructor.utils.Category
 import com.a9992099300.gameTextConstructor.utils.TypeCategory
@@ -25,7 +27,7 @@ import kotlin.coroutines.CoroutineContext
 class EditBookConstructorComponentImpl(
     private val componentContext: ComponentContext,
     private val bookId: String,
-    private val onBack: () -> Unit,
+    override val onBack: () -> Unit,
     private val onBookEdit: () -> Unit,
 ) : ComponentContext by componentContext, EditBookConstructorComponent {
 
@@ -37,11 +39,8 @@ class EditBookConstructorComponentImpl(
     override val stateCategory: MutableStateFlow<List<CategoryUiModel>> =
         MutableStateFlow(Category.listDefaultCategory)
 
-    override val titleBook = MutableStateFlow("")
-    override val descriptionBook = MutableStateFlow("")
-
-    override val dataModel: MutableStateFlow<BookDataModel?> =
-        MutableStateFlow(null)
+    override val uiModel: MutableStateFlow<BookUiModel> =
+        MutableStateFlow(BookUiModel())
 
     override fun chooseCategory(type: TypeCategory) {
         createBooksListRetainedInstance.chooseCategory(type)
@@ -51,10 +50,10 @@ class EditBookConstructorComponentImpl(
         title.allowChangeValue<Unit>(
             64,
             allowSetValue = {
-                this.titleBook.value = title
+                this.uiModel.value = uiModel.value.copy(title = title)
             },
             errorSetValue = { error ->
-                stateUi.value = error
+                stateUi.value = (error as StateUi.Error).copy(codeError = ERROR_TITLE)
             }
         )
     }
@@ -63,10 +62,10 @@ class EditBookConstructorComponentImpl(
         description.allowChangeValue<Unit>(
             1000,
             allowSetValue = {
-                this.descriptionBook.value = description
+                this.uiModel.value = uiModel.value.copy(description = description)
             },
             errorSetValue = { error ->
-                stateUi.value = error
+                stateUi.value = (error as StateUi.Error).copy(codeError = ERROR_DESCRIPTION)
             }
         )
     }
@@ -76,15 +75,11 @@ class EditBookConstructorComponentImpl(
     }
 
     override fun deleteBook() {
-        if (dataModel.value?.deletable == true) {
+        if (uiModel.value.deletable) {
             createBooksListRetainedInstance.deleteBook()
         } else {
-           stateUi.value = StateUi.Error(MainRes.string.prohibit_delete_book)
+            stateUi.value = StateUi.Error(MainRes.string.prohibit_delete_book)
         }
-    }
-
-    override fun onBackClicked() {
-        onBack()
     }
 
 
@@ -104,6 +99,7 @@ class EditBookConstructorComponentImpl(
             scope.launch {
                 stateCategory.value = Category.listDefaultCategory.map {
                     val model = if (it.typeCategory == type) {
+                        uiModel.value = uiModel.value.copy(category = it.title)
                         it.copy(selected = true)
                     } else {
                         it
@@ -116,26 +112,18 @@ class EditBookConstructorComponentImpl(
         fun editBook() {
             scope.launch {
                 stateUi.value = StateUi.Loading
-                if (dataModel.value != null) {
-                    val result = booksRepository.editBook(
-                        dataModel.value!!.copy(
-                            title = titleBook.value,
-                            description = descriptionBook.value,
-                            category = stateCategory.value.find {
-                                it.selected
-                            }?.title ?: MainRes.string.other
-                        )
-                    )
-                    when (result) {
-                        is Result.Success -> {
-                            withContext(Dispatchers.Main) {
-                                onBookEdit()
-                            }
+                val result = booksRepository.editBook(
+                    uiModel.value.mapToData()
+                )
+                when (result) {
+                    is Result.Success -> {
+                        withContext(Dispatchers.Main) {
+                            onBookEdit()
                         }
-
-                        is Result.Error -> stateUi.value =
-                            StateUi.Error(result.error?.message ?: "")
                     }
+
+                    is Result.Error -> stateUi.value =
+                        StateUi.Error(result.error?.message ?: "")
                 }
             }
         }
@@ -146,10 +134,11 @@ class EditBookConstructorComponentImpl(
                 when (val result = booksRepository.getBook(bookId)) {
                     is Result.Success -> {
                         chooseCategory(Category.listDefaultCategory
-                            .find { it.title == result.value.category}?.typeCategory ?: TypeCategory.OTHER)
-                        titleBook.value = result.value.title
-                        descriptionBook.value = result.value.description
-                        dataModel.value = result.value
+                            .find { it.title == result.value.category }?.typeCategory
+                            ?: TypeCategory.OTHER
+                        )
+
+                        uiModel.value = result.value.mapToUI()
                         stateUi.value = StateUi.Success(Unit)
                     }
 
@@ -158,17 +147,16 @@ class EditBookConstructorComponentImpl(
             }
         }
 
-        fun deleteBook(){
+        fun deleteBook() {
             scope.launch {
-               val result =  dataModel.value?.bookId?.let { booksRepository.deleteBook(it) }
-                when (result) {
-                    is Result.Success-> {
+                when (val result = booksRepository.deleteBook(uiModel.value.bookId)) {
+                    is Result.Success -> {
                         withContext(Dispatchers.Main) {
                             onBookEdit()
                         }
                     }
+
                     is Result.Error -> stateUi.value = StateUi.Error(result.error?.message ?: "")
-                    else -> {}
                 }
             }
         }

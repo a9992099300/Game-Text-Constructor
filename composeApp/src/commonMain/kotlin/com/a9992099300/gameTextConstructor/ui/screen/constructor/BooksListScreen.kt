@@ -39,7 +39,7 @@ import com.a9992099300.gameTextConstructor.ui.widgets.HeaderText
 @Composable
 fun ListBooksScreen(component: ListBookConstructorComponent) {
 
-    val stateUi by component.stateUi.collectAsState()
+    val stateUi by component.stateUi.collectAsState(StateUi.Initial)
     val books by component.books.collectAsState()
 
     Card(
@@ -67,7 +67,12 @@ fun ListBooksScreen(component: ListBookConstructorComponent) {
 
             when (stateUi) {
                 is StateUi.Error -> {
-                    CommonSnackBar((stateUi as StateUi.Error).messageError)
+                    CommonSnackBar(
+                        message = (stateUi as StateUi.Error).messageError,
+                        dismissSnack = {
+                            component.closeSnack()
+                        }
+                    )
                 }
 
                 is StateUi.Loading -> {

@@ -37,7 +37,8 @@ class RootConstructorComponentImpl constructor(
             },
             onEditBook = {
                 editNewBook(it)
-            }
+            },
+            onBack = {}
         )
 
     private fun createNewBook(

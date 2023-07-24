@@ -5,9 +5,16 @@ sealed class StateUi<out T> {
         val value: T
     ) : StateUi<T>()
 
-    open class Error(val messageError: String) : StateUi<Nothing>()
+    data class Error(val messageError: String, val codeError: Int = 0) : StateUi<Nothing>()
 
     object Initial : StateUi<Nothing>()
 
     object Loading : StateUi<Nothing>()
+
+    companion object{
+        const val ERROR_TITLE = 1001
+        const val ERROR_DESCRIPTION= 1002
+    }
+
 }
+
