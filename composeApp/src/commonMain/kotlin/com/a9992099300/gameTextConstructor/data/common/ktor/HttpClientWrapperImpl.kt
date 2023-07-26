@@ -27,7 +27,7 @@ class HttpClientWrapperImpl(
 
     override val addToken = httpClient.apply {
         parameters {
-            append(AUTH, token)
+         //   append(AUTH, token) не работает аут
         }
     }
 

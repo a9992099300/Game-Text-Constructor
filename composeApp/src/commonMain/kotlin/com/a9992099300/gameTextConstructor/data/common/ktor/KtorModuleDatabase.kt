@@ -27,7 +27,8 @@ internal val ktorModuleDatabase = DI.Module("ktorModuleDatabase") {
 
             install(DefaultRequest)
             install(ContentNegotiation) {
-                json(Json {
+                json(
+                    Json {
                     isLenient = true
                     ignoreUnknownKeys = true
                     prettyPrint = true

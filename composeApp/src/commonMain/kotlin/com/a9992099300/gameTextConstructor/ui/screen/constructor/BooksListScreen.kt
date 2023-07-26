@@ -117,7 +117,7 @@ private fun BooksListContent(
             )
         }
         item {
-            if (stateUi is StateUi.Success) {
+            if (stateUi !is StateUi.Error) {
                 CommonPlusCard(
                     modifier = Modifier.clickable{
                         component.createNewBook()

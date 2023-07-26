@@ -45,6 +45,20 @@ class AuthServiceImpl(
             }
         }
 
+    suspend fun updateToken(email: String, password: String) =
+        httpClient.post {
+            url {
+                path("token")
+                setBody(
+                    AuthRequestBody(
+                        email,
+                        password,
+                        true
+                    )
+                )
+            }
+        }
+
     override suspend fun saveTokens(body: AuthResponseBody) {
         Napier.d(message = "saveTokens log $body", tag = log)
         store.set(setOf(body))
