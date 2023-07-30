@@ -143,6 +143,63 @@ class BooksServiceImpl(
         }
     }
 
+    override suspend fun getChapters(userId: String, bookId: String): List<ChapterDataModel> {
+        val httpResponse: HttpResponse = httpClient.addToken.get {
+            url {
+                path("users/${userId}/userChapters/books/${bookId}/chapters.json")
+            }
+        }
+        val chapters: MutableList<ChapterDataModel> = mutableListOf()
+        val stringBody: String = httpResponse.body()
+        val jsonObject: JsonObject = builderJson.decodeFromString(stringBody)
 
+        for (i in jsonObject) {
+            val chapter = Json.decodeFromString<ChapterDataModel>(i.value.toString())
+            chapters.add(chapter)
+        }
+        return chapters.toList()
+    }
 
+    override suspend fun getScenes(
+        userId: String,
+        bookId: String,
+        chapterId: String
+    ): List<SceneDataModel> {
+        val httpResponse: HttpResponse = httpClient.addToken.get {
+            url {
+                path("users/${userId}/userScenes/books/${bookId}/chapter/${chapterId}/scenes.json")
+            }
+        }
+        val scenes: MutableList<SceneDataModel> = mutableListOf()
+        val stringBody: String = httpResponse.body()
+        val jsonObject: JsonObject = builderJson.decodeFromString(stringBody)
+
+        for (i in jsonObject) {
+            val scene = Json.decodeFromString<SceneDataModel>(i.value.toString())
+            scenes.add(scene)
+        }
+        return scenes.toList()
+    }
+
+    override suspend fun getPages(
+        userId: String,
+        bookId: String,
+        chapterId: String,
+        sceneId: String
+    ): List<PageDataModel> {
+        val httpResponse: HttpResponse = httpClient.addToken.get {
+            url {
+                path("users/${userId}/userPages/books/${bookId}/chapter/${chapterId}/scenes/${sceneId}/page.json")
+            }
+        }
+        val scenes: MutableList<PageDataModel> = mutableListOf()
+        val stringBody: String = httpResponse.body()
+        val jsonObject: JsonObject = builderJson.decodeFromString(stringBody)
+
+        for (i in jsonObject) {
+            val scene = Json.decodeFromString<PageDataModel>(i.value.toString())
+            scenes.add(scene)
+        }
+        return scenes.toList()
+    }
 }

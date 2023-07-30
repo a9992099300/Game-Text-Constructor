@@ -2,7 +2,6 @@ package com.a9992099300.gameTextConstructor.logic.constructor
 
 import com.a9992099300.gameTextConstructor.data.common.ktor.HttpClientWrapper
 import com.a9992099300.gameTextConstructor.di.Inject
-import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.createBook.CreateBookConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.createBook.CreateBookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.editBook.EditBookConstructorComponent
@@ -11,7 +10,11 @@ import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookC
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.MenuConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.MenuConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.menu.models.ItemModel
+import com.a9992099300.gameTextConstructor.logic.constructor.profile.ProfileConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.profile.ProfileConstructorComponentImpl
+import com.a9992099300.gameTextConstructor.logic.constructor.rootBook.RootBookConstructorComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.rootBook.RootBookConstructorComponentImpl
+import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -38,7 +41,9 @@ class RootConstructorComponentImpl constructor(
             onEditBook = {
                 editNewBook(it)
             },
-            onBack = {}
+            onBack = {
+
+            }
         )
 
     private fun createNewBook(
@@ -66,15 +71,22 @@ class RootConstructorComponentImpl constructor(
             },
             onBookEdit = {
                 onBookEdited()
+            },
+            onEditScenes = {
+                openRootBook(it)
             }
         )
 
-    private fun book(componentContext: ComponentContext): BookConstructorComponentImpl =
-        BookConstructorComponentImpl(
-            componentContext = componentContext
+    private fun book(
+        componentContext: ComponentContext,
+        config: Configuration.RootBook
+    ): RootBookConstructorComponent =
+        RootBookConstructorComponentImpl(
+            componentContext = componentContext,
+            config.bookId
         )
 
-    private fun profile(componentContext: ComponentContext): ProfileConstructorComponentImpl =
+    private fun profile(componentContext: ComponentContext): ProfileConstructorComponent =
         ProfileConstructorComponentImpl(
             componentContext = componentContext
         )
@@ -93,8 +105,10 @@ class RootConstructorComponentImpl constructor(
 
     private fun createNewBook(): Unit = navigation.bringToFront(Configuration.CreateBook)
 
+    private fun openRootBook(book: BookUiModel): Unit = navigation.bringToFront(Configuration.RootBook(bookId = book))
+
     private fun editNewBook(bookId: String): Unit =
-        navigation.bringToFront(Configuration.EditBook(bookId = bookId))
+        navigation.bringToFront(Configuration.EditBook(bookId))
 
     private fun popBack(): Unit = navigation.pop()
 
@@ -106,7 +120,7 @@ class RootConstructorComponentImpl constructor(
     private val stack =
         childStack(
             source = navigation,
-            initialConfiguration = Configuration.Book,
+            initialConfiguration = Configuration.ListBooks,
             handleBackButton = true,
             childFactory = ::createChild
         )
@@ -122,8 +136,8 @@ class RootConstructorComponentImpl constructor(
                 listBooks(componentContext)
             )
 
-            is Configuration.Book -> RootConstructorComponent.Page.Book(
-                book(componentContext)
+            is Configuration.RootBook -> RootConstructorComponent.Page.RootBook(
+                book(componentContext, configuration)
             )
 
             is Configuration.Profile -> RootConstructorComponent.Page.Profile(
@@ -149,7 +163,7 @@ class RootConstructorComponentImpl constructor(
         object ListBooks : Configuration()
 
         @Parcelize
-        object Book : Configuration()
+        data class RootBook(val bookId: BookUiModel) : Configuration()
 
         @Parcelize
         object CreateBook : Configuration()

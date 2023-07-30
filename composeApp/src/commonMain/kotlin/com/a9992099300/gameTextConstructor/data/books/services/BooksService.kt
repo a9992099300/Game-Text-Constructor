@@ -35,4 +35,9 @@ interface BooksService{
 
      suspend fun deleteBook(userId: String, bookId: String): HttpResponse
 
+     suspend fun getChapters(userId: String, bookId: String): List<ChapterDataModel>
+
+     suspend fun getScenes(userId: String, bookId: String, chapterId: String) : List<SceneDataModel>
+
+     suspend fun getPages(userId: String, bookId: String, chapterId: String, sceneId: String) : List<PageDataModel>
 }

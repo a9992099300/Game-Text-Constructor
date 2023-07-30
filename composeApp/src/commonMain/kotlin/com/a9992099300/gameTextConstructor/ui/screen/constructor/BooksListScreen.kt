@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -54,8 +55,7 @@ fun ListBooksScreen(component: ListBookConstructorComponent) {
                     .padding(16.dp),
             ) {
                 BooksListHeader(
-                    component,
-                    stateUi
+                    component
                 )
 
                 BooksListContent(
@@ -119,10 +119,12 @@ private fun BooksListContent(
         item {
             if (stateUi !is StateUi.Error) {
                 CommonPlusCard(
-                    modifier = Modifier.clickable{
+                    modifier = Modifier
+                        .height(400.dp)
+                        .clickable{
                         component.createNewBook()
                     },
-                    component
+                    text = MainRes.string.add_book
                 )
             }
         }
@@ -131,8 +133,7 @@ private fun BooksListContent(
 
 @Composable
 private fun BooksListHeader(
-    component: ListBookConstructorComponent,
-    stateUi: StateUi<Unit>,
+    component: ListBookConstructorComponent
 ) {
     Row(
         modifier = Modifier

@@ -1,4 +1,5 @@
 package com.a9992099300.gameTextConstructor.data.books.models
+import com.a9992099300.gameTextConstructor.ui.screen.models.PageUIModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -10,12 +11,22 @@ data class PageDataModel(
     @SerialName("imageUrl")  val imageUrl: String,
     @SerialName("deletable")  val deletable: Boolean,
 ) {
+
+    fun mapToUI() = PageUIModel(
+        this.pageId,
+        this.title,
+        this.description,
+        this.imageUrl,
+        this.deletable,
+        false
+    )
+
     companion object {
-        fun createEmptyPage(sceneId: String) =
+        fun createEmptyPage(sceneId: String, pageNumber: Int = 1) =
             PageDataModel(
-                pageId = "${sceneId}_0",
-                title = "",
-                description = "",
+                pageId = "${sceneId}_$pageNumber",
+                title = "Страница $pageNumber",
+                description = "Описание страницы",
                 imageUrl = "",
                 deletable = false
             )

@@ -1,5 +1,5 @@
 package com.a9992099300.gameTextConstructor.data.books.models
-import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel.Companion.createEmptyPage
+import com.a9992099300.gameTextConstructor.ui.screen.models.SceneUIModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,13 +12,24 @@ data class SceneDataModel(
     @SerialName("deletable")  val deletable: Boolean,
 ) {
 
+    fun mapToUI() = SceneUIModel(
+        this.sceneId,
+      //  this.chapterNumber,
+        this.title,
+        this.description,
+        this.imageUrl,
+        this.deletable,
+        false
+    )
+
+
     companion object {
-        fun createEmptyScene(chapterId: String): SceneDataModel {
-            val sceneId = "${chapterId}_0"
+        fun createEmptyScene(chapterId: String, sceneNumber: Int = 1): SceneDataModel {
+            val sceneId = "${chapterId}_$sceneNumber"
            return SceneDataModel(
                 sceneId = sceneId,
-                title = "",
-                description = "",
+                title = "Сцена $sceneNumber",
+                description = "Описнаие сцены",
                 imageUrl = "",
                 deletable = false
             )

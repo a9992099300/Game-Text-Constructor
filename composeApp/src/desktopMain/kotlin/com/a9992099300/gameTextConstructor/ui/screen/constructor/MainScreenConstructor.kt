@@ -33,7 +33,7 @@ fun MainConstructorScreen(component: RootConstructorComponent) {
               verticalArrangement = Arrangement.Center,
               horizontalAlignment = Alignment.Start
           ) {
-              MenuConstructorScreen(
+              MenuConstructorContent(
                   component
               )
           }

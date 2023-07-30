@@ -29,6 +29,7 @@ class EditBookConstructorComponentImpl(
     private val bookId: String,
     override val onBack: () -> Unit,
     private val onBookEdit: () -> Unit,
+    private val onEditScenes: (book: BookUiModel) -> Unit,
 ) : ComponentContext by componentContext, EditBookConstructorComponent {
 
     private val booksRepository: BooksRepository = Inject.instance()
@@ -72,6 +73,10 @@ class EditBookConstructorComponentImpl(
 
     override fun editBook() {
         createBooksListRetainedInstance.editBook()
+    }
+
+    override fun onEditScenes() {
+        onEditScenes.invoke(uiModel.value)
     }
 
     override fun deleteBook() {

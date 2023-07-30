@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuConstructorScreen(
+fun MenuConstructorContent(
     component: RootConstructorComponent
 ) {
 
@@ -105,13 +105,12 @@ fun MenuConstructorScreen(
                         is RootConstructorComponent.Page.ListBooks -> {
                             ListBooksScreen(child.component)
                         }
-                        is RootConstructorComponent.Page.Book -> {
-
+                        is RootConstructorComponent.Page.RootBook -> {
+                            RootBookContent(child.component)
                         }
                         is RootConstructorComponent.Page.Profile -> {
                             ProfileScreen(child.component)
                         }
-
                         is RootConstructorComponent.Page.CreateBook -> {
                             CreateBookScreen(child.component) }
 

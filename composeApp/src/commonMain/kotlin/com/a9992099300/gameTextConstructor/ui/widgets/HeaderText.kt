@@ -1,7 +1,6 @@
 package com.a9992099300.gameTextConstructor.ui.widgets
 
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,7 +17,7 @@ fun HeaderText(
         modifier = Modifier.wrapContentWidth(),
         color = Theme.colors.primaryAction,
         textAlign = TextAlign.Start,
-        style = MaterialTheme.typography.bodyMedium,
+        style = androidx.compose.material.MaterialTheme.typography.h2,
         fontSize = 24.sp
     )
 }

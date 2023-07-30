@@ -21,4 +21,6 @@ interface EditBookConstructorComponent: BaseComponent<Unit> {
 
     fun deleteBook()
 
+    fun onEditScenes()
+
 }

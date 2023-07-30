@@ -19,18 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookConstructorComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
 
 
 @Composable
 fun CommonPlusCard(
     modifier: Modifier,
-    component: ListBookConstructorComponent
+    text: String = ""
 ) {
     Card(
-        modifier = modifier.height(400.dp),
+        modifier = modifier,
         shape =  RoundedCornerShape(10.dp)
     ) {
         Column(
@@ -40,7 +38,7 @@ fun CommonPlusCard(
         ) {
 
             Icon(
-                modifier = Modifier.size(50.dp),
+                modifier = Modifier.size(40.dp),
                 imageVector = Icons.Default.Add, contentDescription = null,
                 tint = Theme.colors.primaryAction,
             )
@@ -48,7 +46,7 @@ fun CommonPlusCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = MainRes.string.add_book,
+                text = text,
                 color = Theme.colors.primaryAction,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body1,

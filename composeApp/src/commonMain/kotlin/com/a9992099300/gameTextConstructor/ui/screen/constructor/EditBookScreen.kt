@@ -104,7 +104,7 @@ fun EditBookScreen(component: EditBookConstructorComponent) {
                 ) {
                     CommonButton(
                         onClickButton = {
-                            component.onBackClicked()
+                            component.onEditScenes()
                         },
                         text = MainRes.string.scenes_edit,
                         modifier = Modifier.weight(1f),

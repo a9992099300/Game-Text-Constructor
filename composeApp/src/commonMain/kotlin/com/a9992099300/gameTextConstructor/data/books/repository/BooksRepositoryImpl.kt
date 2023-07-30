@@ -1,8 +1,11 @@
 package com.a9992099300.gameTextConstructor.data.books.repository
 
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
+import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel.Companion.createEmptyChapter
+import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel.Companion.createEmptyPage
+import com.a9992099300.gameTextConstructor.data.books.models.SceneDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.SceneDataModel.Companion.createEmptyScene
 import com.a9992099300.gameTextConstructor.data.books.services.BooksService
 import com.a9992099300.gameTextConstructor.data.common.Result
@@ -108,6 +111,28 @@ class BooksRepositoryImpl(
                 bookId = bookId
             )
         }
+    }
+
+    override suspend fun getChapters(bookId: String): Result<List<ChapterDataModel>> = simpleRequest {
+        val userId = store.get()?.firstOrNull()?.localId
+        userId?.let { bookListBooksService.getChapters(it, bookId) }
+    }
+
+    override suspend fun getScenes(
+        bookId: String,
+        chapterId: String
+    ): Result<List<SceneDataModel>> = simpleRequest {
+        val userId = store.get()?.firstOrNull()?.localId
+        userId?.let { bookListBooksService.getScenes(it,  bookId, chapterId) }
+    }
+
+    override suspend fun getPages(
+        bookId: String,
+        chapterId: String,
+        sceneId: String
+    ): Result<List<PageDataModel>> = simpleRequest {
+        val userId = store.get()?.firstOrNull()?.localId
+        userId?.let { bookListBooksService.getPages(it,  bookId, chapterId, sceneId) }
     }
 }
 
