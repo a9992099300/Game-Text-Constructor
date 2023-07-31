@@ -57,7 +57,7 @@ fun ContentChaptersList(
             LazyColumn(
                 modifier = Modifier.padding(4.dp),
                 contentPadding = PaddingValues(
-                    top = 0.dp,
+                    top = 8.dp,
                     start = 8.dp,
                     end = 8.dp,
                     bottom = 8.dp
@@ -89,13 +89,12 @@ fun ContentChaptersList(
                                 },
                             title = chapter.title,
                             selected = chapter.selected,
-                            simpleView = true
+                            sceneHide = true
                         )
                     }
                 }
                 item {
-                    if (currentState !is StateUi.Error) {
-                        if (!chapterHide) {
+                    if (currentState !is StateUi.Error && !chapterHide) {
                             CommonPlusCard(
                                 modifier = Modifier
                                     .height(160.dp)
@@ -106,7 +105,6 @@ fun ContentChaptersList(
                                 text = MainRes.string.add_chapter
                             )
                         }
-                    }
                 }
             }
         }
@@ -158,7 +156,7 @@ fun HeaderChapter(
                         top = 8.dp,
                         start = 16.dp,
                         end = 8.dp,
-                        bottom = 8.dp
+                        bottom = 0.dp
                     ),
                 color = Theme.colors.primaryAction,
                 textAlign = TextAlign.Start,
@@ -168,22 +166,6 @@ fun HeaderChapter(
 
             Spacer(modifier = Modifier.weight(1F))
 
-            Icon(
-                modifier = Modifier
-                    .padding(
-                        top = 12.dp,
-                        start = 8.dp,
-                        end = 8.dp,
-                        bottom = 0.dp
-                    )
-                    .size(20.dp)
-                    .clickable {
-                        component.loadChapters()
-                    },
-                imageVector = Icons.Default.Refresh,
-                contentDescription = null,
-                tint = Theme.colors.primaryAction,
-            )
         }
 
         Icon(

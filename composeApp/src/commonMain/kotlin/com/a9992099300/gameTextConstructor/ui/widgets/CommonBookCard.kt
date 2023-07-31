@@ -23,13 +23,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.layout.ContentScale
 import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookConstructorComponent
+import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.a9992099300.gameTextConstructor.utils.DEFAULT_IMAGE_BOOK
 
 
 @Composable
 fun CommonBookCard(
     modifier: Modifier,
-    book: BookDataModel,
+    book: BookUiModel,
     component: ListBookConstructorComponent
 ) {
     Card(
@@ -40,7 +41,9 @@ fun CommonBookCard(
             modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 16.dp)
         ) {
             val painter = rememberAsyncImagePainter(
-                url =  DEFAULT_IMAGE_BOOK,
+                url = book.imageUrl.ifBlank {
+                    DEFAULT_IMAGE_BOOK
+                },
             )
             Image(
                 painter = painter,
@@ -73,7 +76,7 @@ fun CommonBookCard(
 }
 
 @Composable
-private fun PostHeader(book: BookDataModel) {
+private fun PostHeader(book: BookUiModel) {
     Column(
         modifier = Modifier.fillMaxWidth()
             .padding(16.dp, 0.dp, 16.dp, 0.dp),

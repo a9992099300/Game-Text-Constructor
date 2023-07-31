@@ -35,6 +35,8 @@
     <string name="add_page">Добавить страницу</string>
     <string name="error">Ошибка</string>
     <string name="chapters">Главы</string>
+    <string name="scenes">Сцены</string>
+    <string name="no_name">Нет названия</string>
     <plurals name="plural_string">
         <item quantity="one">resource</item>
         <item quantity="other">resources</item>

@@ -83,7 +83,10 @@ class RootConstructorComponentImpl constructor(
     ): RootBookConstructorComponent =
         RootBookConstructorComponentImpl(
             componentContext = componentContext,
-            config.bookId
+            config.bookId,
+            popBack = {
+                navigation.bringToFront(Configuration.ListBooks)
+            }
         )
 
     private fun profile(componentContext: ComponentContext): ProfileConstructorComponent =

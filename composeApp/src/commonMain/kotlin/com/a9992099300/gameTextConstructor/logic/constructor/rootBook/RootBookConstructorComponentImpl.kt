@@ -13,6 +13,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 class RootBookConstructorComponentImpl(
     componentContext: ComponentContext,
     private val book: BookUiModel,
+    private val popBack: () -> Unit
 ): RootBookConstructorComponent, ComponentContext by componentContext{
 
     private val navigation = StackNavigation<Configuration>()
@@ -20,7 +21,10 @@ class RootBookConstructorComponentImpl(
     private fun book(componentContext: ComponentContext): BookConstructorComponentImpl =
         BookConstructorComponentImpl(
             componentContext = componentContext,
-            book = book
+            book = book,
+            popBack = {
+                popBack.invoke()
+            }
         )
 
     private val stack =

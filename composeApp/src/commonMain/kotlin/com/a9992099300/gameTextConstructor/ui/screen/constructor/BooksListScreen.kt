@@ -32,6 +32,7 @@ import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookConstructorComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
+import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonBookCard
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonPlusCard
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
@@ -65,10 +66,10 @@ fun ListBooksScreen(component: ListBookConstructorComponent) {
                 )
             }
 
-            when (stateUi) {
+            when (val state = stateUi) {
                 is StateUi.Error -> {
                     CommonSnackBar(
-                        message = (stateUi as StateUi.Error).messageError,
+                        message = state.messageError,
                         dismissSnack = {
                             component.closeSnack()
                         }
@@ -90,7 +91,7 @@ fun ListBooksScreen(component: ListBookConstructorComponent) {
 
 @Composable
 private fun BooksListContent(
-    books: List<BookDataModel>,
+    books: List<BookUiModel>,
     stateUi: StateUi<Unit>,
     component: ListBookConstructorComponent
 ) {

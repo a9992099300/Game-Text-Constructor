@@ -18,6 +18,8 @@ interface BookConstructorComponent {
 
     val chapterHide: StateFlow<Boolean>
 
+    val scenesHide: StateFlow<Boolean>
+
    fun loadChapters()
 
     fun loadScenes(chapterId: String)
@@ -25,4 +27,8 @@ interface BookConstructorComponent {
     fun loadPages(sceneId: String)
 
     fun hideChapters(value: Boolean)
+
+    fun hideScenes(value: Boolean)
+
+    fun popBack()
 }

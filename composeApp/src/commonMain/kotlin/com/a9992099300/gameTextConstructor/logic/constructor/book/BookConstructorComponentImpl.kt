@@ -22,6 +22,7 @@ import kotlin.coroutines.CoroutineContext
 class BookConstructorComponentImpl(
     componentContext: ComponentContext,
     private val book: BookUiModel,
+    private val popBack: () -> (Unit)
 ) : BookConstructorComponent, ComponentContext by componentContext {
 
     private val booksRepository: BooksRepository = Inject.instance()
@@ -38,6 +39,9 @@ class BookConstructorComponentImpl(
         MutableStateFlow(StateUi.Initial)
 
     override val chapterHide: MutableStateFlow<Boolean> =
+        MutableStateFlow(false)
+
+    override val scenesHide: MutableStateFlow<Boolean> =
         MutableStateFlow(false)
 
     override fun loadChapters() {
@@ -62,6 +66,14 @@ class BookConstructorComponentImpl(
 
     override fun hideChapters(value: Boolean) {
         chapterHide.value = value
+    }
+
+    override fun hideScenes(value: Boolean) {
+        scenesHide.value = value
+    }
+
+    override fun popBack() {
+        this.popBack.invoke()
     }
 
     private val bookRetainedInstance =

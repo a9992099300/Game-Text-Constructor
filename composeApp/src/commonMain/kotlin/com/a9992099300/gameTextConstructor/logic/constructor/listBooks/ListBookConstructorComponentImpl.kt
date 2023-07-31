@@ -1,10 +1,10 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.listBooks
 
-import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.data.books.repository.BooksRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
+import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
@@ -30,7 +30,7 @@ class ListBookConstructorComponentImpl(
     override val stateUi: MutableStateFlow<StateUi<Unit>> =
         MutableStateFlow(StateUi.Initial)
 
-    override val books: MutableStateFlow<List<BookDataModel>> =
+    override val books: MutableStateFlow<List<BookUiModel>> =
         MutableStateFlow(listOf())
 
 
@@ -84,7 +84,9 @@ class ListBookConstructorComponentImpl(
                 when (val result = booksRepository.getBooksList()) {
                     is Result.Success -> {
                         stateUi.value = StateUi.Success(Unit)
-                        books.value = result.value
+                        books.value = result.value.map {
+                            it.mapToUI()
+                        }
                     }
                     is Result.Error -> {
                         stateUi.value = StateUi.Error(result.error?.message ?: "Error")

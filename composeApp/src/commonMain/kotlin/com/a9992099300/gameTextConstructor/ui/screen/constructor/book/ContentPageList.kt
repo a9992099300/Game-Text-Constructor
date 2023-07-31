@@ -33,7 +33,7 @@ fun ContentPageList(
     component: BookConstructorComponent
 ) {
     val pages by component.pages.collectAsState()
-    Napier.d(message = "scenes $pages", tag = log)
+
         when (val currentState = pages) {
             is StateUi.Success -> {
                 LazyColumn  (
@@ -60,7 +60,7 @@ fun ContentPageList(
                                 .clickable {
                                   //  component.loadScenes(chapter.chapterId)
                                 },
-                            title = if (chapter.title.isNotBlank()) chapter.title else "Нет названия",
+                            title = chapter.title.ifBlank { MainRes.string.no_name },
                             description = chapter.description,
                             imageUrl = chapter.imageUrl
                         )
