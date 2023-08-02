@@ -1,11 +1,17 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.rootBook
 
+import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponentImpl
+import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateChapterComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateChapterComponentImpl
 import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
+import com.a9992099300.gameTextConstructor.ui.screen.models.ChapterUIModel
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
@@ -18,13 +24,35 @@ class RootBookConstructorComponentImpl(
 
     private val navigation = StackNavigation<Configuration>()
 
-    private fun book(componentContext: ComponentContext): BookConstructorComponentImpl =
+    private fun book(componentContext: ComponentContext): BookConstructorComponent =
         BookConstructorComponentImpl(
             componentContext = componentContext,
             book = book,
             popBack = {
                 popBack.invoke()
+            },
+            onCreateChapter = {
+                navigation.push(Configuration.CreateChapter(null))
+            },
+            onEditChapter = {
+                navigation.push(Configuration.CreateChapter(it))
             }
+        )
+
+    private fun createChapter(componentContext: ComponentContext, model: ChapterUIModel?): CreateChapterComponent =
+        CreateChapterComponentImpl(
+            componentContext = componentContext,
+            bookId = book.bookId,
+            onChapterCreate = {
+                navigation.pop {
+                    (stack.value.active.instance as? RootBookConstructorComponent.Child.Book)
+                        ?.component?.loadChapters()
+                }
+            },
+            onBack = {
+                navigation.pop()
+            },
+            editedChapterModel = model
         )
 
     private val stack =
@@ -45,10 +73,16 @@ class RootBookConstructorComponentImpl(
             is Configuration.Book -> RootBookConstructorComponent.Child.Book(
                 book(componentContext)
             )
+            is Configuration.CreateChapter -> RootBookConstructorComponent.Child.CreateChapter(
+                createChapter(componentContext, configuration.model)
+            )
         }
 
     private sealed class Configuration : Parcelable {
         @Parcelize
         object Book : Configuration()
+
+        @Parcelize
+        data class CreateChapter(val model: ChapterUIModel?) : Configuration()
     }
 }

@@ -22,7 +22,9 @@ import kotlin.coroutines.CoroutineContext
 class BookConstructorComponentImpl(
     componentContext: ComponentContext,
     private val book: BookUiModel,
-    private val popBack: () -> (Unit)
+    private val popBack: () -> (Unit),
+    private val onCreateChapter: () -> (Unit),
+    private val onEditChapter: (ChapterUIModel) -> (Unit)
 ) : BookConstructorComponent, ComponentContext by componentContext {
 
     private val booksRepository: BooksRepository = Inject.instance()
@@ -74,6 +76,14 @@ class BookConstructorComponentImpl(
 
     override fun popBack() {
         this.popBack.invoke()
+    }
+
+    override fun onCreateChapter() {
+        this.onCreateChapter.invoke()
+    }
+
+    override fun onEditChapter(chapter: ChapterUIModel) {
+        onEditChapter.invoke(chapter)
     }
 
     private val bookRetainedInstance =

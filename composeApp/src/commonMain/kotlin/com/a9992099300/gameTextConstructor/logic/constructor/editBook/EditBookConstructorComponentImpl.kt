@@ -27,9 +27,9 @@ import kotlin.coroutines.CoroutineContext
 class EditBookConstructorComponentImpl(
     private val componentContext: ComponentContext,
     private val bookId: String,
-    override val onBack: () -> Unit,
     private val onBookEdit: () -> Unit,
     private val onEditScenes: (book: BookUiModel) -> Unit,
+    override val onBack: () -> Unit,
 ) : ComponentContext by componentContext, EditBookConstructorComponent {
 
     private val booksRepository: BooksRepository = Inject.instance()

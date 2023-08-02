@@ -3,6 +3,7 @@ package com.a9992099300.gameTextConstructor.ui.screen.constructor
 import androidx.compose.runtime.Composable
 import com.a9992099300.gameTextConstructor.logic.constructor.rootBook.RootBookConstructorComponent
 import com.a9992099300.gameTextConstructor.ui.screen.constructor.book.BookScreen
+import com.a9992099300.gameTextConstructor.ui.screen.constructor.book.CreateChapterScreen
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.plus
@@ -18,6 +19,9 @@ fun RootBookContent(component: RootBookConstructorComponent) {
         when (val child = it.instance) {
             is RootBookConstructorComponent.Child.Book -> {
                 BookScreen(child.component)
+            }
+            is RootBookConstructorComponent.Child.CreateChapter -> {
+                CreateChapterScreen(child.component)
             }
         }
     }

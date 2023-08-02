@@ -10,7 +10,9 @@ suspend inline fun <reified R>request(
 ) : Result<R> =
     try {
         val result = request()
-        if (result?.status?.value == 200) {
+        if ((200..207).contains(result?.status?.value) &&
+            result != null
+        ) {
             Result.Success(result.body())
         } else {
             Result.Error(result?.body())

@@ -31,14 +31,20 @@ class BooksServiceImpl(
                 path("users/${userId}/userBooks.json")
             }
         }
+
         val books: MutableList<BookDataModel> = mutableListOf()
         val stringBody: String = httpResponse.body()
-        val jsonObject: JsonObject = builderJson.decodeFromString(stringBody)
 
-        for (i in jsonObject) {
-            val book = Json.decodeFromString<BookDataModel>(i.value.toString())
-            books.add(book)
+
+        val jsonObject: JsonObject? = builderJson.decodeFromString(stringBody)
+
+        if (jsonObject != null) {
+            for (i in jsonObject) {
+                val book = builderJson.decodeFromString<BookDataModel?>(i.value.toString())
+                book?.let { books.add(it) }
+            }
         }
+
         return books.toList()
     }
 
@@ -151,11 +157,31 @@ class BooksServiceImpl(
         }
         val chapters: MutableList<ChapterDataModel> = mutableListOf()
         val stringBody: String = httpResponse.body()
+        val jsonObject: JsonObject? = builderJson.decodeFromString(stringBody)
+
+        if (jsonObject != null) {
+            for (i in jsonObject) {
+                val book = builderJson.decodeFromString<ChapterDataModel?>(i.value.toString())
+                book?.let { chapters.add(it) }
+            }
+        }
+
+        return chapters.toList()
+    }
+
+    override suspend fun getChaptersId(userId: String, bookId: String): List<String> {
+        val httpResponse: HttpResponse = httpClient.addToken.get {
+            url {
+                path("users/${userId}/userChapters/books/${bookId}/chapters.json")
+            }
+            url.parameters.append("shallow", "true")
+        }
+        val chapters: MutableList<String> = mutableListOf()
+        val stringBody: String = httpResponse.body()
         val jsonObject: JsonObject = builderJson.decodeFromString(stringBody)
 
         for (i in jsonObject) {
-            val chapter = Json.decodeFromString<ChapterDataModel>(i.value.toString())
-            chapters.add(chapter)
+            chapters.add(i.key)
         }
         return chapters.toList()
     }
@@ -172,12 +198,16 @@ class BooksServiceImpl(
         }
         val scenes: MutableList<SceneDataModel> = mutableListOf()
         val stringBody: String = httpResponse.body()
-        val jsonObject: JsonObject = builderJson.decodeFromString(stringBody)
+        val jsonObject: JsonObject? = builderJson.decodeFromString(stringBody)
 
-        for (i in jsonObject) {
-            val scene = Json.decodeFromString<SceneDataModel>(i.value.toString())
-            scenes.add(scene)
+
+        if (jsonObject != null) {
+            for (i in jsonObject) {
+                val book = builderJson.decodeFromString<SceneDataModel?>(i.value.toString())
+                book?.let { scenes.add(it) }
+            }
         }
+
         return scenes.toList()
     }
 
@@ -187,19 +217,23 @@ class BooksServiceImpl(
         chapterId: String,
         sceneId: String
     ): List<PageDataModel> {
-        val httpResponse: HttpResponse = httpClient.addToken.get {
+
+        val httpResponseAction: HttpResponse = httpClient.addToken.get {
             url {
                 path("users/${userId}/userPages/books/${bookId}/chapter/${chapterId}/scenes/${sceneId}/page.json")
             }
         }
-        val scenes: MutableList<PageDataModel> = mutableListOf()
-        val stringBody: String = httpResponse.body()
-        val jsonObject: JsonObject = builderJson.decodeFromString(stringBody)
+        val pages: MutableList<PageDataModel> = mutableListOf()
+        val stringBody: String = httpResponseAction.body()
+        val jsonObject: JsonObject? = builderJson.decodeFromString(stringBody)
 
-        for (i in jsonObject) {
-            val scene = Json.decodeFromString<PageDataModel>(i.value.toString())
-            scenes.add(scene)
+        if (jsonObject != null) {
+            for (i in jsonObject) {
+                val page = builderJson.decodeFromString<PageDataModel?>(i.value.toString())
+                page?.let { pages.add(it) }
+            }
         }
-        return scenes.toList()
+
+        return pages.toList()
     }
 }

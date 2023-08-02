@@ -83,6 +83,13 @@ class BooksRepositoryImpl(
         }
     }
 
+    override suspend fun addChapter(model: ChapterDataModel) : Result<ChapterDataModel> = request {
+        val userId = store.get()?.firstOrNull()?.localId
+        userId?.let {
+            bookListBooksService.addChapter(it, model.bookId, model)
+        }
+    }
+
     private suspend fun getBooksSize(userId: String): String {
         val result = simpleRequest {
             bookListBooksService.getBooksListSize(userId)
@@ -133,6 +140,13 @@ class BooksRepositoryImpl(
     ): Result<List<PageDataModel>> = simpleRequest {
         val userId = store.get()?.firstOrNull()?.localId
         userId?.let { bookListBooksService.getPages(it,  bookId, chapterId, sceneId) }
+    }
+
+    override suspend fun getChaptersId(bookId: String): Result<List<String>> = simpleRequest {
+        val userId = store.get()?.firstOrNull()?.localId
+        userId.allowRequest{
+            bookListBooksService.getChaptersId(it, bookId)
+        }
     }
 }
 

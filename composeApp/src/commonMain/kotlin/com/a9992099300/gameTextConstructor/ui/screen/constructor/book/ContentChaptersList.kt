@@ -16,8 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -77,8 +75,12 @@ fun ContentChaptersList(
                                 },
                             title = chapter.title,
                             description = chapter.description,
+                            number = "Глава ${chapter.chapterNumber}",
                             imageUrl = chapter.imageUrl,
-                            selected = chapter.selected
+                            selected = chapter.selected,
+                            onEdit  ={
+                                component.onEditChapter(chapter)
+                            }
                         )
                     } else {
                         CommonCard(
@@ -89,7 +91,10 @@ fun ContentChaptersList(
                                 },
                             title = chapter.title,
                             selected = chapter.selected,
-                            sceneHide = true
+                            sceneHide = true,
+                            onEdit  ={
+                                component.onEditChapter(chapter)
+                            }
                         )
                     }
                 }
@@ -100,7 +105,7 @@ fun ContentChaptersList(
                                     .height(160.dp)
                                     .fillMaxWidth()
                                     .clickable {
-                                        // component.createNewBook()
+                                        component.onCreateChapter()
                                     },
                                 text = MainRes.string.add_chapter
                             )

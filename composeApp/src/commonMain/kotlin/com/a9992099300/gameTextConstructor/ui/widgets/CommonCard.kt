@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,10 +30,12 @@ import com.a9992099300.gameTextConstructor.theme.Theme
 fun CommonCard(
     modifier: Modifier,
     title: String = "",
+    number: String = "",
     description: String = "",
     imageUrl: String = "",
     selected: Boolean = false,
-    sceneHide: Boolean = false
+    sceneHide: Boolean = false,
+    onEdit: () -> Unit
 ) {
     Card(
         modifier = modifier,
@@ -50,7 +52,7 @@ fun CommonCard(
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
-            PostCommonHeader(title, !sceneHide)
+            PostCommonHeader(title, number, !sceneHide, onEdit)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -73,35 +75,59 @@ fun CommonCard(
 }
 
 @Composable
-private fun PostCommonHeader(title: String, sceneHide: Boolean) {
+private fun PostCommonHeader(
+    title: String,
+    number: String,
+    sceneHide: Boolean,
+    onEdit: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
-            .padding(16.dp, 0.dp, 8.dp, 0.dp),
+            .padding(8.dp, 0.dp, 8.dp, 0.dp),
     ) {
 
-        AnimatedVisibility(sceneHide) {
-            Icon(
-                modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.End)
-                    .clickable {
+        Row {
+            Spacer(modifier = Modifier.weight(1f))
 
-                    },
-                imageVector = Icons.Default.Edit,
-                contentDescription = Icons.Default.Settings.name,
-                tint = Theme.colors.primaryAction,
+            AnimatedVisibility(sceneHide) {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            onEdit()
+                        },
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = Icons.Default.Settings.name,
+                    tint = Theme.colors.primaryAction,
+                )
+            }
+        }
+
+        Column {
+
+
+            Text(
+                text = title,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                color = Theme.colors.primaryAction,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.body1,
+                fontSize = 20.sp,
+                maxLines = 1
+            )
+
+            Text(
+                text = number,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                color = Theme.colors.primaryAction,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.body1,
+                fontSize = 18.sp,
+                maxLines = 1
             )
         }
-        Text(
-            text = title,
-            modifier = Modifier
-                .fillMaxWidth(),
-            color = Theme.colors.primaryAction,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.body1,
-            fontSize = 20.sp,
-            maxLines = 1
-        )
     }
 }
 

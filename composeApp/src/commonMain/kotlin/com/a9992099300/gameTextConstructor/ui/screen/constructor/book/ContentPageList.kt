@@ -18,14 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.data.auth.services.log
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonCard
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonPlusCard
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
-import io.github.aakira.napier.Napier
 
 
 @Composable
@@ -62,7 +60,10 @@ fun ContentPageList(
                                 },
                             title = chapter.title.ifBlank { MainRes.string.no_name },
                             description = chapter.description,
-                            imageUrl = chapter.imageUrl
+                            imageUrl = chapter.imageUrl,
+                            onEdit = {
+
+                            }
                         )
                     }
                     item {

@@ -14,6 +14,7 @@ sealed class StateUi<out T> {
     companion object{
         const val ERROR_TITLE = 1001
         const val ERROR_DESCRIPTION= 1002
+        const val ERROR_INPUT_NUMBER = 1003
     }
 
 }

@@ -110,7 +110,6 @@ fun ContentSceneList(
                     items = currentState.value,
                     key = { it.sceneId }
                 ) { scene ->
-                    //   if (!sceneHide) {
                     CommonCard(
                         modifier = Modifier
                             .width(220.dp)
@@ -122,21 +121,11 @@ fun ContentSceneList(
                         description = scene.description,
                         imageUrl = scene.imageUrl,
                         selected = scene.selected,
-                        sceneHide = sceneHide
+                        sceneHide = sceneHide,
+                        onEdit = {
+
+                        }
                     )
-//                    } else {
-//                        CommonCard(
-//                            modifier = Modifier
-//                                .width(220.dp)
-//                                .fillMaxHeight()
-//                                .clickable {
-//                                    component.loadPages(scene.sceneId)
-//                                },
-//                            title = scene.title.ifBlank { MainRes.string.no_name },
-//                            selected = scene.selected,
-//                            simpleView = true
-//                        )
-//                    }
                 }
                 item {
                     if (currentState !is StateUi.Error && !sceneHide) {

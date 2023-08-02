@@ -14,6 +14,8 @@ interface BooksRepository {
 
     suspend fun addBook(model: BookModel) : Result<BookDataModel>
 
+    suspend fun addChapter(model: ChapterDataModel) : Result<ChapterDataModel>
+
     suspend fun editBook(model: BookDataModel) : Result<BookDataModel>
 
     suspend fun deleteBook(bookId: String) : Result<Unit>
@@ -27,5 +29,7 @@ interface BooksRepository {
         chapterId: String,
         sceneId: String
     ): Result<List<PageDataModel>>
+
+    suspend fun getChaptersId(bookId: String): Result<List<String>>
 
 }

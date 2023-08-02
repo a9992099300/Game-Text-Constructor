@@ -37,6 +37,11 @@
     <string name="chapters">Главы</string>
     <string name="scenes">Сцены</string>
     <string name="no_name">Нет названия</string>
+    <string name="description_chapter">Описание главы</string>
+    <string name="title_chapter">Название главы</string>
+    <string name="edit_chapter">Название главы</string>
+    <string name="new_chapter">Новая глава</string>
+    <string name="number_chapter">Номер глава</string>
     <plurals name="plural_string">
         <item quantity="one">resource</item>
         <item quantity="other">resources</item>

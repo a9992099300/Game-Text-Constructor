@@ -31,4 +31,8 @@ interface BookConstructorComponent {
     fun hideScenes(value: Boolean)
 
     fun popBack()
+
+    fun onCreateChapter()
+
+    fun onEditChapter(chapter: ChapterUIModel)
 }

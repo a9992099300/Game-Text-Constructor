@@ -40,4 +40,6 @@ interface BooksService{
      suspend fun getScenes(userId: String, bookId: String, chapterId: String) : List<SceneDataModel>
 
      suspend fun getPages(userId: String, bookId: String, chapterId: String, sceneId: String) : List<PageDataModel>
+
+     suspend fun getChaptersId(userId: String, bookId: String): List<String>
 }

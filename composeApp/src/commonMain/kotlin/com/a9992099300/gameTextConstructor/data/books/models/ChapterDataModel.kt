@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChapterDataModel(
+    @SerialName("bookId") val bookId: String,
     @SerialName("chapterId") val chapterId: String,
     @SerialName("chapterNumber") val chapterNumber: Int,
     @SerialName("title") val title: String,
@@ -15,6 +16,7 @@ data class ChapterDataModel(
 ) {
 
     fun mapToUI() = ChapterUIModel(
+        this.bookId,
         this.chapterId,
         this.chapterNumber,
         this.title,
@@ -28,6 +30,7 @@ data class ChapterDataModel(
         fun createEmptyChapter(bookId: String, chapterNumber: Int = 1): ChapterDataModel {
             val chapterId = "${bookId}_${chapterNumber}"
            return ChapterDataModel(
+                bookId = bookId,
                 chapterId = chapterId,
                 chapterNumber = chapterNumber,
                 title = "Глава $chapterNumber",
