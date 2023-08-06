@@ -27,6 +27,10 @@ class SplashComponentImpl(
 
     override val name = MutableStateFlow("")
 
+    override val onBack: () -> Unit = {
+
+    }
+
     override val stateUi: MutableStateFlow<StateUi<Unit>> =
         MutableStateFlow(StateUi.Initial)
 

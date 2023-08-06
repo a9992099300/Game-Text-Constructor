@@ -1,7 +1,7 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.createBook
 
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.data.books.repository.BooksRepository
+import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
@@ -24,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
 
 class CreateBookConstructorComponentImpl(
     private val componentContext: ComponentContext,
-    private val onBack: () -> Unit,
+    override val onBack: () -> Unit,
     private val onBookEdit: () -> Unit,
 ) : ComponentContext by componentContext, CreateBookConstructorComponent {
 

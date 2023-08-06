@@ -95,7 +95,7 @@ fun ContentPageList(
             }
 
             is StateUi.Error -> {
-                CommonSnackBar(
+                CommonSnackBar<Unit>(
                     message = currentState.messageError,
                     dismissSnack = {
                         component.loadChapters()

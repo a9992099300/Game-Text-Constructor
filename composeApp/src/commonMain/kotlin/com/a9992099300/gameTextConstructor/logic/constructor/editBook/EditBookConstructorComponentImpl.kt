@@ -1,7 +1,7 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.editBook
 
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.data.books.repository.BooksRepository
+import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
@@ -167,7 +167,7 @@ class EditBookConstructorComponentImpl(
         }
 
         override fun onDestroy() {
-            scope.cancel() // Cancel the scope when the instance is destroyed
+            scope.cancel()
         }
     }
 }

@@ -99,7 +99,9 @@ fun RegistrationScreen(component: RegistrationComponent) {
             Spacer(modifier = Modifier.height(24.dp))
 
             CommonButton(
-                onClickButton = component::onBack,
+                onClickButton = {
+                    component.onBack()
+                                },
                 isLoading = false,
                 text = MainRes.string.back
             )
@@ -120,7 +122,10 @@ fun RegistrationScreen(component: RegistrationComponent) {
     }
 
     if (stateUi is StateUi.Error) {
-        CommonSnackBar((stateUi as StateUi.Error).messageError)
+        CommonSnackBar(
+            message = (stateUi as StateUi.Error).messageError,
+            component = component
+        )
     }
 }
 

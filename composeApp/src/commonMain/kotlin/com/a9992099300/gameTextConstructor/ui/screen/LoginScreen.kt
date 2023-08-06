@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.a9992099300.gameTextConstructor.MainRes
+import com.a9992099300.gameTextConstructor.logic.base.BaseComponent
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.logic.login.LogInComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
@@ -139,7 +140,11 @@ fun LoginScreen(component: LogInComponent) {
     }
 
     if (stateUi is StateUi.Error) {
-        CommonSnackBar((stateUi as StateUi.Error).messageError)
+        CommonSnackBar(
+            message = (stateUi as StateUi.Error).messageError,
+            component = component as? BaseComponent<Unit>
+        )
+
     }
 }
 

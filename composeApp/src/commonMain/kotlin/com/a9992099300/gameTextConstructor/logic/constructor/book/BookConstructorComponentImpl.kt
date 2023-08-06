@@ -1,6 +1,7 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.book
 
-import com.a9992099300.gameTextConstructor.data.books.repository.BooksRepository
+import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
+import com.a9992099300.gameTextConstructor.data.books.repository.scenes.ScenesRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
@@ -24,10 +25,14 @@ class BookConstructorComponentImpl(
     private val book: BookUiModel,
     private val popBack: () -> (Unit),
     private val onCreateChapter: () -> (Unit),
-    private val onEditChapter: (ChapterUIModel) -> (Unit)
+    private val onEditChapter: (ChapterUIModel) -> (Unit),
+    private val onCreateScene: (String) -> (Unit),
+    private val onEditScene: (SceneUIModel) -> (Unit),
 ) : BookConstructorComponent, ComponentContext by componentContext {
 
     private val booksRepository: BooksRepository = Inject.instance()
+
+    private val scenesRepository: ScenesRepository = Inject.instance()
 
     override val title: MutableStateFlow<String> = MutableStateFlow(book.title)
 
@@ -83,7 +88,20 @@ class BookConstructorComponentImpl(
     }
 
     override fun onEditChapter(chapter: ChapterUIModel) {
-        onEditChapter.invoke(chapter)
+        this.onEditChapter.invoke(chapter)
+    }
+
+    override fun onCreateScene() {
+        val currentState = chapters.value
+        if (currentState is StateUi.Success) {
+            currentState.value.find { it.selected }?.chapterId?.let { this.onCreateScene(it) }
+        } else {
+            chapters.value = StateUi.Error(messageError = "Выберите главу чтобы создать сцену")
+        }
+    }
+
+    override fun onEditScene(scene: SceneUIModel) {
+        this.onEditScene.invoke(scene)
     }
 
     private val bookRetainedInstance =
@@ -119,7 +137,7 @@ class BookConstructorComponentImpl(
         fun loadScenes(chapterId: String) {
             scenes.value = StateUi.Loading
             scope.launch {
-                val result = booksRepository.getScenes(book.bookId, chapterId)
+                val result = scenesRepository.getScenes(book.bookId, chapterId)
                 when (result) {
                     is Result.Success -> scenes.value = StateUi.Success(
                         result.value.map {
@@ -162,7 +180,9 @@ class BookConstructorComponentImpl(
             (chapters.value as? StateUi.Success)?.value?.map { model ->
                 model.copy(selected = model.chapterId == chapterId)
             }
-        listChapters?.let { chapters.value = StateUi.Success(it) }
+        listChapters?.let {
+            chapters.value = StateUi.Success(it)
+        }
     }
 
     private fun selectScene(sceneId: String) {

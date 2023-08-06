@@ -1,13 +1,9 @@
-package com.a9992099300.gameTextConstructor.data.books.repository
+package com.a9992099300.gameTextConstructor.data.books.repository.book
 
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel.Companion.createEmptyChapter
 import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel.Companion.createEmptyPage
-import com.a9992099300.gameTextConstructor.data.books.models.SceneDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.SceneDataModel.Companion.createEmptyScene
-import com.a9992099300.gameTextConstructor.data.books.services.BooksService
+import com.a9992099300.gameTextConstructor.data.books.services.book.BooksService
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.data.common.SavedAuth
 import com.a9992099300.gameTextConstructor.data.common.allowRequest
@@ -47,26 +43,26 @@ class BooksRepositoryImpl(
         val booksListSize = userId?.let { getBooksSize(it) } ?: "0"
         userId?.let { userIdOwner ->
             val bookId = "${userIdOwner}_${date}_$booksListSize"
-            val chapter = createEmptyChapter(bookId = bookId)
-            bookListBooksService.addChapter(
-                userId = userIdOwner,
-                bookId = bookId,
-                model = chapter
-            )
-            val scene = createEmptyScene(chapterId = chapter.chapterId)
-            bookListBooksService.addScene(
-                userId = userIdOwner,
-                bookId = bookId,
-                chapterId = chapter.chapterId,
-                model = scene
-            )
-            bookListBooksService.addPage(
-                userId = userIdOwner,
-                bookId = bookId,
-                chapterId = chapter.chapterId,
-                sceneId = scene.sceneId,
-                model = createEmptyPage(sceneId = scene.sceneId)
-            )
+        //    val chapter = createEmptyChapter(bookId = bookId)
+//            bookListBooksService.addChapter(
+//                userId = userIdOwner,
+//                bookId = bookId,
+//                model = chapter
+//            )
+//            val scene = createEmptyScene(chapterId = chapter.chapterId)
+//            bookListBooksService.addScene(
+//                userId = userIdOwner,
+//                bookId = bookId,
+//                chapterId = chapter.chapterId,
+//                model = scene
+//            )
+//            bookListBooksService.addPage(
+//                userId = userIdOwner,
+//                bookId = bookId,
+//                chapterId = chapter.chapterId,
+//                sceneId = scene.sceneId,
+//                model = createEmptyPage(sceneId = scene.sceneId)
+//            )
             bookListBooksService.addBook(
                 userId = userIdOwner,
                 BookDataModel(
@@ -125,14 +121,6 @@ class BooksRepositoryImpl(
         userId?.let { bookListBooksService.getChapters(it, bookId) }
     }
 
-    override suspend fun getScenes(
-        bookId: String,
-        chapterId: String
-    ): Result<List<SceneDataModel>> = simpleRequest {
-        val userId = store.get()?.firstOrNull()?.localId
-        userId?.let { bookListBooksService.getScenes(it,  bookId, chapterId) }
-    }
-
     override suspend fun getPages(
         bookId: String,
         chapterId: String,
@@ -146,6 +134,13 @@ class BooksRepositoryImpl(
         val userId = store.get()?.firstOrNull()?.localId
         userId.allowRequest{
             bookListBooksService.getChaptersId(it, bookId)
+        }
+    }
+
+    override suspend fun deleteChapter(bookId: String, chapterId: String): Result<Unit> = request{
+        val userId = store.get()?.firstOrNull()?.localId
+        userId.allowRequest{
+            bookListBooksService.deleteChapter(it, bookId, chapterId)
         }
     }
 }

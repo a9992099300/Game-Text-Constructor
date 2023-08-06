@@ -118,12 +118,14 @@ fun ContentSceneList(
                                 component.loadPages(scene.sceneId)
                             },
                         title = scene.title.ifBlank { MainRes.string.no_name },
+                        number = MainRes.string.scene_number_v
+                            .format(scene.sceneNumber.toString()),
                         description = scene.description,
                         imageUrl = scene.imageUrl,
                         selected = scene.selected,
                         sceneHide = sceneHide,
                         onEdit = {
-
+                            component.onEditScene(scene)
                         }
                     )
                 }
@@ -134,7 +136,7 @@ fun ContentSceneList(
                                 .fillMaxHeight()
                                 .width(220.dp)
                                 .clickable {
-                                    // component.createNewBook()
+                                    component.onCreateScene()
                                 },
                             text = MainRes.string.add_scene
                         )
@@ -156,7 +158,7 @@ fun ContentSceneList(
         }
 
         is StateUi.Error -> {
-            CommonSnackBar(
+            CommonSnackBar<Unit>(
                 message = currentState.messageError,
                 dismissSnack = {
                     component.loadChapters()

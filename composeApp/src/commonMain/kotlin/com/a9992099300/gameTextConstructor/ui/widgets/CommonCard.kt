@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -21,6 +23,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.a9992099300.gameTextConstructor.theme.Theme
@@ -59,12 +62,13 @@ fun CommonCard(
             AnimatedVisibility(!sceneHide) {
                 Column(
                     modifier = Modifier
-                        //     .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState())
                         .padding(16.dp, 0.dp, 16.dp, 0.dp),
                 ) {
                     Text(
                         text = description,
-                        color = Theme.colors.primaryTextColor
+                        color = Theme.colors.primaryTextColor,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
 
@@ -90,6 +94,18 @@ private fun PostCommonHeader(
             Spacer(modifier = Modifier.weight(1f))
 
             AnimatedVisibility(sceneHide) {
+                Text(
+                    text = number,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    color = Theme.colors.primaryAction,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.body1,
+                    fontSize = 18.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
                 Icon(
                     modifier = Modifier
                         .size(24.dp)
@@ -104,8 +120,6 @@ private fun PostCommonHeader(
         }
 
         Column {
-
-
             Text(
                 text = title,
                 modifier = Modifier
@@ -114,18 +128,8 @@ private fun PostCommonHeader(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body1,
                 fontSize = 20.sp,
-                maxLines = 1
-            )
-
-            Text(
-                text = number,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                color = Theme.colors.primaryAction,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.body1,
-                fontSize = 18.sp,
-                maxLines = 1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

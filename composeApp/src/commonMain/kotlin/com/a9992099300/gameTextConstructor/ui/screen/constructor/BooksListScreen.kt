@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.logic.constructor.listBooks.ListBookConstructorComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
@@ -70,9 +69,7 @@ fun ListBooksScreen(component: ListBookConstructorComponent) {
                 is StateUi.Error -> {
                     CommonSnackBar(
                         message = state.messageError,
-                        dismissSnack = {
-                            component.closeSnack()
-                        }
+                        component = component
                     )
                 }
 

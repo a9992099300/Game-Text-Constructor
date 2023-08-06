@@ -22,9 +22,11 @@ class LoginComponentImpl(
     private val openMain: () -> Unit,
     private val openRootConstructor: () -> Unit,
 ) : ComponentContext by componentContext, LogInComponent {
-
     private val authRepository: AuthRepository = instance()
 
+    override val onBack: () -> Unit = {
+
+    }
     override val stateUi: MutableStateFlow<StateUi<Unit>> =
         MutableStateFlow(StateUi.Initial)
 
@@ -82,7 +84,7 @@ class LoginComponentImpl(
         }
 
         override fun onDestroy() {
-            scope.cancel() // Cancel the scope when the instance is destroyed
+            scope.cancel()
         }
     }
 }

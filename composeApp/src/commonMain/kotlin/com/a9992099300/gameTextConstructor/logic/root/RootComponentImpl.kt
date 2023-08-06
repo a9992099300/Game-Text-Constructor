@@ -73,7 +73,7 @@ class RootComponentImpl constructor(
         registration = { childContext, output ->
             RegistrationComponentImpl(
                 componentContext = childContext,
-                backClicked = {
+                onBack = {
                     output.onNext(RegistrationComponent.Registration.Back)
                 }
             )

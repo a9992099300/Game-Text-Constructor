@@ -1,7 +1,7 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.createChapter
 
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.data.books.repository.BooksRepository
+import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
@@ -25,18 +25,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
-class CreateChapterComponentImpl(
+class CreateOrEditOrEditChapterComponentImpl(
     private val componentContext: ComponentContext,
     private val bookId: String,
-    private val onChapterCreate: () -> Unit,
+    private val onChapterEdited: () -> Unit,
     override val onBack: () -> Unit,
-    override val editedChapterModel: ChapterUIModel?
-) : ComponentContext by componentContext, CreateChapterComponent {
+    override val editedChapterModel: ChapterUIModel
+) : ComponentContext by componentContext, CreateOrEditChapterComponent {
 
     private val booksRepository: BooksRepository = Inject.instance()
     override val stateUi: MutableStateFlow<StateUi<Unit>> = MutableStateFlow(Initial)
     override val chapterState: MutableStateFlow<ChapterUIModel> =
-        MutableStateFlow(editedChapterModel ?: ChapterUIModel())
+        MutableStateFlow(
+            if (editedChapterModel.chapterId.isNotBlank()) {
+                editedChapterModel
+            } else {
+                ChapterUIModel()
+            }
+        )
 
     override val chapterIds: MutableStateFlow<List<String>> =
         MutableStateFlow(listOf())
@@ -82,16 +88,19 @@ class CreateChapterComponentImpl(
         )
     }
 
-    override fun addChapter() {
-        if (editedChapterModel == null) {
+    override fun addOrEditChapter() {
+        if (editedChapterModel.chapterId.isBlank()) {
             createChapterRetainedInstance.addChapter()
         } else {
             createChapterRetainedInstance.editChapters()
         }
     }
 
-    override fun deleteChapter() {
+    override fun resetError() {
+        stateUi.value = Success(Unit)
+    }
 
+    override fun deleteChapter() {
         if (chapterState.value.deletable) {
             createChapterRetainedInstance.deleteChapter()
         } else {
@@ -115,11 +124,8 @@ class CreateChapterComponentImpl(
         fun addChapter() {
             scope.launch {
                 stateUi.value = Loading
-                val id = chapterIds.value.lastOrNull().getLastPartId()
+                val id = chapterIds.value.lastOrNull().getLastPartId() ?: "0"
 
-                if (id == null) {
-                    stateUi.value = Error("Error")
-                } else {
                     val result = booksRepository.addChapter(
                         chapterState.value.mapToData(
                             bookId,
@@ -129,14 +135,14 @@ class CreateChapterComponentImpl(
                     when (result) {
                         is Result.Success -> {
                             withContext(Dispatchers.Main) {
-                                onChapterCreate()
+                                onChapterEdited()
+                                stateUi.value = Success(Unit)
                             }
                         }
 
                         is Result.Error -> stateUi.value = Error(result.error?.message ?: "")
                     }
                 }
-            }
         }
 
         fun editChapters() {
@@ -148,7 +154,8 @@ class CreateChapterComponentImpl(
                 when (result) {
                     is Result.Success -> {
                         withContext(Dispatchers.Main) {
-                            onChapterCreate()
+                            onChapterEdited()
+                            stateUi.value = Success(Unit)
                         }
                     }
 
@@ -172,7 +179,19 @@ class CreateChapterComponentImpl(
         }
 
         fun deleteChapter() {
+            scope.launch {
+                stateUi.value = Loading
+                when (val result = booksRepository
+                    .deleteChapter(bookId, chapterState.value.chapterId)) {
 
+                    is Result.Success -> {
+                        stateUi.value = Success(Unit)
+                        onChapterEdited()
+                    }
+
+                    is Result.Error -> stateUi.value = Error(result.error?.message ?: "")
+                }
+            }
         }
 
         override fun onDestroy() {

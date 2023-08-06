@@ -30,14 +30,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.a9992099300.gameTextConstructor.MainRes
 import com.a9992099300.gameTextConstructor.data.auth.services.log
+import com.a9992099300.gameTextConstructor.logic.base.BaseComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
 @Composable
-fun CommonSnackBar(
+
+fun <T>CommonSnackBar(
     message: String,
     imageVector: ImageVector = Icons.Default.Warning,
+    component: BaseComponent<T>?  = null,
     dismissSnack: (() -> Unit)? = null
 ) {
     val scope = rememberCoroutineScope()
@@ -86,6 +89,7 @@ fun CommonSnackBar(
 
                         Button(
                             onClick = {
+                                component?.closeSnack()
                                 dismissSnack?.let {
                                     it()
                                 }

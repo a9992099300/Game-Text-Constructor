@@ -10,14 +10,15 @@ import com.a9992099300.gameTextConstructor.theme.Theme
 
 @Composable
 fun HeaderText(
-    text: String
+    text: String,
+    modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
-        modifier = Modifier.wrapContentWidth(),
+        modifier = modifier.wrapContentWidth(),
         color = Theme.colors.primaryAction,
         textAlign = TextAlign.Start,
         style = androidx.compose.material.MaterialTheme.typography.h2,
-        fontSize = 24.sp
+        fontSize = 24.sp,
     )
 }

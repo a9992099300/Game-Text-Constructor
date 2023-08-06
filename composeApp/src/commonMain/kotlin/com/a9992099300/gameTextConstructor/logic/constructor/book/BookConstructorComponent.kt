@@ -35,4 +35,8 @@ interface BookConstructorComponent {
     fun onCreateChapter()
 
     fun onEditChapter(chapter: ChapterUIModel)
+
+    fun onCreateScene()
+
+    fun onEditScene(scene: SceneUIModel)
 }

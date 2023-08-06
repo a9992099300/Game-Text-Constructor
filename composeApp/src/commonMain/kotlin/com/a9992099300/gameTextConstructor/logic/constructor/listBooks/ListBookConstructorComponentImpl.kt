@@ -1,6 +1,6 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.listBooks
 
-import com.a9992099300.gameTextConstructor.data.books.repository.BooksRepository
+import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi

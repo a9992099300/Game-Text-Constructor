@@ -26,19 +26,4 @@ data class ChapterDataModel(
         false
     )
 
-    companion object {
-        fun createEmptyChapter(bookId: String, chapterNumber: Int = 1): ChapterDataModel {
-            val chapterId = "${bookId}_${chapterNumber}"
-           return ChapterDataModel(
-                bookId = bookId,
-                chapterId = chapterId,
-                chapterNumber = chapterNumber,
-                title = "Глава $chapterNumber",
-                description = "Описание главы",
-                imageUrl = "",
-                deletable = false
-            )
-        }
-    }
-
 }

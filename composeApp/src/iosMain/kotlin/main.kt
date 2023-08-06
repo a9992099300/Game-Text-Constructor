@@ -10,6 +10,7 @@ import com.a9992099300.gameTextConstructor.theme.AppTheme
 import com.a9992099300.gameTextConstructor.ui.screen.MainScreen
 import com.a9992099300.gameTextConstructor.ui.screen.RegistrationScreen
 import com.a9992099300.gameTextConstructor.ui.screen.LoginScreen
+import com.a9992099300.gameTextConstructor.ui.screen.SplashScreen
 import com.a9992099300.gameTextConstructor.utils.initLogger
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
@@ -65,7 +66,10 @@ fun RootContent(component: RootComponent) {
             is RootComponent.Child.Login -> LoginScreen(child.component)
             is RootComponent.Child.Main -> MainScreen(child.component)
             is RootComponent.Child.Registration -> RegistrationScreen(child.component)
-            else -> {}
+            is RootComponent.Child.Splash -> SplashScreen(child.component)
+            is RootComponent.Child.RootConstructor -> {
+                // переход на сайт: создать свою книгу
+            }
         }
 
     }

@@ -19,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
 
 class RegistrationComponentImpl (
     componentContext: ComponentContext,
-    private val backClicked: () -> Unit,
+    override val onBack: () -> Unit,
 ) : ComponentContext by componentContext, RegistrationComponent {
 
     private val backCallback = BackCallback {
@@ -60,11 +60,6 @@ class RegistrationComponentImpl (
         signInRetainedInstance.signIn()
     }
 
-    override fun onBack() {
-        backClicked()
-    }
-
-
 
     inner class SignInRetainedInstance(mainContext: CoroutineContext) : InstanceKeeper.Instance {
         private val scope = CoroutineScope(mainContext + SupervisorJob())
@@ -83,7 +78,7 @@ class RegistrationComponentImpl (
         }
 
         override fun onDestroy() {
-            scope.cancel() // Cancel the scope when the instance is destroyed
+            scope.cancel()
         }
     }
 }

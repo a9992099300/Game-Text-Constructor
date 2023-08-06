@@ -36,6 +36,9 @@ class ProfileConstructorComponentImpl(
         profileRetainedInstance.saveUserData()
     }
 
+    override val onBack: () -> Unit
+        get() = {  }
+
     private val profileRetainedInstance =
         instanceKeeper.getOrCreate { ProfileRetainedInstance(Dispatchers.Default) }
 

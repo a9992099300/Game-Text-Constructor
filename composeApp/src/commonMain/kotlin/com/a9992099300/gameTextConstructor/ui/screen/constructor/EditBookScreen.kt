@@ -118,10 +118,8 @@ fun EditBookScreen(component: EditBookConstructorComponent) {
 
     if (stateUi is StateUi.Error) {
         CommonSnackBar(
-            (stateUi as StateUi.Error).messageError,
-            dismissSnack = {
-                component.closeSnack()
-            }
+            message = (stateUi as StateUi.Error).messageError,
+            component = component
         )
 
 

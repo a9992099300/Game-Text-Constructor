@@ -5,7 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SceneDataModel(
+    @SerialName("bookId") val bookId: String,
+    @SerialName("chapterId") val chapterId: String,
     @SerialName("sceneId") val sceneId: String,
+    @SerialName("sceneNumber") val sceneNumber: Int,
     @SerialName("title")  val title: String,
     @SerialName("description")  val description: String,
     @SerialName("imageUrl")  val imageUrl: String,
@@ -13,27 +16,15 @@ data class SceneDataModel(
 ) {
 
     fun mapToUI() = SceneUIModel(
+        this.bookId,
+        this.chapterId,
         this.sceneId,
-      //  this.chapterNumber,
+        this.sceneNumber,
         this.title,
         this.description,
         this.imageUrl,
         this.deletable,
         false
     )
-
-
-    companion object {
-        fun createEmptyScene(chapterId: String, sceneNumber: Int = 1): SceneDataModel {
-            val sceneId = "${chapterId}_$sceneNumber"
-           return SceneDataModel(
-                sceneId = sceneId,
-                title = "Сцена $sceneNumber",
-                description = "Описнаие сцены",
-                imageUrl = "",
-                deletable = false
-            )
-        }
-    }
 
 }

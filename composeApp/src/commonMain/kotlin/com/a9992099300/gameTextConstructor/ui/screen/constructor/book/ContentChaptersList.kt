@@ -75,7 +75,8 @@ fun ContentChaptersList(
                                 },
                             title = chapter.title,
                             description = chapter.description,
-                            number = "Глава ${chapter.chapterNumber}",
+                            number = MainRes.string.chapter_number_v
+                                .format(chapter.chapterNumber.toString()),
                             imageUrl = chapter.imageUrl,
                             selected = chapter.selected,
                             onEdit  ={
@@ -127,7 +128,7 @@ fun ContentChaptersList(
         }
 
         is StateUi.Error -> {
-            CommonSnackBar(
+            CommonSnackBar<Unit>(
                 message = currentState.messageError,
                 dismissSnack = {
                     component.loadChapters()
@@ -166,7 +167,8 @@ fun HeaderChapter(
                 color = Theme.colors.primaryAction,
                 textAlign = TextAlign.Start,
                 style = MaterialTheme.typography.h2,
-                fontSize = 24.sp
+                fontSize = 24.sp,
+
             )
 
             Spacer(modifier = Modifier.weight(1F))

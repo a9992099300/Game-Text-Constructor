@@ -4,11 +4,11 @@ import com.a9992099300.gameTextConstructor.logic.base.BaseComponent
 import com.a9992099300.gameTextConstructor.ui.screen.models.ChapterUIModel
 import kotlinx.coroutines.flow.StateFlow
 
-interface CreateChapterComponent: BaseComponent<Unit> {
+interface CreateOrEditChapterComponent: BaseComponent<Unit> {
 
     val chapterState: StateFlow<ChapterUIModel>
 
-    val editedChapterModel: ChapterUIModel?
+    val editedChapterModel: ChapterUIModel
 
     val chapterIds: StateFlow<List<String>>
 
@@ -20,7 +20,9 @@ interface CreateChapterComponent: BaseComponent<Unit> {
 
     fun changeDescription(description: String)
 
-    fun addChapter()
+    fun addOrEditChapter()
+
+    fun resetError()
 
     fun deleteChapter()
 

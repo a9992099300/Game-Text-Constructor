@@ -110,6 +110,9 @@ fun ProfileScreen(component: ProfileConstructorComponent) {
     }
 
     if (stateUi is StateUi.Error) {
-        CommonSnackBar((stateUi as StateUi.Error).messageError)
+        CommonSnackBar(
+            message = (stateUi as StateUi.Error).messageError,
+            component = component
+        )
     }
 }

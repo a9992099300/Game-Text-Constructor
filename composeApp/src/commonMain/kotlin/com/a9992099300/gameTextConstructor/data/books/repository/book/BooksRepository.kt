@@ -1,10 +1,9 @@
-package com.a9992099300.gameTextConstructor.data.books.repository
+package com.a9992099300.gameTextConstructor.data.books.repository.book
 
-import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.SceneDataModel
+import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.ui.screen.models.BookModel
 
 interface BooksRepository {
@@ -22,8 +21,6 @@ interface BooksRepository {
 
     suspend fun getChapters(bookId: String) : Result<List<ChapterDataModel>>
 
-    suspend fun getScenes(bookId: String, chapterId: String) : Result<List<SceneDataModel>>
-
     suspend fun getPages(
         bookId: String,
         chapterId: String,
@@ -31,5 +28,7 @@ interface BooksRepository {
     ): Result<List<PageDataModel>>
 
     suspend fun getChaptersId(bookId: String): Result<List<String>>
+
+    suspend fun deleteChapter(bookId: String, chapterId: String) : Result<Unit>
 
 }

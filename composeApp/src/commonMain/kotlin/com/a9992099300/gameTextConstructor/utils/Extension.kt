@@ -14,11 +14,11 @@ inline fun <T>String.allowChangeValue(size: Int, allowSetValue: () -> Unit, erro
 }
 
 inline fun <T>String.allowChangeValueInt(size: Int, allowSetValue: () -> Unit, errorSetValue: (StateUi<T>) -> Unit) {
-    if (this.length < size && this.toIntOrNull() != null) {
+    if (this.length < size && this.toIntOrNull() != null || this.isEmpty()) {
         allowSetValue()
     } else {
         errorSetValue(
-            StateUi.Error(MainRes.string.max_string.format(size.toString()))
+            StateUi.Error(MainRes.string.max_int.format(size.toString()))
         )
     }
 }

@@ -1,9 +1,8 @@
-package com.a9992099300.gameTextConstructor.data.books.services
+package com.a9992099300.gameTextConstructor.data.books.services.book
 
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.SceneDataModel
 import com.a9992099300.gameTextConstructor.data.common.ktor.HttpClientWrapper
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -87,20 +86,6 @@ class BooksServiceImpl(
             }
         }
 
-    override suspend fun addScene(
-        userId: String,
-        bookId: String,
-        chapterId: String,
-        model: SceneDataModel
-    ) = httpClient.addToken.patch {
-        url {
-            path("users/${userId}/userScenes/books/${bookId}/chapter/${chapterId}/scenes/${model.sceneId}.json")
-            setBody(
-                model
-            )
-        }
-    }
-
     override suspend fun addPage(
         userId: String,
         bookId: String,
@@ -109,7 +94,7 @@ class BooksServiceImpl(
         model: PageDataModel
     ) = httpClient.addToken.patch {
         url {
-            path("users/${userId}/userPages/books/${bookId}/chapter/${chapterId}/scenes/${sceneId}/page/${model.pageId}.json")
+            path("users/${userId}/userPages/books/${bookId}/chapters/${chapterId}/scenes/${sceneId}/page/${model.pageId}.json")
             setBody(
                 model
             )
@@ -178,37 +163,14 @@ class BooksServiceImpl(
         }
         val chapters: MutableList<String> = mutableListOf()
         val stringBody: String = httpResponse.body()
-        val jsonObject: JsonObject = builderJson.decodeFromString(stringBody)
-
-        for (i in jsonObject) {
-            chapters.add(i.key)
-        }
-        return chapters.toList()
-    }
-
-    override suspend fun getScenes(
-        userId: String,
-        bookId: String,
-        chapterId: String
-    ): List<SceneDataModel> {
-        val httpResponse: HttpResponse = httpClient.addToken.get {
-            url {
-                path("users/${userId}/userScenes/books/${bookId}/chapter/${chapterId}/scenes.json")
-            }
-        }
-        val scenes: MutableList<SceneDataModel> = mutableListOf()
-        val stringBody: String = httpResponse.body()
         val jsonObject: JsonObject? = builderJson.decodeFromString(stringBody)
-
 
         if (jsonObject != null) {
             for (i in jsonObject) {
-                val book = builderJson.decodeFromString<SceneDataModel?>(i.value.toString())
-                book?.let { scenes.add(it) }
+                chapters.add(i.key)
             }
         }
-
-        return scenes.toList()
+        return chapters.toList()
     }
 
     override suspend fun getPages(
@@ -220,7 +182,7 @@ class BooksServiceImpl(
 
         val httpResponseAction: HttpResponse = httpClient.addToken.get {
             url {
-                path("users/${userId}/userPages/books/${bookId}/chapter/${chapterId}/scenes/${sceneId}/page.json")
+                path("users/${userId}/userPages/books/${bookId}/chapters/${chapterId}/scenes/${sceneId}/page.json")
             }
         }
         val pages: MutableList<PageDataModel> = mutableListOf()
@@ -235,5 +197,23 @@ class BooksServiceImpl(
         }
 
         return pages.toList()
+    }
+
+    override suspend fun deleteChapter(userId: String, bookId: String, chapterId: String): HttpResponse {
+        httpClient.addToken.delete {
+            url {
+                path("users/${userId}/userScenes/books/${bookId}/chapters/${chapterId}.json")
+            }
+        }
+        httpClient.addToken.delete {
+            url {
+                path("users/${userId}/userChapters/books/${bookId}/chapters/${chapterId}.json")
+            }
+        }
+        return httpClient.addToken.delete {
+            url {
+                path("users/${userId}/userPages/books/${bookId}/chapters/${chapterId}.json")
+            }
+        }
     }
 }
