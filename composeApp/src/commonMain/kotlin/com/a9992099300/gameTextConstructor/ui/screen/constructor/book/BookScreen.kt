@@ -47,7 +47,7 @@ fun BookScreen(component: BookConstructorComponent) {
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(if (chapterHide) 100.dp else 300.dp)
+                    .width(if (chapterHide) 150.dp else 300.dp)
             ) {
                 Card(
                     modifier = Modifier
@@ -118,7 +118,7 @@ fun BookHeader(
                     )
                     .size(24.dp)
                     .clickable {
-                        component.loadChapters()
+                        component.refresh()
                     },
                 imageVector = Icons.Default.Refresh,
                 contentDescription = null,

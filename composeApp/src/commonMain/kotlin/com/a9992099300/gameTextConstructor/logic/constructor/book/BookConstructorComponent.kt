@@ -39,4 +39,6 @@ interface BookConstructorComponent {
     fun onCreateScene()
 
     fun onEditScene(scene: SceneUIModel)
+
+    fun refresh()
 }

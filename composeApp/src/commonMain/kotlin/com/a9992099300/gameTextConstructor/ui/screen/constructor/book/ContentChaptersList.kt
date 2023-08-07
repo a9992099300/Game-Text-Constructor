@@ -32,6 +32,7 @@ import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonCard
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonPlusCard
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
+import com.a9992099300.gameTextConstructor.ui.widgets.CommonVerticalCard
 import compose.icons.FeatherIcons
 import compose.icons.feathericons.ArrowLeft
 import compose.icons.feathericons.ArrowRight
@@ -84,7 +85,7 @@ fun ContentChaptersList(
                             }
                         )
                     } else {
-                        CommonCard(
+                        CommonVerticalCard(
                             modifier = Modifier
                                 .height(160.dp)
                                 .clickable {
@@ -92,7 +93,6 @@ fun ContentChaptersList(
                                 },
                             title = chapter.title,
                             selected = chapter.selected,
-                            sceneHide = true,
                             onEdit  ={
                                 component.onEditChapter(chapter)
                             }

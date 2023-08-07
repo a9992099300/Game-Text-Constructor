@@ -104,6 +104,10 @@ class BookConstructorComponentImpl(
         this.onEditScene.invoke(scene)
     }
 
+    override fun refresh() {
+        bookRetainedInstance.refresh()
+    }
+
     private val bookRetainedInstance =
         instanceKeeper.getOrCreate { BookRetainedInstance(Dispatchers.Default) }
 
@@ -114,6 +118,14 @@ class BookConstructorComponentImpl(
 
         init {
             loadChapters()
+        }
+
+       fun refresh() {
+           loadChapters()
+           scope.launch {
+               scenes.emit(StateUi.Initial)
+               pages.emit(StateUi.Initial)
+           }
         }
 
         fun loadChapters() {
