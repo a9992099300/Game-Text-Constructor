@@ -51,8 +51,8 @@ class ScenesServiceImpl(
 
         if (jsonObject != null) {
             for (i in jsonObject) {
-                val book = builderJson.decodeFromString<SceneDataModel?>(i.value.toString())
-                book?.let { scenes.add(it) }
+                val scene = builderJson.decodeFromString<SceneDataModel?>(i.value.toString())
+                scene?.let { scenes.add(it) }
             }
         }
 

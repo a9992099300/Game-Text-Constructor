@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
-class CreateOrEditOrEditChapterComponentImpl(
+class CreateOrEditChapterComponentImpl(
     private val componentContext: ComponentContext,
     private val bookId: String,
     private val onChapterEdited: () -> Unit,

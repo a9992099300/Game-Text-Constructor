@@ -1,6 +1,5 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.listBooks
 
-import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.logic.base.BaseComponent
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel

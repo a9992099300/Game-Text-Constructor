@@ -3,7 +3,7 @@ package com.a9992099300.gameTextConstructor.logic.constructor.rootBook
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateOrEditChapterComponent
-import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateOrEditOrEditChapterComponentImpl
+import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateOrEditChapterComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.createScenes.CreateOrEditScenesComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.createScenes.CreateOrEditScenesComponentImpl
 import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
@@ -62,7 +62,7 @@ class RootBookConstructorComponentImpl(
         componentContext: ComponentContext,
         model: ChapterUIModel
     ): CreateOrEditChapterComponent =
-        CreateOrEditOrEditChapterComponentImpl(
+        CreateOrEditChapterComponentImpl(
             componentContext = componentContext,
             bookId = book.bookId,
             onChapterEdited = {

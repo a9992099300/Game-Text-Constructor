@@ -1,5 +1,6 @@
 package com.a9992099300.gameTextConstructor.logic.constructor
 
+import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
 import com.a9992099300.gameTextConstructor.data.common.ktor.HttpClientWrapper
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.constructor.createBook.CreateBookConstructorComponent
@@ -31,6 +32,7 @@ class RootConstructorComponentImpl constructor(
 
     private val navigation = StackNavigation<Configuration>()
     private val httpClientWrapper: HttpClientWrapper = Inject.instance()
+    private val booksRepository: BooksRepository = Inject.instance()
 
     private fun listBooks(componentContext: ComponentContext): ListBookConstructorComponentImpl =
         ListBookConstructorComponentImpl(
@@ -51,6 +53,7 @@ class RootConstructorComponentImpl constructor(
     ): CreateBookConstructorComponent =
         CreateBookConstructorComponentImpl(
             componentContext = componentContext,
+            booksRepository = booksRepository,
             onBack = {
                 popBack()
             },

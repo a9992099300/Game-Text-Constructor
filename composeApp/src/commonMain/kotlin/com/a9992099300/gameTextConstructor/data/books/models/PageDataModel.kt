@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 data class PageDataModel(
     @SerialName("pageId") val pageId: String,
     @SerialName("title") val title: String,
-    @SerialName("arguments") val arguments: List<Argument> = listOf(),
+    @SerialName("inputArguments") val inputArguments: List<Arg> = listOf(),
+  //  @SerialName("outputArguments") val outputArguments: List<Arg> = listOf(),
     @SerialName("description") val description: String,
     @SerialName("addDescription") val addDescription: List<AddDescription> = listOf(),
     @SerialName("imageUrl") val imageUrl: String,
@@ -28,7 +29,8 @@ data class PageDataModel(
             PageDataModel(
                 pageId = "${sceneId}_$pageNumber",
                 title = "Страница $pageNumber",
-                arguments = listOf(),
+                inputArguments = listOf(),
+            //    outputArguments = listOf(),
                 description = "Описание страницы",
                 addDescription = listOf(),
                 imageUrl = "",
@@ -38,7 +40,7 @@ data class PageDataModel(
                         action = listOf(
                             ActionPage.Move(
                                 startDestination = "",
-                                endDestination = "",
+                                endDestination = ""
                             )
                         ),
                         block = listOf()
@@ -52,14 +54,15 @@ data class PageDataModel(
 data class ItemPage(
     @SerialName("id") val id: Int = 1,
     @SerialName("description") val description: String = "Описание действия",
-    @SerialName("block") val block: List<Argument> = listOf(),
+    @SerialName("block") val block: List<Condition> = listOf(),
+    @SerialName("outputArguments") val outputArguments: List<Arg> = listOf(),
     @SerialName("action") val action: List<ActionPage>
 )
 
 @Serializable
 data class AddDescription(
     @SerialName("description") val description: String,
-    @SerialName("argument") val argument: Argument,
+    @SerialName("argument") val argument: Arg,
 )
 
 @Serializable
@@ -68,25 +71,31 @@ sealed class ActionPage {
     data class Move(
         @SerialName("startDestination") val startDestination: String,
         @SerialName("endDestination") val endDestination: String,
-        @SerialName("arguments") val arguments: List<Argument> = listOf(),
-        @SerialName("conditions") val conditions: List<Condition> = listOf(),
+    ) : ActionPage()
+
+    @Serializable
+    data class ConditionMove(
+        @SerialName("conditionMark") val conditionMark: ConditionMark,
+        @SerialName("name") val name: String,
+        @SerialName("quantity") val quantity: Int,
+        @SerialName("startDestination") val startDestination: String,
+        @SerialName("endDestination") val endDestination: String,
     ) : ActionPage()
 
     @Serializable
     data class EditInventory(
-        @SerialName("subject") val subject: String,
+        @SerialName("subject") val argument: Arg,
         @SerialName("action") val action: Action,
-        @SerialName("arguments") val arguments: List<Argument> = listOf(),
-        @SerialName("conditions") val conditions: List<Condition> = listOf(),
+       // @SerialName("quantity") val quantity: Int,
+      //  @SerialName("conditions") val conditions: List<Condition> = listOf(),
     ) : ActionPage()
 
     @Serializable
-    data class EditGlobalAchievement(
-        @SerialName("achievement") val achievement: String,
+    data class EditAchievement(
+        @SerialName("achievement") val argument: Arg,
         @SerialName("action") val action: Action,
-        @SerialName("quantity") val quantity: Int,
-        @SerialName("argument") val arguments: List<Argument> = listOf(),
-        @SerialName("conditions") val conditions: List<Condition> = listOf(),
+     //   @SerialName("quantity") val quantity: Int,
+     //   @SerialName("conditions") val conditions: List<Condition> = listOf(),
     ) : ActionPage()
 
 }
@@ -101,23 +110,46 @@ enum class Action(action: String) {
 data class Condition(
     @SerialName("conditionMark") val conditionMark: ConditionMark,
     @SerialName("name") val name: String,
-    @SerialName("quantity") val quantity: Int,
+    @SerialName("lowValue") val lowValue: Int,
+    @SerialName("heightValue") val heightValue: Int,
 )
 
-@Serializable
-data class Argument(
-    @SerialName("name") val name: String,
-    @SerialName("quantity") val quantity: Int,
-    @SerialName("howGetArgument")  val howGetArgument: HowGetArgument,
-    @SerialName("lowQuantity") val lowQuantity: Int,
-    @SerialName("highQuantity") val highQuantity: Int,
-)
+
+
+//interface arg
+//
+//@Serializable
+//data class Argument(
+//    @SerialName("name") val name: String,
+//    @SerialName("quantity") val quantity: Int,
+//    @SerialName("howGetArgument")  val howGetArgument: HowGetArgument,
+//    @SerialName("lowQuantity") val lowQuantity: Int,
+//    @SerialName("highQuantity") val highQuantity: Int,
+//) : arg
+
+
+ sealed interface Arg {
+     @Serializable
+     data class ArgumentExactly(
+         @SerialName("name") val name: String,
+         @SerialName("quantity") val quantity: Int,
+     ) : Arg
+
+     @Serializable
+     data class ArgumentRandom(
+         @SerialName("name") val name: String,
+         @SerialName("lowQuantity") val lowQuantity: Int,
+         @SerialName("highQuantity") val highQuantity: Int,
+     ) : Arg
+ }
+
 
 @Serializable
 enum class ConditionMark(value: String) {
     LOW("low"),
     EQUALS("equals"),
     HIGH("high"),
+    BETWEEN("between"),
     NOT_USE("not_use"),
 }
 

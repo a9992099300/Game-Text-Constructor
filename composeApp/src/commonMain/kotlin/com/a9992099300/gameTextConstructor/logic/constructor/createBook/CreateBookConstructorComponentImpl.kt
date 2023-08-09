@@ -3,7 +3,6 @@ package com.a9992099300.gameTextConstructor.logic.constructor.createBook
 import com.a9992099300.gameTextConstructor.MainRes
 import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
-import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.ui.screen.models.BookModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.CategoryUiModel
@@ -18,6 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
@@ -26,63 +27,72 @@ class CreateBookConstructorComponentImpl(
     private val componentContext: ComponentContext,
     override val onBack: () -> Unit,
     private val onBookEdit: () -> Unit,
+    private val booksRepository: BooksRepository
 ) : ComponentContext by componentContext, CreateBookConstructorComponent {
 
-    private val booksRepository: BooksRepository = Inject.instance()
-
-    override val stateUi: MutableStateFlow<StateUi<Unit>> =
-        MutableStateFlow(StateUi.Initial)
-
-    override val stateCategory: MutableStateFlow<List<CategoryUiModel>> =
-        MutableStateFlow(Category.listDefaultCategory)
-
-    override val titleBook = MutableStateFlow("")
-    override val descriptionBook = MutableStateFlow("")
+    override val stateUi: StateFlow<StateUi<Unit>>
+        get() = createBookViewModel.stateUi.asStateFlow()
+    override val stateCategory: StateFlow<List<CategoryUiModel>>
+        get() = createBookViewModel.stateCategory.asStateFlow()
+    override val titleBook: StateFlow<String>
+        get() = createBookViewModel.titleBook.asStateFlow()
+    override val descriptionBook: StateFlow<String>
+        get() = createBookViewModel.descriptionBook.asStateFlow()
 
     override fun chooseCategory(type: TypeCategory) {
-        createBooksListRetainedInstance.chooseCategory(type)
+        createBookViewModel.chooseCategory(type)
     }
 
     override fun changeTitle(title: String) {
         title.allowChangeValue<Unit>(
             64,
             allowSetValue = {
-                this.titleBook.value = title
+                createBookViewModel.titleBook.value = title
             },
             errorSetValue = { error ->
-                stateUi.value = error
+                createBookViewModel.stateUi.value = error
             }
         )
     }
-
 
     override fun changeDescription(description: String) {
         description.allowChangeValue<Unit>(
             1000,
             allowSetValue = {
-                this.descriptionBook.value = description
+                createBookViewModel.descriptionBook.value = description
             },
             errorSetValue = { error ->
-                stateUi.value = error
+                createBookViewModel.stateUi.value = error
             }
         )
     }
 
     override fun addBook() {
-        createBooksListRetainedInstance.addBook()
+        createBookViewModel.addBook()
     }
 
     override fun onBackClicked() {
         onBack()
     }
 
-    private val createBooksListRetainedInstance =
-        instanceKeeper.getOrCreate { CreateBooksListRetainedInstance(Dispatchers.Default) }
+    private val createBookViewModel =
+        instanceKeeper.getOrCreate { CreateBooksViewModel(Dispatchers.Default) }
 
-    inner class CreateBooksListRetainedInstance(mainContext: CoroutineContext) :
+   private inner class CreateBooksViewModel(mainContext: CoroutineContext) :
         InstanceKeeper.Instance {
 
         private val scope = CoroutineScope(mainContext + SupervisorJob())
+
+        val stateUi: MutableStateFlow<StateUi<Unit>> =
+        MutableStateFlow(StateUi.Initial)
+
+        val stateCategory: MutableStateFlow<List<CategoryUiModel>> =
+            MutableStateFlow(Category.listDefaultCategory)
+
+        val titleBook = MutableStateFlow("")
+
+        val descriptionBook = MutableStateFlow("")
+
         fun chooseCategory(type: TypeCategory) {
             scope.launch {
                 stateCategory.value = Category.listDefaultCategory.map {
