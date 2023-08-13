@@ -43,26 +43,6 @@ class BooksRepositoryImpl(
         val booksListSize = userId?.let { getBooksSize(it) } ?: "0"
         userId?.let { userIdOwner ->
             val bookId = "${userIdOwner}_${date}_$booksListSize"
-        //    val chapter = createEmptyChapter(bookId = bookId)
-//            bookListBooksService.addChapter(
-//                userId = userIdOwner,
-//                bookId = bookId,
-//                model = chapter
-//            )
-//            val scene = createEmptyScene(chapterId = chapter.chapterId)
-//            bookListBooksService.addScene(
-//                userId = userIdOwner,
-//                bookId = bookId,
-//                chapterId = chapter.chapterId,
-//                model = scene
-//            )
-//            bookListBooksService.addPage(
-//                userId = userIdOwner,
-//                bookId = bookId,
-//                chapterId = chapter.chapterId,
-//                sceneId = scene.sceneId,
-//                model = createEmptyPage(sceneId = scene.sceneId)
-//            )
             bookListBooksService.addBook(
                 userId = userIdOwner,
                 BookDataModel(

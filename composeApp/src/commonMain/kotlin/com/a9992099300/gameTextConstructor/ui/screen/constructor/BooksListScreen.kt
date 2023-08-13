@@ -103,6 +103,19 @@ private fun BooksListContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        item {
+            if (stateUi !is StateUi.Error) {
+                CommonPlusCard(
+                    modifier = Modifier
+                        .height(400.dp)
+                        .clickable{
+                            component.createNewBook()
+                        },
+                    text = MainRes.string.add_book
+                )
+            }
+        }
+
         items(
             books
         ) { book ->
@@ -113,18 +126,6 @@ private fun BooksListContent(
                 book = book,
                 component,
             )
-        }
-        item {
-            if (stateUi !is StateUi.Error) {
-                CommonPlusCard(
-                    modifier = Modifier
-                        .height(400.dp)
-                        .clickable{
-                        component.createNewBook()
-                    },
-                    text = MainRes.string.add_book
-                )
-            }
         }
     }
 }

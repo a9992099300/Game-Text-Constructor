@@ -5,6 +5,7 @@ import com.a9992099300.gameTextConstructor.data.common.ktor.ktorModuleAuth
 import com.a9992099300.gameTextConstructor.data.common.ktor.ktorModuleDatabase
 import com.a9992099300.gameTextConstructor.di.book.bookModule
 import com.a9992099300.gameTextConstructor.di.book.sceneModule
+import com.a9992099300.gameTextConstructor.di.inventory.inventoryModule
 import com.a9992099300.gameTextConstructor.di.login.authModule
 import com.a9992099300.gameTextConstructor.di.profile.profileModule
 import org.kodein.di.DI
@@ -38,6 +39,7 @@ object Inject {
                     profileModule,
                     bookModule,
                     sceneModule,
+                    inventoryModule,
                     ktorModuleAuth,
                     ktorModuleDatabase,
                     httpClientWrapperModule

@@ -28,6 +28,7 @@ class BookConstructorComponentImpl(
     private val onEditChapter: (ChapterUIModel) -> (Unit),
     private val onCreateScene: (String) -> (Unit),
     private val onEditScene: (SceneUIModel) -> (Unit),
+    private val onOpenInventory: () -> (Unit),
 ) : BookConstructorComponent, ComponentContext by componentContext {
 
     private val booksRepository: BooksRepository = Inject.instance()
@@ -106,6 +107,10 @@ class BookConstructorComponentImpl(
 
     override fun refresh() {
         bookRetainedInstance.refresh()
+    }
+
+    override fun openInventory() {
+        this.onOpenInventory()
     }
 
     private val bookRetainedInstance =

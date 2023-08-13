@@ -9,11 +9,13 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -103,9 +105,23 @@ fun ContentSceneList(
                                 tint = Theme.colors.primaryAction,
                             )
                         }
-
                     }
                 }
+
+                item {
+                    if (currentState !is StateUi.Error && !sceneHide) {
+                        CommonPlusCard(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .width(220.dp)
+                                .clickable {
+                                    component.onCreateScene()
+                                },
+                            text = MainRes.string.add_scene
+                        )
+                    }
+                }
+
                 items(
                     items = currentState.value,
                     key = { it.sceneId }
@@ -129,26 +145,13 @@ fun ContentSceneList(
                         }
                     )
                 }
-                item {
-                    if (currentState !is StateUi.Error && !sceneHide) {
-                        CommonPlusCard(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .width(220.dp)
-                                .clickable {
-                                    component.onCreateScene()
-                                },
-                            text = MainRes.string.add_scene
-                        )
-                    }
-                }
             }
         }
 
         is StateUi.Loading -> {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(
                     modifier = Modifier,

@@ -66,9 +66,9 @@ class CreateOrEditChapterComponentImpl(
     override fun changeNumber(title: String) {
         title.allowChangeValueInt<Unit>(
             10,
-            allowSetValue = {
+            allowSetValue = {number ->
                 this.chapterState.value = chapterState.value
-                    .copy(chapterNumber = title.toIntOrNull() ?: 0)
+                    .copy(chapterNumber = number)
             },
             errorSetValue = { error ->
                 stateUi.value = (error as Error).copy(codeError = ERROR_INPUT_NUMBER)

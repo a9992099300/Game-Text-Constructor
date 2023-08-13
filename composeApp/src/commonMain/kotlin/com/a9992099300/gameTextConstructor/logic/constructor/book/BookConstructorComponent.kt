@@ -41,4 +41,6 @@ interface BookConstructorComponent {
     fun onEditScene(scene: SceneUIModel)
 
     fun refresh()
+
+    fun openInventory()
 }

@@ -5,6 +5,7 @@ import com.a9992099300.gameTextConstructor.logic.constructor.rootBook.RootBookCo
 import com.a9992099300.gameTextConstructor.ui.screen.constructor.book.BookScreen
 import com.a9992099300.gameTextConstructor.ui.screen.constructor.book.CreateOrEditChapterScreen
 import com.a9992099300.gameTextConstructor.ui.screen.constructor.book.CreateOrEditSceneScreen
+import com.a9992099300.gameTextConstructor.ui.screen.constructor.inventory.InventoryScreen
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.plus
@@ -26,6 +27,9 @@ fun RootBookContent(component: RootBookConstructorComponent) {
             }
             is RootBookConstructorComponent.Child.CreateOrEditScene -> {
                 CreateOrEditSceneScreen(child.component)
+            }
+            is RootBookConstructorComponent.Child.Inventory -> {
+                InventoryScreen(child.component)
             }
         }
     }

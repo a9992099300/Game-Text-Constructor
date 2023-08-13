@@ -70,7 +70,7 @@ class CreateOrEditScenesComponentImpl(
             10,
             allowSetValue = {
                 this.sceneState.value = sceneState.value
-                    .copy(sceneNumber = title.toIntOrNull() ?: 0)
+                    .copy(sceneNumber = it)
             },
             errorSetValue = { error ->
                 stateUi.value = (error as Error).copy(codeError = ERROR_INPUT_NUMBER)

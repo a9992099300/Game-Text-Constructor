@@ -63,6 +63,20 @@ fun ContentChaptersList(
                 ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                item {
+                    if (currentState !is StateUi.Error && !chapterHide) {
+                        CommonPlusCard(
+                            modifier = Modifier
+                                .height(160.dp)
+                                .fillMaxWidth()
+                                .clickable {
+                                    component.onCreateChapter()
+                                },
+                            text = MainRes.string.add_chapter
+                        )
+                    }
+                }
+
                 items(
                     items = currentState.value,
                     key = { it.chapterId }
@@ -98,19 +112,6 @@ fun ContentChaptersList(
                             }
                         )
                     }
-                }
-                item {
-                    if (currentState !is StateUi.Error && !chapterHide) {
-                            CommonPlusCard(
-                                modifier = Modifier
-                                    .height(160.dp)
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        component.onCreateChapter()
-                                    },
-                                text = MainRes.string.add_chapter
-                            )
-                        }
                 }
             }
         }

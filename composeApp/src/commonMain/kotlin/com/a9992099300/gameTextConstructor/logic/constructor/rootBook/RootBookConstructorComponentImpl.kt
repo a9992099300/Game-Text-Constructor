@@ -1,11 +1,14 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.rootBook
 
+import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateOrEditChapterComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateOrEditChapterComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.createScenes.CreateOrEditScenesComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.createScenes.CreateOrEditScenesComponentImpl
+import com.a9992099300.gameTextConstructor.logic.constructor.inventory.InventoryComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.inventory.InventoryComponentImpl
 import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.ChapterUIModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.SceneUIModel
@@ -55,6 +58,11 @@ class RootBookConstructorComponentImpl(
                         chapterId = it.chapterId
                     )
                 )
+            },
+            onOpenInventory = {
+                navigation.push(
+                    Configuration.Inventory
+                )
             }
         )
 
@@ -98,6 +106,18 @@ class RootBookConstructorComponentImpl(
             editeSceneModel = model
         )
 
+    private fun createInventory(
+        componentContext: ComponentContext,
+    ): InventoryComponent =
+        InventoryComponentImpl(
+            componentContext = componentContext,
+            bookId = book.bookId,
+            inventoryRepository = Inject.instance(),
+            onBack = {
+                navigation.pop()
+            },
+        )
+
     private val stack =
         childStack(
             source = navigation,
@@ -124,11 +144,17 @@ class RootBookConstructorComponentImpl(
             is Configuration.CreateOrEditScene -> RootBookConstructorComponent.Child.CreateOrEditScene(
                 createScene(componentContext, configuration.model, configuration.chapterId)
             )
+            is Configuration.Inventory -> RootBookConstructorComponent.Child.Inventory(
+                createInventory(componentContext)
+            )
         }
 
     private sealed class Configuration : Parcelable {
         @Parcelize
         object Book : Configuration()
+
+        @Parcelize
+        object Inventory : Configuration()
 
         @Parcelize
         data class CreateOrEditChapter(val model: ChapterUIModel) : Configuration()
