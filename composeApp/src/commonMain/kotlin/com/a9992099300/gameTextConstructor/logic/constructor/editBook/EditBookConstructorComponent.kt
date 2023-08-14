@@ -1,9 +1,12 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.editBook
 
 import com.a9992099300.gameTextConstructor.logic.base.BaseComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.dialog.DefaultDialogComponent
 import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.CategoryUiModel
 import com.a9992099300.gameTextConstructor.utils.TypeCategory
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.value.Value
 import kotlinx.coroutines.flow.StateFlow
 
 interface EditBookConstructorComponent: BaseComponent<Unit> {

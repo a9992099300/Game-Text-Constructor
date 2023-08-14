@@ -20,6 +20,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,6 +31,7 @@ import com.a9992099300.gameTextConstructor.logic.base.BaseComponent
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateOrEditChapterComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
+import com.a9992099300.gameTextConstructor.ui.widgets.CommonDialog
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextFieldOutline
 import com.a9992099300.gameTextConstructor.ui.widgets.HeaderText
@@ -115,6 +119,9 @@ private fun EditChapterHeader(
     component: CreateOrEditChapterComponent,
     stateUi: StateUi<Unit>
 ) {
+
+    var isDeleteRequested by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -166,12 +173,25 @@ private fun EditChapterHeader(
                     .padding(16.dp)
                     .size(24.dp)
                     .clickable {
-                        component.deleteChapter()
+                        isDeleteRequested = true
                     },
                 imageVector = Icons.Default.Delete,
                 contentDescription = Icons.Default.Delete.name,
                 tint = Theme.colors.primaryAction,
             )
         }
+    }
+
+    if (isDeleteRequested) {
+        CommonDialog(
+            text = MainRes.string.delete_chapter,
+            onCanceled = {
+                isDeleteRequested = false
+            },
+            onSuccess = {
+                isDeleteRequested = false
+                component.deleteChapter()
+            }
+        )
     }
 }

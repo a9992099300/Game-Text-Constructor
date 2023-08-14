@@ -27,6 +27,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -37,6 +40,7 @@ import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.screen.models.InventoryUIModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.TypeInventory
 import com.a9992099300.gameTextConstructor.ui.screen.models.TypeInventoryUiModel
+import com.a9992099300.gameTextConstructor.ui.widgets.CommonDialog
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextFieldOutline
 import com.a9992099300.gameTextConstructor.ui.widgets.HeaderText
@@ -206,6 +210,8 @@ fun InventoryFilterChip(categoryUiModel: TypeInventoryUiModel, onClick: (TypeInv
     model: InventoryUIModel,
 ) {
 
+    var isDeleteRequested by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -240,12 +246,25 @@ fun InventoryFilterChip(categoryUiModel: TypeInventoryUiModel, onClick: (TypeInv
                     .padding(16.dp)
                     .size(24.dp)
                     .clickable {
-                        component.deleteInventory(model.inventoryId)
+                        isDeleteRequested = true
                     },
                 imageVector = Icons.Default.Delete,
                 contentDescription = Icons.Default.Delete.name,
                 tint = Theme.colors.primaryAction,
             )
         }
+    }
+
+    if (isDeleteRequested) {
+        CommonDialog(
+            text = MainRes.string.delete_inventory,
+            onCanceled = {
+                isDeleteRequested = false
+            },
+            onSuccess = {
+                isDeleteRequested = false
+                component.deleteInventory(model.inventoryId)
+            }
+        )
     }
 }

@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 
 @Composable
 expect fun CommonDialog(
-    text: String,
+    title: String = "",
+    text: String = "",
     onSuccess: () -> Unit,
     onCanceled: () -> Unit,
 )

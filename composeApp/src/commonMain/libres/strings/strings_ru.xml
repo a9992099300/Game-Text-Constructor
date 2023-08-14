@@ -61,7 +61,11 @@
     <string name="error_duplicate_inventory">Предмет/характеристика с таким именем уже существует!</string>
     <string name="add_inventory">Добавить предмет/характеристику</string>
     <string name="edit_inventory_1">Редактирование предмета/характеристики</string>
-
+    <string name="delete_book">Удалить выбранную книгу? Вместе с книгой будут удалены все главы, сцены, страницы и предметы книги</string>
+    <string name="delete_chapter">Удалить выбранную главу? Также будут удалены все сцены и страницы главы</string>
+    <string name="delete_scene">Удалить выбранную сцену? Также будут удалены все страницы сцены</string>
+    <string name="delete_inventory">Удалить выбранный предмет/характеристику?</string>
+    <string name="yes">Да</string>
 
     <string name="def_quan_inventory">Значение по умолчанию ${number}</string>
     <plurals name="plural_string">

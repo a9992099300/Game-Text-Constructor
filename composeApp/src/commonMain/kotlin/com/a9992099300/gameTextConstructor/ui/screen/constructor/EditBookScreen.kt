@@ -20,8 +20,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,6 +36,7 @@ import com.a9992099300.gameTextConstructor.logic.common.StateUi.Companion.ERROR_
 import com.a9992099300.gameTextConstructor.logic.constructor.editBook.EditBookConstructorComponent
 import com.a9992099300.gameTextConstructor.theme.Theme
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonButton
+import com.a9992099300.gameTextConstructor.ui.widgets.CommonDialog
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonFilterChip
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextFieldOutline
@@ -150,13 +155,15 @@ private fun EditBookHeader(
     component: EditBookConstructorComponent,
     stateUi: StateUi<Unit>,
 ) {
+
+    var isDeleteRequested by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(16.dp, 0.dp, 16.dp, 0.dp)
     ) {
-
         HeaderText(
             text = MainRes.string.edit_book,
         )
@@ -192,11 +199,24 @@ private fun EditBookHeader(
                 .padding(16.dp, 0.dp)
                 .size(24.dp)
                 .clickable {
-                  component.deleteBook()
+                    isDeleteRequested = true
             },
             imageVector = Icons.Default.Delete,
             contentDescription = Icons.Default.Delete.name,
             tint = Theme.colors.primaryAction,
+        )
+    }
+
+    if (isDeleteRequested) {
+        CommonDialog(
+            text = MainRes.string.delete_book,
+            onCanceled = {
+                isDeleteRequested = false
+            },
+            onSuccess = {
+                isDeleteRequested = false
+                component.deleteBook()
+            }
         )
     }
 }
