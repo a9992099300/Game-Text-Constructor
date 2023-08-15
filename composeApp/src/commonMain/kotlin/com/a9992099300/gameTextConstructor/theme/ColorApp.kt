@@ -33,4 +33,7 @@ val palette = ColorsApp(
     textFieldBackground = Color(     0xFFA6A5B1)
 )
 
-val LocalColorProvider = staticCompositionLocalOf<ColorsApp> { error("No default implementation") }
+val LocalColorProvider = staticCompositionLocalOf<ColorsApp> {
+   //error("No default implementation")
+    palette
+}

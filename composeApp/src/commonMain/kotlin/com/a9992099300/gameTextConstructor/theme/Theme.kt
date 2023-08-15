@@ -72,22 +72,24 @@ internal fun AppTheme(
             content = content
         )
     }
-
-//    val colors = if (!useDarkTheme) {
-//        LightColorScheme
+}
+//
+//@Composable
+//fun ComposeAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+//    val colors = if (darkTheme) {
+//        DarkColorPalette
 //    } else {
-//        DarkColorScheme
+//        LightColorPalette
 //    }
 //
 //    MaterialTheme(
-//        colorScheme = colors,
-//        typography = AppTypography,
-//        shapes = AppShapes,
-//        content = {
-//            Surface(content = content)
-//        }
+//        colors = colors,
+//        typography = typography,
+//        shapes = shapes,
+//        content = content
 //    )
-}
+//}
+
 
 object Theme {
    internal val colors: ColorsApp
