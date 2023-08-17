@@ -2,7 +2,6 @@ package com.a9992099300.gameTextConstructor.data.books.repository.book
 
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel
 import com.a9992099300.gameTextConstructor.data.books.services.book.BooksService
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.data.common.SavedAuth
@@ -101,14 +100,14 @@ class BooksRepositoryImpl(
         userId?.let { bookListBooksService.getChapters(it, bookId) }
     }
 
-    override suspend fun getPages(
-        bookId: String,
-        chapterId: String,
-        sceneId: String
-    ): Result<List<PageDataModel>> = simpleRequest {
-        val userId = store.get()?.firstOrNull()?.localId
-        userId?.let { bookListBooksService.getPages(it,  bookId, chapterId, sceneId) }
-    }
+//    override suspend fun getPages(
+//        bookId: String,
+//        chapterId: String,
+//        sceneId: String
+//    ): Result<List<PageDataModel>> = simpleRequest {
+//        val userId = store.get()?.firstOrNull()?.localId
+//        userId?.let { bookListBooksService.getPages(it,  bookId, chapterId, sceneId) }
+//    }
 
     override suspend fun getChaptersId(bookId: String): Result<List<String>> = simpleRequest {
         val userId = store.get()?.firstOrNull()?.localId

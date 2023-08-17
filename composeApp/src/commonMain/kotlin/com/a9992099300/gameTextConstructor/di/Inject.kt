@@ -42,7 +42,8 @@ object Inject {
                     inventoryModule,
                     ktorModuleAuth,
                     ktorModuleDatabase,
-                    httpClientWrapperModule
+                    httpClientWrapperModule,
+                    databaseModule
                 )
             }.direct
     }

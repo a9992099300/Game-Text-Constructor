@@ -167,7 +167,7 @@ private fun EditChapterHeader(
             contentDescription = FeatherIcons.Save.name,
             tint = Theme.colors.primaryAction,
         )
-        if (component.editedChapterModel.chapterId.isNotBlank()) {
+        if (component.editedChapterModel.isNotBlank()) {
             Icon(
                 modifier = Modifier
                     .padding(16.dp)

@@ -5,12 +5,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PageDataModel(
+    @SerialName("bookId") val bookId: String,
+    @SerialName("chapterId") val chapterId: String,
+    @SerialName("sceneId") val sceneId: String,
     @SerialName("pageId") val pageId: String,
     @SerialName("title") val title: String,
-    @SerialName("inputArguments") val inputArguments: List<Arg> = listOf(),
-  //  @SerialName("outputArguments") val outputArguments: List<Arg> = listOf(),
+    @SerialName("inputArguments") val inputArguments: List<InventoryArgDataModel> = listOf(),
+    @SerialName("outputArguments") val outputArguments: List<InventoryArgDataModel> = listOf(),
     @SerialName("description") val description: String,
-    @SerialName("addDescription") val addDescription: List<AddDescription> = listOf(),
+    @SerialName("addDescription") val addExtraDescription: List<AddDescription> = listOf(),
     @SerialName("imageUrl") val imageUrl: String,
     @SerialName("deletable") val deletable: Boolean,
     @SerialName("items") val items: List<ItemPage>,
@@ -24,30 +27,30 @@ data class PageDataModel(
         false
     )
 
-    companion object {
-        fun createEmptyPage(sceneId: String, pageNumber: Int = 1) =
-            PageDataModel(
-                pageId = "${sceneId}_$pageNumber",
-                title = "Страница $pageNumber",
-                inputArguments = listOf(),
-            //    outputArguments = listOf(),
-                description = "Описание страницы",
-                addDescription = listOf(),
-                imageUrl = "",
-                deletable = false,
-                listOf(
-                    ItemPage(
-                        action = listOf(
-                            ActionPage.Move(
-                                startDestination = "",
-                                endDestination = ""
-                            )
-                        ),
-                        block = listOf()
-                    )
-                )
-            )
-    }
+//    companion object {
+//        fun createEmptyPage(sceneId: String, pageNumber: Int = 1) =
+//            PageDataModel(
+//                pageId = "${sceneId}_$pageNumber",
+//                title = "Страница $pageNumber",
+//                inputArguments = listOf(),
+//                outputArguments = listOf(),
+//                description = "Описание страницы",
+//                addExtraDescription = listOf(),
+//                imageUrl = "",
+//                deletable = false,
+//                listOf(
+//                    ItemPage(
+//                        action = listOf(
+//                            ActionMovePage.Move(
+//                                startDestination = "",
+//                                endDestination = ""
+//                            )
+//                        ),
+//                        block = listOf()
+//                    )
+//                )
+//            )
+//    }
 }
 
 @Serializable
@@ -56,49 +59,61 @@ data class ItemPage(
     @SerialName("description") val description: String = "Описание действия",
     @SerialName("block") val block: List<Condition> = listOf(),
     @SerialName("outputArguments") val outputArguments: List<Arg> = listOf(),
-    @SerialName("action") val action: List<ActionPage>
+    @SerialName("action") val action: List<ActionMovePage>
 )
 
 @Serializable
 data class AddDescription(
     @SerialName("description") val description: String,
-    @SerialName("argument") val argument: Arg,
+    @SerialName("argument") val argument: InventoryArgDataModel,
 )
 
 @Serializable
-sealed class ActionPage {
+sealed class ActionMovePage {
     @Serializable
     data class Move(
         @SerialName("startDestination") val startDestination: String,
         @SerialName("endDestination") val endDestination: String,
-    ) : ActionPage()
+    ) : ActionMovePage()
+
+    @Serializable
+    data class RandomMove(
+        @SerialName("startDestination") val startDestination: String,
+        @SerialName("endDestination") val endDestinations: List<String>,
+    ) : ActionMovePage()
 
     @Serializable
     data class ConditionMove(
-        @SerialName("conditionMark") val conditionMark: ConditionMark,
-        @SerialName("name") val name: String,
-        @SerialName("quantity") val quantity: Int,
-        @SerialName("startDestination") val startDestination: String,
-        @SerialName("endDestination") val endDestination: String,
-    ) : ActionPage()
+        @SerialName("conditionMoveDestination") val conditionMoveDestination: List<ConditionMoveDestination>
+    ) : ActionMovePage()
 
-    @Serializable
-    data class EditInventory(
-        @SerialName("subject") val argument: Arg,
-        @SerialName("action") val action: Action,
-       // @SerialName("quantity") val quantity: Int,
-      //  @SerialName("conditions") val conditions: List<Condition> = listOf(),
-    ) : ActionPage()
-
-    @Serializable
-    data class EditAchievement(
-        @SerialName("achievement") val argument: Arg,
-        @SerialName("action") val action: Action,
-     //   @SerialName("quantity") val quantity: Int,
-     //   @SerialName("conditions") val conditions: List<Condition> = listOf(),
-    ) : ActionPage()
+//    @Serializable
+//    data class EditInventory(
+//        @SerialName("subject") val argument: Arg,
+//        @SerialName("action") val action: Action,
+//       // @SerialName("quantity") val quantity: Int,
+//      //  @SerialName("conditions") val conditions: List<Condition> = listOf(),
+//    ) : ActionMovePage()
+//
+//    @Serializable
+//    data class EditAchievement(
+//        @SerialName("achievement") val argument: Arg,
+//        @SerialName("action") val action: Action,
+//     //   @SerialName("quantity") val quantity: Int,
+//     //   @SerialName("conditions") val conditions: List<Condition> = listOf(),
+//    ) : ActionMovePage()
 
 }
+
+@Serializable
+data class ConditionMoveDestination(
+    @SerialName("conditionMark") val conditionMark: ConditionMark,
+    @SerialName("name") val name: String,
+    @SerialName("quantity1") val lowValue: Int,
+    @SerialName("quantity2") val heightValue: Int,
+    @SerialName("startDestination") val startDestination: String,
+    @SerialName("endDestination") val endDestination: String,
+)
 
 @Serializable
 enum class Action(action: String) {
@@ -109,7 +124,7 @@ enum class Action(action: String) {
 @Serializable
 data class Condition(
     @SerialName("conditionMark") val conditionMark: ConditionMark,
-    @SerialName("name") val name: String,
+    @SerialName("name") val inventoryDataModel: InventoryDataModel,
     @SerialName("lowValue") val lowValue: Int,
     @SerialName("heightValue") val heightValue: Int,
 )

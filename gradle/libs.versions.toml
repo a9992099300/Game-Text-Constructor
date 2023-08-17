@@ -1,8 +1,8 @@
 [versions]
 
-kotlin = "1.8.20"
+kotlin = "1.8.22"
 agp = "8.0.1"
-compose = "1.4.0"
+compose = "1.4.3"
 androidx-appcompat = "1.6.1"
 androidx-activityCompose = "1.7.0"
 compose-uitooling = "1.4.1"
@@ -65,7 +65,7 @@ kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore-version" }
 sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
-sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
+sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "sqlDelight" }
 decompose-base = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose_version" }
 decompose-extensions-compose = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose_version" }
 decompose-extensions-compose-experimental = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose-version-experimental" }

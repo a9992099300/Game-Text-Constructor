@@ -28,7 +28,7 @@ class EditBookConstructorComponentImpl(
     private val componentContext: ComponentContext,
     private val bookId: String,
     private val onBookEdit: () -> Unit,
-    private val onEditScenes: (book: BookUiModel) -> Unit,
+    private val onEditScenes: (book: String) -> Unit,
     override val onBack: () -> Unit,
 ) : ComponentContext by componentContext, EditBookConstructorComponent {
 
@@ -76,7 +76,7 @@ class EditBookConstructorComponentImpl(
     }
 
     override fun onEditScenes() {
-        onEditScenes.invoke(uiModel.value)
+        onEditScenes.invoke(uiModel.value.bookId)
     }
 
     override fun deleteBook() {

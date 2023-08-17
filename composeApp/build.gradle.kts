@@ -31,11 +31,11 @@ kotlin {
 
     jvm("desktop")
 
-    js {
-        //  IR
-        browser()
-        binaries.executable()
-    }
+//    js {
+//        //  IR
+//        browser()
+//        binaries.executable()
+//    }
 
     iosX64()
     iosArm64()
@@ -117,14 +117,17 @@ kotlin {
             }
         }
 
-        val jsMain by getting {
-            dependencies {
-                implementation(compose.html.core)
-                implementation(libs.sqlDelight.driver.sqljs)
-                implementation(libs.ktor.client.js)
-                implementation(libs.kstore.storage)
-            }
-        }
+//        val jsMain by getting {
+//            dependencies {
+//                implementation(compose.html.core)
+//                implementation(libs.sqlDelight.driver.sqljs)
+//                implementation(libs.ktor.client.js)
+//                implementation(libs.kstore.storage)
+//              //  implementation("app.cash.sqldelight:sqljs-driver:2.0.0")
+//                implementation(npm("sql.js", "1.6.2"))
+//                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+//            }
+//        }
 
         val iosMain by getting {
             dependencies {
@@ -190,7 +193,7 @@ libres {
 }
 tasks.getByPath("desktopProcessResources").dependsOn("libresGenerateResources")
 tasks.getByPath("desktopSourcesJar").dependsOn("libresGenerateResources")
-tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
+//tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
 
 buildConfig {
     // BuildConfig configuration here.
@@ -203,6 +206,7 @@ sqldelight {
             // Database configuration here.
             // https://cashapp.github.io/sqldelight
             packageName.set("com.a9992099300.gameTextConstructor.db")
+          //  generateAsync.set(true)
         }
     }
 }

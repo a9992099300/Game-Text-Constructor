@@ -1,7 +1,9 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.listBooks
 
+import com.a9992099300.gameTextConstructor.data.auth.services.log
 import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
+import com.a9992099300.gameTextConstructor.db.MyDatabase
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
 import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
@@ -10,6 +12,7 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -26,6 +29,8 @@ class ListBookConstructorComponentImpl(
 ): ComponentContext by componentContext, ListBookConstructorComponent {
 
     private val booksRepository: BooksRepository = Inject.instance()
+
+    private val database: MyDatabase = Inject.instance()
 
     override val stateUi: MutableStateFlow<StateUi<Unit>> =
         MutableStateFlow(StateUi.Initial)
@@ -55,7 +60,11 @@ class ListBookConstructorComponentImpl(
 //
 
     override fun getBooksList() {
+        val a =  database.authQueries.selectAll().executeAsList()
+        Napier.d(message = "list $a ", tag = log)
         booksListRetainedInstance.getBooksList()
+
+
     }
 
     override fun createNewBook() {

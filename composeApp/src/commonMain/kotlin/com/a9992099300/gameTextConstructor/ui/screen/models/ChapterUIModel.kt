@@ -1,10 +1,7 @@
 package com.a9992099300.gameTextConstructor.ui.screen.models
 
 import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
-import com.arkivanov.essenty.parcelable.Parcelize
 
-
-@Parcelize
 data class ChapterUIModel(
     val bookId: String = "",
     val chapterId: String = "",

@@ -9,9 +9,6 @@ import com.a9992099300.gameTextConstructor.logic.constructor.createScenes.Create
 import com.a9992099300.gameTextConstructor.logic.constructor.createScenes.CreateOrEditScenesComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.inventory.InventoryComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.inventory.InventoryComponentImpl
-import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
-import com.a9992099300.gameTextConstructor.ui.screen.models.ChapterUIModel
-import com.a9992099300.gameTextConstructor.ui.screen.models.SceneUIModel
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -24,7 +21,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 
 class RootBookConstructorComponentImpl(
     componentContext: ComponentContext,
-    private val book: BookUiModel,
+    private val book: String,
     private val popBack: () -> Unit
 ) : RootBookConstructorComponent, ComponentContext by componentContext {
 
@@ -39,10 +36,10 @@ class RootBookConstructorComponentImpl(
                 popBack.invoke()
             },
             onCreateChapter = {
-                navigation.push(Configuration.CreateOrEditChapter(ChapterUIModel()))
+                navigation.push(Configuration.CreateOrEditChapter(""))
             },
             onEditChapter = {
-                navigation.push(Configuration.CreateOrEditChapter(it))
+                navigation.push(Configuration.CreateOrEditChapter(it.chapterId))
             },
             onCreateScene = {
                 navigation.push(
@@ -54,7 +51,7 @@ class RootBookConstructorComponentImpl(
             onEditScene = {
                 navigation.push(
                     Configuration.CreateOrEditScene(
-                        model = it,
+                        sceneId = it.sceneId,
                         chapterId = it.chapterId
                     )
                 )
@@ -68,11 +65,11 @@ class RootBookConstructorComponentImpl(
 
     private fun createChapter(
         componentContext: ComponentContext,
-        model: ChapterUIModel
+        chapterId: String
     ): CreateOrEditChapterComponent =
         CreateOrEditChapterComponentImpl(
             componentContext = componentContext,
-            bookId = book.bookId,
+            bookId = book,
             onChapterEdited = {
                 navigation.pop {
                     (stack.value.active.instance as? RootBookConstructorComponent.Child.Book)
@@ -82,17 +79,17 @@ class RootBookConstructorComponentImpl(
             onBack = {
                 navigation.pop()
             },
-            editedChapterModel = model
+            editedChapterModel = chapterId
         )
 
     private fun createScene(
         componentContext: ComponentContext,
-        model: SceneUIModel,
+        sceneId: String,
         chapterId: String
     ): CreateOrEditScenesComponent =
         CreateOrEditScenesComponentImpl(
             componentContext = componentContext,
-            bookId = book.bookId,
+            bookId = book,
             chapterId = chapterId,
             onSceneEdited = {
                 navigation.pop {
@@ -103,7 +100,7 @@ class RootBookConstructorComponentImpl(
             onBack = {
                 navigation.pop()
             },
-            editeSceneModel = model
+            editeSceneModel = sceneId
         )
 
     private fun createInventory(
@@ -111,7 +108,7 @@ class RootBookConstructorComponentImpl(
     ): InventoryComponent =
         InventoryComponentImpl(
             componentContext = componentContext,
-            bookId = book.bookId,
+            bookId = book,
             inventoryRepository = Inject.instance(),
             onBack = {
                 navigation.pop()
@@ -138,11 +135,11 @@ class RootBookConstructorComponentImpl(
             )
 
             is Configuration.CreateOrEditChapter -> RootBookConstructorComponent.Child.CreateOrEditChapter(
-                createChapter(componentContext, configuration.model)
+                createChapter(componentContext, configuration.chapterId)
             )
 
             is Configuration.CreateOrEditScene -> RootBookConstructorComponent.Child.CreateOrEditScene(
-                createScene(componentContext, configuration.model, configuration.chapterId)
+                createScene(componentContext, configuration.sceneId, configuration.chapterId)
             )
             is Configuration.Inventory -> RootBookConstructorComponent.Child.Inventory(
                 createInventory(componentContext)
@@ -157,11 +154,11 @@ class RootBookConstructorComponentImpl(
         object Inventory : Configuration()
 
         @Parcelize
-        data class CreateOrEditChapter(val model: ChapterUIModel) : Configuration()
+        data class CreateOrEditChapter(val chapterId: String) : Configuration()
 
         @Parcelize
         data class CreateOrEditScene(
-            val model: SceneUIModel = SceneUIModel(),
+            val sceneId: String = "",
             val chapterId: String
         ) : Configuration()
     }

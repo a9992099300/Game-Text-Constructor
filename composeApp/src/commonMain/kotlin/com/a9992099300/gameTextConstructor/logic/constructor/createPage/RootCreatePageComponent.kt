@@ -1,18 +1,12 @@
-package com.a9992099300.gameTextConstructor.logic.constructor.createChapter
+package com.a9992099300.gameTextConstructor.logic.constructor.createPage
 
 import com.a9992099300.gameTextConstructor.logic.base.BaseComponent
 import com.a9992099300.gameTextConstructor.ui.screen.models.ChapterUIModel
 import kotlinx.coroutines.flow.StateFlow
 
-interface CreateOrEditChapterComponent: BaseComponent<Unit> {
+interface RootCreatePageComponent: BaseComponent<Unit> {
 
-    val chapterState: StateFlow<ChapterUIModel>
-
-    val editedChapterModel: String
-
-    val chapterIds: StateFlow<List<String>>
-
-    val snackBar: StateFlow<String>
+    val pageState: StateFlow<ChapterUIModel>
 
     fun changeTitle(title: String)
 
@@ -20,7 +14,7 @@ interface CreateOrEditChapterComponent: BaseComponent<Unit> {
 
     fun changeDescription(description: String)
 
-    fun addOrEditChapter()
+    fun addOrEditPage()
 
     fun resetError()
 
