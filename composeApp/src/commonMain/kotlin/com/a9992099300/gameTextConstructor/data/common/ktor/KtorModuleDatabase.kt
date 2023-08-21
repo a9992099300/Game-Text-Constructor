@@ -18,12 +18,43 @@ import org.kodein.di.singleton
 
 
 internal val ktorModuleDatabase = DI.Module("ktorModuleDatabase") {
+//    importOnce(databaseModule)
     bind<HttpClient>(tag = "database") with singleton {
         HttpClient(HttpEngineFactory().createEngine()) {
             install(Logging) {
                 logger = Logger.SIMPLE
                 level = LogLevel.ALL
             }
+
+//            install(Auth) {
+//                bearer {
+//                    // Load tokens ...
+//                    refreshTokens {
+//                        val database = instance<MyDatabase>()
+//                        val authData: List<AuthDb> = database.authQueries.selectAll().executeAsList()
+//                        val refreshTokenInfo: AuthRefreshBody = client.submitForm(
+//                            url = "https://securetoken.googleapis.com/v1/token?key=[${KEY_VALUE}]",
+//                            formParameters = parameters {
+//                                append("grant_type", "refresh_token")
+//                                //   append("client_id", System.getenv("GOOGLE_CLIENT_ID"))
+//                                append("refresh_token", authData.last().refresh_token ?: "")
+//                            }
+//                        ) { markAsRefreshTokenRequest() }.body()
+//                        database.authQueries.deletAll()
+//                        database.authQueries.insert(
+//                            refreshTokenInfo.idToken,
+//                            refreshTokenInfo.refreshToken,
+//                            "",
+//                            refreshTokenInfo.userId,
+//                            refreshTokenInfo.expiresIn
+//                        )
+//                        BearerTokens(
+//                            refreshTokenInfo.idToken,
+//                            refreshTokenInfo.refreshToken,
+//                        )
+//                    }
+//                }
+//            }
 
             install(DefaultRequest)
             install(ContentNegotiation) {
@@ -41,6 +72,9 @@ internal val ktorModuleDatabase = DI.Module("ktorModuleDatabase") {
             }
 
             defaultRequest {
+//                val database = instance<MyDatabase>()
+//                val authData2: List<AuthDb> = database.authQueries.selectAll().executeAsList()
+//                url.parameters.append(AUTH, authData2.last().access_token ?: "")
                 url("https://game-text-constructor-default-rtdb.europe-west1.firebasedatabase.app/")
                 header("Content-Type", "application/json; charset=UTF-8")
             }

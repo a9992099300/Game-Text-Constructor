@@ -1,0 +1,30 @@
+
+CREATE TABLE authDb
+(
+    access_token TEXT,
+    refresh_token TEXT,
+    email TEXT,
+    uid TEXT,
+    expiresIn TEXT
+);
+
+CREATE INDEX authDb_full ON authDb(uid);
+
+INSERT OR REPLACE INTO authDb (access_token, refresh_token, email, uid, expiresIn)
+VALUES (?, ? ,? ,? ,?);
+
+selectAll:
+SELECT *
+FROM authDb;
+
+deletAll:
+DELETE FROM authDb;
+
+insert:
+INSERT INTO authDb(access_token, refresh_token, email, uid, expiresIn)
+VALUES (?, ? ,? ,? ,?);
+
+selectByUser:
+SELECT *
+FROM authDb
+WHERE uid = ?;

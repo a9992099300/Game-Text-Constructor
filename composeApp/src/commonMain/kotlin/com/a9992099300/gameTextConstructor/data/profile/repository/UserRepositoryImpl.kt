@@ -12,7 +12,7 @@ import io.github.xxfast.kstore.KStore
 
 class UserRepositoryImpl(
     private val userService: UserService,
-    private val store: KStore<SavedAuth>
+    private val store: KStore<SavedAuth>,
 ) : UserRepository {
 
     override suspend fun updateUserInfo(name: String): Result<ProfileDataModel> =

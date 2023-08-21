@@ -120,7 +120,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(compose.html.core)
-                implementation(libs.sqlDelight.driver.sqljs)
+              //  implementation(libs.sqlDelight.driver.sqljs)
                 implementation(libs.ktor.client.js)
                 implementation(libs.kstore.storage)
             }
