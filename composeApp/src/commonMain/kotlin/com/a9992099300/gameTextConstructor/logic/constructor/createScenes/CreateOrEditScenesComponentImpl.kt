@@ -31,7 +31,7 @@ class CreateOrEditScenesComponentImpl(
     private val chapterId: String,
     private val onSceneEdited: () -> Unit,
     override val onBack: () -> Unit,
-    override val editeSceneModel: String
+    override val editeSceneModel: SceneUIModel
 ) : ComponentContext by componentContext, CreateOrEditScenesComponent {
 
     private val scenesRepository: ScenesRepository = Inject.instance()
@@ -39,9 +39,8 @@ class CreateOrEditScenesComponentImpl(
     override val stateUi: MutableStateFlow<StateUi<Unit>> = MutableStateFlow(Initial)
     override val sceneState: MutableStateFlow<SceneUIModel> =
         MutableStateFlow(
-            if (editeSceneModel.isNotBlank()) {
-                SceneUIModel()
-             //   editeSceneModel
+            if (editeSceneModel.sceneId.isNotBlank()) {
+                editeSceneModel
             } else {
                 SceneUIModel()
             }
@@ -92,7 +91,7 @@ class CreateOrEditScenesComponentImpl(
     }
 
     override fun addOrEditScene() {
-        if (editeSceneModel.isBlank()) {
+        if (editeSceneModel.sceneId.isBlank()) {
             createChapterRetainedInstance.addScene()
         } else {
             createChapterRetainedInstance.editScene()

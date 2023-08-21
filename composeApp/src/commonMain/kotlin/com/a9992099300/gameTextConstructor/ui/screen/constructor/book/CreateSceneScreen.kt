@@ -130,7 +130,7 @@ private fun EditSceneHeader(
 
         HeaderText(
             modifier = Modifier.padding(16.dp),
-            text = if (component.editeSceneModel.isNotBlank())
+            text = if (component.editeSceneModel.sceneId.isNotBlank())
                 MainRes.string.edit_scene else MainRes.string.add_scene
         )
 
@@ -168,7 +168,7 @@ private fun EditSceneHeader(
             contentDescription = FeatherIcons.Save.name,
             tint = Theme.colors.primaryAction,
         )
-        if (component.editeSceneModel.isNotBlank()) {
+        if (component.editeSceneModel.sceneId.isNotBlank()) {
             Icon(
                 modifier = Modifier
                     .padding(16.dp)

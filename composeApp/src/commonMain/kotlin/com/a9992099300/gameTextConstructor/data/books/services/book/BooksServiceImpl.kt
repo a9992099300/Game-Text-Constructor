@@ -4,7 +4,6 @@ import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel
 import com.a9992099300.gameTextConstructor.data.common.ktor.HttpClientWrapper
-import com.a9992099300.gameTextConstructor.data.common.ktor.UID
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -74,7 +73,6 @@ class BooksServiceImpl(
                 setBody(
                     model
                 )
-                url.parameters.append("auth", "eyJhbGciOiJSUzI1NiIsImtpZCI6IjYzODBlZjEyZjk1ZjkxNmNhZDdhNGNlMzg4ZDJjMmMzYzIzMDJmZGUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZ2FtZS10ZXh0LWNvbnN0cnVjdG9yIiwiYXVkIjoiZ2FtZS10ZXh0LWNvbnN0cnVjdG9yIiwiYXV0aF90aW1lIjoxNjkyMTk2Mjc2LCJ1c2VyX2lkIjoiYmVsSENvS2tyS1Bud2d6R044T040djU1eGowMiIsInN1YiI6ImJlbEhDb0trcktQbndnekdOOE9ONHY1NXhqMDIiLCJpYXQiOjE2OTIxOTYyNzYsImV4cCI6MTY5MjE5OTg3NiwiZW1haWwiOiJhOTk5MjA5OTMwMEB5YW5kZXgucnUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYTk5OTIwOTkzMDBAeWFuZGV4LnJ1Il19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.lVbcZim0lPTU2-ggUgy-u9iqsYEBnABQuVEIuZFVJ4Vk-lPrYSY3sPtz6BXx8AWBWQRLJHEqhs3DFcqr8AygG7BnW_U0yvAPttrOux9qd5VQEDyp8O62vmz5WkpF5M8d0AtzLxbKGdlZROqDt0n_l1qyrp9FDBDl1b5e5mRK8uDAn1YRlezhbS4Z9stst9MVxrp0HhU944K8qjTgqEEIGutd21pAptjDE1N5IYHup1ZanZkFTkBA2uEjWVVGq5JW0sb09-h6L14YJnAq7Eg5DbpO2w0u1lTaunZF-1aIJ7xjv0u2xGlNPlVxdepa77PNWJr2XtvZP1giewjTiDxARg")
             }
         }
 
@@ -106,7 +104,6 @@ class BooksServiceImpl(
     override suspend fun editBook(userId: String, model: BookDataModel) =
         httpClient.addToken.patch {
             url {
-                parameters.append(UID, userId)
                 path("users/${userId}/userBooks/${model.bookId}.json")
                 setBody(
                     model
@@ -176,12 +173,31 @@ class BooksServiceImpl(
         return chapters.toList()
     }
 
-//    override suspend fun getPages(
-//        userId: String,
-//        bookId: String,
-//        chapterId: String,
-//        sceneId: String
-//    ): List<PageDataModel>
+    override suspend fun getPages(
+        userId: String,
+        bookId: String,
+        chapterId: String,
+        sceneId: String
+    ): List<PageDataModel> {
+
+        val httpResponseAction: HttpResponse = httpClient.addToken.get {
+            url {
+                path("users/${userId}/userPages/books/${bookId}/chapters/${chapterId}/scenes/${sceneId}/page.json")
+            }
+        }
+        val pages: MutableList<PageDataModel> = mutableListOf()
+        val stringBody: String = httpResponseAction.body()
+        val jsonObject: JsonObject? = builderJson.decodeFromString(stringBody)
+
+        if (jsonObject != null) {
+            for (i in jsonObject) {
+                val page = builderJson.decodeFromString<PageDataModel?>(i.value.toString())
+                page?.let { pages.add(it) }
+            }
+        }
+
+        return pages.toList()
+    }
 
     override suspend fun deleteChapter(userId: String, bookId: String, chapterId: String): HttpResponse {
         httpClient.addToken.delete {

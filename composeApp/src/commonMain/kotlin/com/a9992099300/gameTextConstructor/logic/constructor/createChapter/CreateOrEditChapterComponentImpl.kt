@@ -30,16 +30,15 @@ class CreateOrEditChapterComponentImpl(
     private val bookId: String,
     private val onChapterEdited: () -> Unit,
     override val onBack: () -> Unit,
-    override val editedChapterModel: String
+    override val editedChapterModel: ChapterUIModel
 ) : ComponentContext by componentContext, CreateOrEditChapterComponent {
 
     private val booksRepository: BooksRepository = Inject.instance()
     override val stateUi: MutableStateFlow<StateUi<Unit>> = MutableStateFlow(Initial)
     override val chapterState: MutableStateFlow<ChapterUIModel> =
         MutableStateFlow(
-            if (editedChapterModel.isNotBlank()) {
-             //   editedChapterModel
-                ChapterUIModel()
+            if (editedChapterModel.chapterId.isNotBlank()) {
+                editedChapterModel
             } else {
                 ChapterUIModel()
             }
@@ -90,7 +89,7 @@ class CreateOrEditChapterComponentImpl(
     }
 
     override fun addOrEditChapter() {
-        if (editedChapterModel.isBlank()) {
+        if (editedChapterModel.chapterId.isBlank()) {
             createChapterRetainedInstance.addChapter()
         } else {
             createChapterRetainedInstance.editChapters()

@@ -68,5 +68,4 @@ internal val ktorModuleAuth = DI.Module("ktorModuleAuth") {
 }
 
 const val KEY = "key"
-const val UID = "uid"
 const val KEY_VALUE = "AIzaSyBSg1OrmYOuDpO6FqvLc_gPbQD9PwkGinw"

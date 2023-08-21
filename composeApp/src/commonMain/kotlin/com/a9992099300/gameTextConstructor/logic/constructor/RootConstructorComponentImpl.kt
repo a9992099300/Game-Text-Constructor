@@ -15,6 +15,7 @@ import com.a9992099300.gameTextConstructor.logic.constructor.profile.ProfileCons
 import com.a9992099300.gameTextConstructor.logic.constructor.profile.ProfileConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.rootBook.RootBookConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.rootBook.RootBookConstructorComponentImpl
+import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -110,7 +111,7 @@ class RootConstructorComponentImpl constructor(
 
     private fun createNewBook(): Unit = navigation.bringToFront(Configuration.CreateBook)
 
-    private fun openRootBook(book: String): Unit = navigation.bringToFront(Configuration.RootBook(bookId = book))
+    private fun openRootBook(book: BookUiModel): Unit = navigation.bringToFront(Configuration.RootBook(bookId = book))
 
     private fun editNewBook(bookId: String): Unit =
         navigation.bringToFront(Configuration.EditBook(bookId))
@@ -168,7 +169,7 @@ class RootConstructorComponentImpl constructor(
         object ListBooks : Configuration()
 
         @Parcelize
-        data class RootBook(val bookId: String) : Configuration()
+        data class RootBook(val bookId: BookUiModel) : Configuration()
 
         @Parcelize
         object CreateBook : Configuration()
