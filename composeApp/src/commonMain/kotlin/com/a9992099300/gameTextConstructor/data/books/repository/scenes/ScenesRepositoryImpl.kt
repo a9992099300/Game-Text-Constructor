@@ -24,10 +24,12 @@ class ScenesRepositoryImpl(
 
     override suspend fun addScene(model: SceneDataModel): Result<SceneDataModel>  = request {
             val userId = store.get()?.firstOrNull()?.localId
+            val token = store.get()?.firstOrNull()?.idToken ?: ""
             userId?.let {
                 scenesService.addScene(
                     userId = it,
-                    model = model
+                    model = model,
+                    token = token
                 )
             }
         }
@@ -41,8 +43,9 @@ class ScenesRepositoryImpl(
 
     override suspend fun deleteScene(bookId: String, chapterId: String, scendeId: String): Result<Unit> = request{
         val userId = store.get()?.firstOrNull()?.localId
+        val token = store.get()?.firstOrNull()?.idToken ?: ""
         userId.allowRequest{
-            scenesService.deleteScene(it, bookId, chapterId, scendeId)
+            scenesService.deleteScene(it, bookId, chapterId, scendeId, token)
         }
     }
 }

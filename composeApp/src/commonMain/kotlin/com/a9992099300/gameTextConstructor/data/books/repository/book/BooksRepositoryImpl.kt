@@ -38,6 +38,7 @@ class BooksRepositoryImpl(
 
     override suspend fun addBook(model: BookModel): Result<BookDataModel> = request {
         val userId = store.get()?.firstOrNull()?.localId
+        val token = store.get()?.firstOrNull()?.idToken
 
         val date = Clock.System.now().toEpochMilliseconds()
         val booksListSize = userId?.let { getBooksSize(it) } ?: "0"
@@ -54,15 +55,17 @@ class BooksRepositoryImpl(
                     imageUrl = "",
                     createdDate = date.toString(),
                     deletable = true
-                )
+                ),
+                token ?: ""
             )
         }
     }
 
     override suspend fun addChapter(model: ChapterDataModel) : Result<ChapterDataModel> = request {
         val userId = store.get()?.firstOrNull()?.localId
+        val token = store.get()?.firstOrNull()?.idToken
         userId?.let {
-            bookListBooksService.addChapter(it, model.bookId, model)
+            bookListBooksService.addChapter(it, model.bookId, model,token ?: "")
         }
     }
 
@@ -78,20 +81,24 @@ class BooksRepositoryImpl(
 
     override suspend fun editBook(model: BookDataModel): Result<BookDataModel> = request {
         val userId = store.get()?.firstOrNull()?.localId
+        val token = store.get()?.firstOrNull()?.idToken
         userId.allowRequest { userIdOwner ->
             bookListBooksService.addBook(
                 userId = userIdOwner,
-                model = model
+                model = model,
+                token = token ?: ""
             )
         }
     }
 
     override suspend fun deleteBook(bookId: String): Result<Unit> = request {
         val userId = store.get()?.firstOrNull()?.localId
+        val token = store.get()?.firstOrNull()?.idToken ?: ""
         userId.allowRequest { userIdOwner ->
             bookListBooksService.deleteBook(
                 userId = userIdOwner,
-                bookId = bookId
+                bookId = bookId,
+                token = token
             )
         }
     }
@@ -119,8 +126,10 @@ class BooksRepositoryImpl(
 
     override suspend fun deleteChapter(bookId: String, chapterId: String): Result<Unit> = request{
         val userId = store.get()?.firstOrNull()?.localId
+        val token = store.get()?.firstOrNull()?.idToken ?: ""
+
         userId.allowRequest{
-            bookListBooksService.deleteChapter(it, bookId, chapterId)
+            bookListBooksService.deleteChapter(it, bookId, chapterId, token)
         }
     }
 }

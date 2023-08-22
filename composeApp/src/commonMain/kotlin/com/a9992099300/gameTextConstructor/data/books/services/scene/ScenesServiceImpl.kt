@@ -1,6 +1,7 @@
 package com.a9992099300.gameTextConstructor.data.books.services.scene
 
 import com.a9992099300.gameTextConstructor.data.books.models.SceneDataModel
+import com.a9992099300.gameTextConstructor.data.common.ktor.AUTH
 import com.a9992099300.gameTextConstructor.data.common.ktor.HttpClientWrapper
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -24,10 +25,12 @@ class ScenesServiceImpl(
 
     override suspend fun addScene(
         userId: String,
-        model: SceneDataModel
+        model: SceneDataModel,
+        token: String
     ) = httpClient.addToken.patch {
         url {
             path("users/${userId}/userScenes/books/${model.bookId}/chapters/${model.chapterId}/scenes/${model.sceneId}.json")
+            url.parameters.append(AUTH, token)
             setBody(
                 model
             )
@@ -78,20 +81,23 @@ class ScenesServiceImpl(
         return scenes.toList()
     }
 
-    override suspend fun deleteScene(userId: String, bookId: String, chapterId: String, sceneId: String): HttpResponse {
+    override suspend fun deleteScene(userId: String, bookId: String, chapterId: String, sceneId: String, token: String): HttpResponse {
         httpClient.addToken.delete {
             url {
                 path("users/${userId}/userScenes/books/${bookId}/chapters/${chapterId}/scenes/${sceneId}.json")
+                url.parameters.append(AUTH, token)
             }
         }
         httpClient.addToken.delete {
             url {
                 path("users/${userId}/userChapters/books/${bookId}/chapters/${chapterId}/scenes/${sceneId}.json")
+                url.parameters.append(AUTH, token)
             }
         }
         return httpClient.addToken.delete {
             url {
                 path("users/${userId}/userPages/books/${bookId}/chapters/${chapterId}/scenes/${sceneId}.json")
+                url.parameters.append(AUTH, token)
             }
         }
     }

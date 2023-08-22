@@ -66,6 +66,7 @@
     <string name="delete_scene">Удалить выбранную сцену? Также будут удалены все страницы сцены</string>
     <string name="delete_inventory">Удалить выбранный предмет/характеристику?</string>
     <string name="yes">Да</string>
+    <string name="error_auth">Ошибка авторизации, попробуйте повторить запрос</string>
 
     <string name="def_quan_inventory">Значение по умолчанию ${number}</string>
     <plurals name="plural_string">
