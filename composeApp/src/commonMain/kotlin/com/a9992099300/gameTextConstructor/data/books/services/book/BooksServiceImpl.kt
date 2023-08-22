@@ -3,6 +3,7 @@ package com.a9992099300.gameTextConstructor.data.books.services.book
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
 import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel
+import com.a9992099300.gameTextConstructor.data.common.ktor.AUTH
 import com.a9992099300.gameTextConstructor.data.common.ktor.HttpClientWrapper
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -66,40 +67,48 @@ class BooksServiceImpl(
             }
         }
 
-    override suspend fun addBook(userId: String, model: BookDataModel) =
+    override suspend fun addBook(userId: String, model: BookDataModel, token: String) =
         httpClient.addToken.patch {
             url {
                 path("users/${userId}/userBooks/${model.bookId}.json")
+                url.parameters.append(AUTH, token)
                 setBody(
                     model
                 )
             }
         }
 
-    override suspend fun addChapter(userId: String, bookId: String, model: ChapterDataModel) =
+    override suspend fun addChapter(
+        userId: String,
+        bookId: String,
+        model: ChapterDataModel,
+        token: String
+    ) =
         httpClient.addToken.patch {
             url {
                 path("users/${userId}/userChapters/books/${bookId}/chapters/${model.chapterId}.json")
                 setBody(
                     model
                 )
+                url.parameters.append(AUTH, token)
             }
         }
 
-    override suspend fun addPage(
-        userId: String,
-        bookId: String,
-        chapterId: String,
-        sceneId: String,
-        model: PageDataModel
-    ) = httpClient.addToken.patch {
-        url {
-            path("users/${userId}/userPages/books/${bookId}/chapters/${chapterId}/scenes/${sceneId}/page/${model.pageId}.json")
-            setBody(
-                model
-            )
-        }
-    }
+//    override suspend fun addPage(
+//        userId: String,
+//        bookId: String,
+//        chapterId: String,
+//        sceneId: String,
+//        model: PageDataModel
+//    ) = httpClient.addToken.patch {
+//        url {
+//            path("users/${userId}/userPages/books/${bookId}/chapters/${chapterId}/scenes/${sceneId}/page/${model.pageId}.json")
+//            url.parameters.append(AUTH, token)
+//            setBody(
+//                model
+//            )
+//        }
+//    }
 
     override suspend fun editBook(userId: String, model: BookDataModel) =
         httpClient.addToken.patch {
@@ -111,25 +120,29 @@ class BooksServiceImpl(
             }
         }
 
-    override suspend fun deleteBook(userId: String, bookId: String): HttpResponse {
+    override suspend fun deleteBook(userId: String, bookId: String, token: String): HttpResponse {
         httpClient.addToken.delete {
             url {
                 path("users/${userId}/userBooks/${bookId}.json")
+                url.parameters.append(AUTH, token)
             }
         }
         httpClient.addToken.delete {
             url {
                 path("users/${userId}/userScenes/books/${bookId}/.json")
+                url.parameters.append(AUTH, token)
             }
         }
         httpClient.addToken.delete {
             url {
                 path("users/${userId}/userChapters/books/${bookId}/.json")
+                url.parameters.append(AUTH, token)
             }
         }
         return httpClient.addToken.delete {
             url {
                 path("users/${userId}/userPages/books/${bookId}/.json")
+                url.parameters.append(AUTH, token)
             }
         }
     }
@@ -199,20 +212,24 @@ class BooksServiceImpl(
         return pages.toList()
     }
 
-    override suspend fun deleteChapter(userId: String, bookId: String, chapterId: String): HttpResponse {
+    override suspend fun deleteChapter(userId: String, bookId: String, chapterId: String, token: String): HttpResponse {
         httpClient.addToken.delete {
             url {
                 path("users/${userId}/userScenes/books/${bookId}/chapters/${chapterId}.json")
+                url.parameters.append(AUTH, token)
             }
         }
         httpClient.addToken.delete {
             url {
                 path("users/${userId}/userChapters/books/${bookId}/chapters/${chapterId}.json")
+                url.parameters.append(AUTH, token)
+
             }
         }
         return httpClient.addToken.delete {
             url {
                 path("users/${userId}/userPages/books/${bookId}/chapters/${chapterId}.json")
+                url.parameters.append(AUTH, token)
             }
         }
     }

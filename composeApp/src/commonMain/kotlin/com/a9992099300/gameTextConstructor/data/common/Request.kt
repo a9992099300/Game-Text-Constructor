@@ -1,5 +1,6 @@
 package com.a9992099300.gameTextConstructor.data.common
 
+import com.a9992099300.gameTextConstructor.MainRes
 import com.a9992099300.gameTextConstructor.data.auth.services.log
 import io.github.aakira.napier.Napier
 import io.ktor.client.call.body
@@ -12,14 +13,17 @@ suspend inline fun <reified R> request(
     val result: HttpResponse?
     return try {
         result = request()
-        if ((200..207).contains(result?.status?.value) &&
-            result != null
-        ) {
-            Result.Success(result.body())
-        } else {
-            val stringBody: String? = result?.body()
-            val error = stringBody?.let { Json.decodeFromString<ErrorData>(it) }
-            Result.Error(Throwable(message = error?.error?.message ?: "Error"))
+
+        when {
+            ((200..207).contains(result?.status?.value) && result != null) -> {
+                Result.Success(result.body())
+            }
+            result?.status?.value == 401 ->  Result.Error(Throwable(message = MainRes.string.error_auth))
+            else -> {
+                val stringBody: String? = result?.body()
+                val error = stringBody?.let { Json.decodeFromString<ErrorData>(it) }
+                Result.Error(Throwable(message = error?.error?.message ?: "Error"))
+            }
         }
     } catch (e: Exception) {
         Napier.d("Exception ${e}", tag = log)

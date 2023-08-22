@@ -32,7 +32,7 @@ kotlin {
     jvm("desktop")
 
     js {
-        //  IR
+        IR
         browser()
         binaries.executable()
     }

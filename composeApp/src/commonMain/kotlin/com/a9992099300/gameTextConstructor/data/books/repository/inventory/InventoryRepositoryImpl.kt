@@ -21,13 +21,18 @@ class InventoryRepositoryImpl(
         userId?.let { inventoryService.getInventories(it,  bookId) }
     }
 
-    override suspend fun addInventory(bookId: String, model: InventoryDataModel): Result<InventoryDataModel>  = request {
+    override suspend fun addInventory(
+        bookId: String,
+        model: InventoryDataModel
+    ): Result<InventoryDataModel>  = request {
             val userId = store.get()?.firstOrNull()?.localId
+            val token = store.get()?.firstOrNull()?.idToken ?: ""
             userId?.let {
                 inventoryService.addInventory(
                     userId = it,
                     bookId = bookId,
-                    inventoryDataModel = model
+                    inventoryDataModel = model,
+                    token = token
                 )
             }
         }
@@ -41,8 +46,10 @@ class InventoryRepositoryImpl(
 
     override suspend fun deleteInventory(bookId: String, inventoryId: String): Result<Unit> = request{
         val userId = store.get()?.firstOrNull()?.localId
+        val token = store.get()?.firstOrNull()?.idToken ?: ""
+
         userId.allowRequest{
-            inventoryService.deleteInventory(it, bookId, inventoryId)
+            inventoryService.deleteInventory(it, bookId, inventoryId, token)
         }
     }
 }

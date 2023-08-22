@@ -15,8 +15,8 @@ inline fun <T>String.allowChangeValue(size: Int, allowSetValue: () -> Unit, erro
 }
 
 inline fun <T>String.allowChangeValueInt(size: Int, allowSetValue: (Int) -> Unit, errorSetValue: (StateUi<T>) -> Unit) {
-    if (this.length < size && this.toIntOrNull() != null || this.isEmpty()) {
-        allowSetValue(this.toInt())
+    if (this.length < size && this.toIntOrNull() != null || !this.isEmpty()) {
+        allowSetValue(this.toIntOrNull() ?: 0)
     } else {
         errorSetValue(
             StateUi.Error(MainRes.string.max_int.format(size.toString()))

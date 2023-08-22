@@ -12,21 +12,15 @@ interface BooksService{
 
      suspend fun getBook(userId: String, bookId: String) : HttpResponse
 
-     suspend fun addBook(userId: String, model: BookDataModel) : HttpResponse
-
-     suspend fun addChapter(userId: String, bookId: String, model: ChapterDataModel) : HttpResponse
-
-     suspend fun addPage(
-          userId: String,
-          bookId: String,
-          chapterId: String,
-          sceneId: String,
-          model: PageDataModel
+     suspend fun addBook(userId: String, model: BookDataModel
+                         ,token: String
      ) : HttpResponse
+
+     suspend fun addChapter(userId: String, bookId: String, model: ChapterDataModel, token: String) : HttpResponse
 
      suspend fun editBook(userId: String, model: BookDataModel) : HttpResponse
 
-     suspend fun deleteBook(userId: String, bookId: String): HttpResponse
+     suspend fun deleteBook(userId: String, bookId: String, token: String): HttpResponse
 
      suspend fun getChapters(userId: String, bookId: String): List<ChapterDataModel>
 
@@ -34,5 +28,5 @@ interface BooksService{
 
      suspend fun getChaptersId(userId: String, bookId: String): List<String>
 
-     suspend fun deleteChapter(userId: String, bookId: String, chapterId: String): HttpResponse
+     suspend fun deleteChapter(userId: String, bookId: String, chapterId: String, token: String): HttpResponse
 }

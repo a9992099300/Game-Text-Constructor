@@ -1,6 +1,7 @@
 package com.a9992099300.gameTextConstructor.data.books.services.inventary
 
 import com.a9992099300.gameTextConstructor.data.books.models.InventoryDataModel
+import com.a9992099300.gameTextConstructor.data.common.ktor.AUTH
 import com.a9992099300.gameTextConstructor.data.common.ktor.HttpClientWrapper
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -25,10 +26,12 @@ class InventoryServiceImpl(
     override suspend fun addInventory(
         userId: String,
         bookId: String,
-        inventoryDataModel: InventoryDataModel
+        inventoryDataModel: InventoryDataModel,
+        token: String
     ) = httpClient.addToken.patch {
         url {
             path("users/${userId}/userInventories/books/${bookId}/inventories/${inventoryDataModel.inventoryId}.json")
+            url.parameters.append(AUTH, token)
             setBody(
                 inventoryDataModel
             )
@@ -78,11 +81,13 @@ class InventoryServiceImpl(
     override suspend fun deleteInventory(
         userId: String,
         bookId: String,
-        inventoryId: String
+        inventoryId: String,
+        token: String
     ): HttpResponse  =
         httpClient.addToken.delete {
             url {
                 path("users/${userId}/userInventories/books/${bookId}/inventories/${inventoryId}.json")
+                url.parameters.append(AUTH, token)
             }
         }
 }
