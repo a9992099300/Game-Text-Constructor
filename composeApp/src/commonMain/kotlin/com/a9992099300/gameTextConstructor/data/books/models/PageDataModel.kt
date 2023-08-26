@@ -5,6 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PageDataModel(
+    @SerialName("bookId") val bookId: String,
+    @SerialName("chapterId") val chapterId: String,
+    @SerialName("sceneId") val sceneId: String,
     @SerialName("pageId") val pageId: String,
     @SerialName("title") val title: String,
     @SerialName("inputArguments") val inputArguments: List<Arg> = listOf(),
@@ -13,9 +16,12 @@ data class PageDataModel(
     @SerialName("addDescription") val addDescription: List<AddDescription> = listOf(),
     @SerialName("imageUrl") val imageUrl: String,
     @SerialName("deletable") val deletable: Boolean,
-    @SerialName("items") val items: List<ItemPage>,
+    @SerialName("items") val items: List<ItemPage> = listOf(),
 ) {
     fun mapToUI() = PageUIModel(
+        this.bookId,
+        this.chapterId,
+        this.sceneId,
         this.pageId,
         this.title,
         this.description,
@@ -23,31 +29,6 @@ data class PageDataModel(
         this.deletable,
         false
     )
-
-    companion object {
-        fun createEmptyPage(sceneId: String, pageNumber: Int = 1) =
-            PageDataModel(
-                pageId = "${sceneId}_$pageNumber",
-                title = "Страница $pageNumber",
-                inputArguments = listOf(),
-            //    outputArguments = listOf(),
-                description = "Описание страницы",
-                addDescription = listOf(),
-                imageUrl = "",
-                deletable = false,
-                listOf(
-                    ItemPage(
-                        action = listOf(
-                            ActionPage.Move(
-                                startDestination = "",
-                                endDestination = ""
-                            )
-                        ),
-                        block = listOf()
-                    )
-                )
-            )
-    }
 }
 
 @Serializable
@@ -56,7 +37,7 @@ data class ItemPage(
     @SerialName("description") val description: String = "Описание действия",
     @SerialName("block") val block: List<Condition> = listOf(),
     @SerialName("outputArguments") val outputArguments: List<Arg> = listOf(),
-    @SerialName("action") val action: List<ActionPage>
+    @SerialName("action") val action: List<ActionPage> = listOf()
 )
 
 @Serializable

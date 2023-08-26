@@ -1,6 +1,7 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.book
 
 import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
+import com.a9992099300.gameTextConstructor.data.books.repository.pages.PagesRepository
 import com.a9992099300.gameTextConstructor.data.books.repository.scenes.ScenesRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
@@ -29,11 +30,11 @@ class BookConstructorComponentImpl(
     private val onCreateScene: (String) -> (Unit),
     private val onEditScene: (SceneUIModel) -> (Unit),
     private val onOpenInventory: () -> (Unit),
+    private val onCreateOrEditPage: (String, String, String) -> Unit,
+    private val booksRepository: BooksRepository = Inject.instance(),
+    private val scenesRepository: ScenesRepository = Inject.instance(),
+    private val pagesRepository: PagesRepository = Inject.instance()
 ) : BookConstructorComponent, ComponentContext by componentContext {
-
-    private val booksRepository: BooksRepository = Inject.instance()
-
-    private val scenesRepository: ScenesRepository = Inject.instance()
 
     override val title: MutableStateFlow<String> = MutableStateFlow(book.title)
 
@@ -98,6 +99,34 @@ class BookConstructorComponentImpl(
             currentState.value.find { it.selected }?.chapterId?.let { this.onCreateScene(it) }
         } else {
             chapters.value = StateUi.Error(messageError = "Выберите главу чтобы создать сцену")
+        }
+    }
+
+    override fun onCreatePage() {
+        val currentState = scenes.value
+        if (currentState is StateUi.Success) {
+            currentState.value.find { it.selected }?.let {
+                this.onCreateOrEditPage(
+                it.chapterId,
+                it.sceneId,
+                ""
+            ) }
+        } else {
+            chapters.value = StateUi.Error(messageError = "Выберите сцену чтобы создать страницу")
+        }
+    }
+
+    override fun onEditPage(pageId: String) {
+        val currentState = scenes.value
+        if (currentState is StateUi.Success) {
+            currentState.value.find { it.selected }?.let {
+                this.onCreateOrEditPage(
+                    it.chapterId,
+                    it.sceneId,
+                    pageId
+                ) }
+        } else {
+            chapters.value = StateUi.Error(messageError = "Выберите сцену чтобы создать страницу")
         }
     }
 
@@ -172,7 +201,7 @@ class BookConstructorComponentImpl(
         fun loadPages(chapterId: String, sceneId: String) {
             pages.value = StateUi.Loading
             scope.launch {
-                val result = booksRepository.getPages(book.bookId, chapterId, sceneId)
+                val result = pagesRepository.getPages(book.bookId, chapterId, sceneId)
                 when (result) {
                     is Result.Success -> pages.value = StateUi.Success(
                         result.value.map {

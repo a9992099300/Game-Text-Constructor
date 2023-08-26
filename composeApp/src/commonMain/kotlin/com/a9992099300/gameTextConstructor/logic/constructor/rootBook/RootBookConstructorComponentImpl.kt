@@ -1,10 +1,14 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.rootBook
 
 import com.a9992099300.gameTextConstructor.di.Inject
+import com.a9992099300.gameTextConstructor.logic.constructor.action.CreateOrEditActionComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.action.CreateOrEditActionComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.book.BookConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateOrEditChapterComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.createChapter.CreateOrEditChapterComponentImpl
+import com.a9992099300.gameTextConstructor.logic.constructor.createPage.CreateOrEditPageComponent
+import com.a9992099300.gameTextConstructor.logic.constructor.createPage.CreateOrEditPageComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.createScenes.CreateOrEditScenesComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.createScenes.CreateOrEditScenesComponentImpl
 import com.a9992099300.gameTextConstructor.logic.constructor.inventory.InventoryComponent
@@ -29,7 +33,6 @@ class RootBookConstructorComponentImpl(
 ) : RootBookConstructorComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Configuration>()
-
 
     private fun book(componentContext: ComponentContext): BookConstructorComponent =
         BookConstructorComponentImpl(
@@ -56,6 +59,15 @@ class RootBookConstructorComponentImpl(
                     Configuration.CreateOrEditScene(
                         model = it,
                         chapterId = it.chapterId
+                    )
+                )
+            },
+            onCreateOrEditPage = { chapterId, sceneId, pageId ->
+                navigation.push(
+                    Configuration.CreateOrEditPage(
+                        chapterId = chapterId,
+                        sceneId = sceneId,
+                        pageId = pageId
                     )
                 )
             },
@@ -118,6 +130,44 @@ class RootBookConstructorComponentImpl(
             },
         )
 
+    private fun createPage(
+        componentContext: ComponentContext,
+        chapterId: String,
+        sceneId: String,
+        pageId: String,
+    ): CreateOrEditPageComponent =
+        CreateOrEditPageComponentImpl(
+            componentContext = componentContext,
+            bookId = book.bookId,
+            chapterId = chapterId,
+            sceneId = sceneId,
+            pageId = pageId,
+            onBack = {
+                navigation.pop()
+            },
+            onCreateAction = { id ->
+                navigation.push(Configuration.CreateOrEditAction(id))
+            },
+            onSaveChanged = {
+                navigation.pop {
+                    (stack.value.active.instance as? RootBookConstructorComponent.Child.Book)
+                        ?.component?.loadPages(sceneId)
+                }
+            }
+        )
+
+    private fun createAction(
+        componentContext: ComponentContext,
+        pageId: String
+    ): CreateOrEditActionComponent =
+        CreateOrEditActionComponentImpl(
+            componentContext = componentContext,
+            pageId = pageId,
+            onBack = {
+                navigation.pop()
+            }
+        )
+
     private val stack =
         childStack(
             source = navigation,
@@ -144,8 +194,22 @@ class RootBookConstructorComponentImpl(
             is Configuration.CreateOrEditScene -> RootBookConstructorComponent.Child.CreateOrEditScene(
                 createScene(componentContext, configuration.model, configuration.chapterId)
             )
+
             is Configuration.Inventory -> RootBookConstructorComponent.Child.Inventory(
                 createInventory(componentContext)
+            )
+
+            is Configuration.CreateOrEditPage -> RootBookConstructorComponent.Child.CreateOrEditPage(
+                createPage(
+                    componentContext,
+                    configuration.chapterId,
+                    configuration.sceneId,
+                    configuration.pageId
+                )
+            )
+
+            is Configuration.CreateOrEditAction -> RootBookConstructorComponent.Child.CreateOrEditAction(
+                createAction(componentContext, configuration.pageId)
             )
         }
 
@@ -163,6 +227,18 @@ class RootBookConstructorComponentImpl(
         data class CreateOrEditScene(
             val model: SceneUIModel = SceneUIModel(),
             val chapterId: String
+        ) : Configuration()
+
+        @Parcelize
+        data class CreateOrEditPage(
+            val chapterId: String,
+            val sceneId: String,
+            val pageId: String,
+        ) : Configuration()
+
+        @Parcelize
+        data class CreateOrEditAction(
+            val pageId: String
         ) : Configuration()
     }
 }

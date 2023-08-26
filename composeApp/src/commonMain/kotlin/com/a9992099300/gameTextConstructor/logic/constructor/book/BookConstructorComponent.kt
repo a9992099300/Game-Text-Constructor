@@ -38,6 +38,10 @@ interface BookConstructorComponent {
 
     fun onCreateScene()
 
+    fun onCreatePage()
+
+    fun onEditPage(pageId: String)
+
     fun onEditScene(scene: SceneUIModel)
 
     fun refresh()

@@ -50,20 +50,20 @@ fun ContentPageList(
                 ) {
                     items(
                         items = currentState.value ,
-                        key = { it.sceneId}
-                    ) { chapter ->
+                        key = { it.pageId}
+                    ) { page ->
                         CommonCard(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(120.dp)
                                 .clickable {
-                                  //  component.loadScenes(chapter.chapterId)
+                                    component.onEditPage(page.pageId)
                                 },
-                            title = chapter.title.ifBlank { MainRes.string.no_name },
-                            description = chapter.description,
-                            imageUrl = chapter.imageUrl,
+                            title = page.title.ifBlank { MainRes.string.no_name },
+                            description = page.description,
+                            imageUrl = page.imageUrl,
                             onEdit = {
-
+                                component.onEditPage(page.pageId)
                             }
                         )
                     }
@@ -74,7 +74,7 @@ fun ContentPageList(
                                     .fillMaxWidth()
                                     .height(120.dp)
                                     .clickable {
-                                    // component.createNewBook()
+                                     component.onCreatePage()
                                 },
                                 text = MainRes.string.add_page
                             )

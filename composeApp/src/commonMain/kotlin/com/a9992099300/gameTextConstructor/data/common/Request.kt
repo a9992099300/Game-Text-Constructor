@@ -18,7 +18,10 @@ suspend inline fun <reified R> request(
             ((200..207).contains(result?.status?.value) && result != null) -> {
                 Result.Success(result.body())
             }
-            result?.status?.value == 401 ->  Result.Error(Throwable(message = MainRes.string.error_auth))
+            result?.status?.value == 401 -> {
+               // request()
+                Result.Error(Throwable(message = MainRes.string.error_auth))
+            }
             else -> {
                 val stringBody: String? = result?.body()
                 val error = stringBody?.let { Json.decodeFromString<ErrorData>(it) }
