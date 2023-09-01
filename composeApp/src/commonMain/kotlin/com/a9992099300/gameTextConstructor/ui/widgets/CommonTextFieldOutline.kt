@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -45,8 +46,8 @@ fun CommonTextFieldOutline(
         trailingIcon = {
             trailingIcon.invoke()
         },
-        colors = androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Theme.colors.primaryTextColor,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Theme.colors.primaryTextColor,
             cursorColor = Theme.colors.primaryTextColor,
             focusedBorderColor = Theme.colors.primaryBackground,
         ),

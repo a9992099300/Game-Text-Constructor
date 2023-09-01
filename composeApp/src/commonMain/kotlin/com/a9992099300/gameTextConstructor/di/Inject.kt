@@ -3,6 +3,7 @@ package com.a9992099300.gameTextConstructor.di
 import com.a9992099300.gameTextConstructor.data.common.ktor.httpClientWrapperModule
 import com.a9992099300.gameTextConstructor.data.common.ktor.ktorModuleAuth
 import com.a9992099300.gameTextConstructor.data.common.ktor.ktorModuleDatabase
+import com.a9992099300.gameTextConstructor.di.book.actionModule
 import com.a9992099300.gameTextConstructor.di.book.bookModule
 import com.a9992099300.gameTextConstructor.di.book.pageModule
 import com.a9992099300.gameTextConstructor.di.book.sceneModule
@@ -41,6 +42,7 @@ object Inject {
                     bookModule,
                     sceneModule,
                     pageModule,
+                    actionModule,
                     inventoryModule,
                     ktorModuleAuth,
                     ktorModuleDatabase,

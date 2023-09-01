@@ -145,8 +145,15 @@ class RootBookConstructorComponentImpl(
             onBack = {
                 navigation.pop()
             },
-            onCreateAction = { id ->
-                navigation.push(Configuration.CreateOrEditAction(id))
+            openCreateAction = { actionId ->
+                navigation.push(
+                    Configuration.CreateOrEditAction(
+                        chapterId,
+                        sceneId,
+                        pageId,
+                        actionId
+                    )
+                )
             },
             onSaveChanged = {
                 navigation.pop {
@@ -158,13 +165,20 @@ class RootBookConstructorComponentImpl(
 
     private fun createAction(
         componentContext: ComponentContext,
-        pageId: String
+        chapterId: String,
+        sceneId: String,
+        pageId: String,
+        actionId: String
     ): CreateOrEditActionComponent =
         CreateOrEditActionComponentImpl(
             componentContext = componentContext,
+            bookId = book.bookId,
+            chapterId = chapterId,
+            sceneId = sceneId,
             pageId = pageId,
+            actionId = actionId,
             onBack = {
-                navigation.pop()
+                 navigation.pop()
             }
         )
 
@@ -209,7 +223,13 @@ class RootBookConstructorComponentImpl(
             )
 
             is Configuration.CreateOrEditAction -> RootBookConstructorComponent.Child.CreateOrEditAction(
-                createAction(componentContext, configuration.pageId)
+                createAction(
+                    componentContext,
+                    configuration.chapterId,
+                    configuration.sceneId,
+                    configuration.pageId,
+                    configuration.actionId
+                )
             )
         }
 
@@ -238,7 +258,10 @@ class RootBookConstructorComponentImpl(
 
         @Parcelize
         data class CreateOrEditAction(
-            val pageId: String
+            val chapterId: String,
+            val sceneId: String,
+            val pageId: String,
+            val actionId: String,
         ) : Configuration()
     }
 }

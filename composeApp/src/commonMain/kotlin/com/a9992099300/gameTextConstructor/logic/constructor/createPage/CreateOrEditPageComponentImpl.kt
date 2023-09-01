@@ -6,24 +6,28 @@ import com.a9992099300.gameTextConstructor.data.books.repository.pages.PagesRepo
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
-import com.a9992099300.gameTextConstructor.logic.common.StateUi.*
+import com.a9992099300.gameTextConstructor.logic.common.StateUi.Companion
+import com.a9992099300.gameTextConstructor.logic.common.StateUi.Error
+import com.a9992099300.gameTextConstructor.logic.common.StateUi.Initial
+import com.a9992099300.gameTextConstructor.logic.common.StateUi.Loading
+import com.a9992099300.gameTextConstructor.logic.common.StateUi.Success
+import com.a9992099300.gameTextConstructor.ui.screen.models.PageUIModel
+import com.a9992099300.gameTextConstructor.utils.allowChangeValue
+import com.a9992099300.gameTextConstructor.utils.getLastPartId
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlin.coroutines.CoroutineContext
-import com.a9992099300.gameTextConstructor.ui.screen.models.PageUIModel
-import com.a9992099300.gameTextConstructor.utils.allowChangeValue
-import com.a9992099300.gameTextConstructor.utils.getLastPartId
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class CreateOrEditPageComponentImpl(
     private val componentContext: ComponentContext,
@@ -33,7 +37,7 @@ class CreateOrEditPageComponentImpl(
     private val sceneId: String,
     private val pageId: String,
     override val onBack: () -> Unit,
-    private val onCreateAction: (String) -> Unit,
+    private val openCreateAction: (String) -> Unit,
     private val onSaveChanged: () -> Unit,
 ) : ComponentContext by componentContext, CreateOrEditPageComponent {
 
@@ -67,7 +71,7 @@ class CreateOrEditPageComponentImpl(
     }
 
     override fun onCreateAction() {
-        this.onCreateAction()
+        createPageViewModel.createAction()
     }
 
     override fun resetError() {
@@ -140,7 +144,7 @@ class CreateOrEditPageComponentImpl(
                     }
 
                     is Result.Error -> {
-                        Napier.d(message = "error ${result.error?.message}",  tag = log)
+                        Napier.d(message = "error ${result.error?.message}", tag = log)
                         stateUi.value = Error(result.error?.message ?: "")
                     }
                 }
@@ -163,6 +167,7 @@ class CreateOrEditPageComponentImpl(
                             uiPageModel.emit(result.value.mapToUI())
                         }
                     }
+
                     is Result.Error -> stateUi.emit(Error(result.error?.message ?: ""))
                 }
             }
@@ -206,7 +211,20 @@ class CreateOrEditPageComponentImpl(
             )
         }
 
-       fun resetError() {
+        fun createAction() {
+            scope.launch {
+                if (pageId.isBlank()) {
+                    stateUi.emit(Error(messageError = "Сначала нужно заполнить и сохранить основную информацию о книге"))
+                } else {
+                //    editPage()
+                    withContext(Dispatchers.Main) {
+                        openCreateAction("")
+                    }
+                }
+            }
+        }
+
+        fun resetError() {
             scope.launch {
                 stateUi.emit(Success(Unit))
             }

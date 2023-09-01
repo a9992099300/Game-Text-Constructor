@@ -34,9 +34,13 @@
     <string name="add_chapter">Добавить главу</string>
     <string name="add_scene">Добавить сцену</string>
     <string name="add_page">Добавить страницу</string>
+    <string name="description_action">Описание действие</string>
     <string name="title_page">Название страницы</string>
     <string name="description_page">Описание страницы</string>
     <string name="actions">Действия:</string>
+    <string name="action_move">Прямой переход</string>
+    <string name="action_random_move">Рандомной переход</string>
+    <string name="action_condition_move">Переход при условии</string>
     <string name="add_action">Добавить действие</string>
     <string name="error">Ошибка</string>
     <string name="chapters">Главы</string>

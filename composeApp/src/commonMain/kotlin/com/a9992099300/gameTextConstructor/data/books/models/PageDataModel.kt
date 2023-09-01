@@ -1,4 +1,7 @@
 package com.a9992099300.gameTextConstructor.data.books.models
+
+import com.a9992099300.gameTextConstructor.ui.screen.models.ActionTypeUI
+import com.a9992099300.gameTextConstructor.ui.screen.models.ItemPageUi
 import com.a9992099300.gameTextConstructor.ui.screen.models.PageUIModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -11,12 +14,12 @@ data class PageDataModel(
     @SerialName("pageId") val pageId: String,
     @SerialName("title") val title: String,
     @SerialName("inputArguments") val inputArguments: List<Arg> = listOf(),
-  //  @SerialName("outputArguments") val outputArguments: List<Arg> = listOf(),
+    //  @SerialName("outputArguments") val outputArguments: List<Arg> = listOf(),
     @SerialName("description") val description: String,
     @SerialName("addDescription") val addDescription: List<AddDescription> = listOf(),
     @SerialName("imageUrl") val imageUrl: String,
     @SerialName("deletable") val deletable: Boolean,
-    @SerialName("items") val items: List<ItemPage> = listOf(),
+    @SerialName("items") val items: ItemPage = ItemPage(),
 ) {
     fun mapToUI() = PageUIModel(
         this.bookId,
@@ -26,6 +29,7 @@ data class PageDataModel(
         this.title,
         this.description,
         this.imageUrl,
+        this.items.mapToUi(),
         this.deletable,
         false
     )
@@ -33,12 +37,20 @@ data class PageDataModel(
 
 @Serializable
 data class ItemPage(
-    @SerialName("id") val id: Int = 1,
+    @SerialName("id") val actionId: String = "",
     @SerialName("description") val description: String = "Описание действия",
     @SerialName("block") val block: List<Condition> = listOf(),
     @SerialName("outputArguments") val outputArguments: List<Arg> = listOf(),
-    @SerialName("action") val action: List<ActionPage> = listOf()
-)
+    @SerialName("action") val action: ActionPage = ActionPage.Move(
+        "", ""
+    )
+) {
+    fun mapToUi() = ItemPageUi(
+        actionId,
+        description,
+        action.mapToUi()
+    )
+}
 
 @Serializable
 data class AddDescription(
@@ -48,36 +60,72 @@ data class AddDescription(
 
 @Serializable
 sealed class ActionPage {
+
+    abstract fun mapToUi(): ActionTypeUI
+
     @Serializable
     data class Move(
         @SerialName("startDestination") val startDestination: String,
         @SerialName("endDestination") val endDestination: String,
-    ) : ActionPage()
+    ) : ActionPage() {
+        override fun mapToUi(): ActionTypeUI =
+            ActionTypeUI.Move(
+                startDestination = startDestination,
+                endDestination = endDestination,
+                selected = true
+            )
+    }
+
+    @Serializable
+    data class RandomMove(
+        @SerialName("startDestination") val startDestination: String,
+        @SerialName("endDestinations") val endDestinations: List<String>,
+    ) : ActionPage() {
+        override fun mapToUi(): ActionTypeUI =
+            ActionTypeUI.RandomMove(
+                startDestination = startDestination,
+                endDestinations = endDestinations,
+                selected = true
+            )
+    }
 
     @Serializable
     data class ConditionMove(
         @SerialName("conditionMark") val conditionMark: ConditionMark,
-        @SerialName("name") val name: String,
+        @SerialName("name") val nameThing: String,
         @SerialName("quantity") val quantity: Int,
         @SerialName("startDestination") val startDestination: String,
-        @SerialName("endDestination") val endDestination: String,
-    ) : ActionPage()
+        @SerialName("endDestinationIf") val endDestinationIf: String,
+        @SerialName("endDestinationElse") val endDestinationElse: String,
+    ) : ActionPage() {
+        override fun mapToUi(): ActionTypeUI =
+            ActionTypeUI.ConditionMove(
+                conditionMark = conditionMark,
+                nameThing = nameThing,
+                quantity = quantity,
+                startDestination = startDestination,
+                endDestinationIf = endDestinationIf,
+                endDestinationElse = endDestinationElse,
+                selected = true
+            )
+    }
 
-    @Serializable
-    data class EditInventory(
-        @SerialName("subject") val argument: Arg,
-        @SerialName("action") val action: Action,
-       // @SerialName("quantity") val quantity: Int,
-      //  @SerialName("conditions") val conditions: List<Condition> = listOf(),
-    ) : ActionPage()
+//    @Serializable
+//    data class EditInventory(
+//        @SerialName("subject") val argument: Arg,
+//        @SerialName("action") val action: Action,
+//       // @SerialName("quantity") val quantity: Int,
+//      //  @SerialName("conditions") val conditions: List<Condition> = listOf(),
+//    ) : ActionPage()
+//
+//    @Serializable
+//    data class EditAchievement(
+//        @SerialName("achievement") val argument: Arg,
+//        @SerialName("action") val action: Action,
+//     //   @SerialName("quantity") val quantity: Int,
+//     //   @SerialName("conditions") val conditions: List<Condition> = listOf(),
+//    ) : ActionPage()
 
-    @Serializable
-    data class EditAchievement(
-        @SerialName("achievement") val argument: Arg,
-        @SerialName("action") val action: Action,
-     //   @SerialName("quantity") val quantity: Int,
-     //   @SerialName("conditions") val conditions: List<Condition> = listOf(),
-    ) : ActionPage()
 
 }
 
@@ -96,7 +144,6 @@ data class Condition(
 )
 
 
-
 //interface arg
 //
 //@Serializable
@@ -109,20 +156,20 @@ data class Condition(
 //) : arg
 
 
- sealed interface Arg {
-     @Serializable
-     data class ArgumentExactly(
-         @SerialName("name") val name: String,
-         @SerialName("quantity") val quantity: Int,
-     ) : Arg
+sealed interface Arg {
+    @Serializable
+    data class ArgumentExactly(
+        @SerialName("name") val name: String,
+        @SerialName("quantity") val quantity: Int,
+    ) : Arg
 
-     @Serializable
-     data class ArgumentRandom(
-         @SerialName("name") val name: String,
-         @SerialName("lowQuantity") val lowQuantity: Int,
-         @SerialName("highQuantity") val highQuantity: Int,
-     ) : Arg
- }
+    @Serializable
+    data class ArgumentRandom(
+        @SerialName("name") val name: String,
+        @SerialName("lowQuantity") val lowQuantity: Int,
+        @SerialName("highQuantity") val highQuantity: Int,
+    ) : Arg
+}
 
 
 @Serializable

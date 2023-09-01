@@ -182,7 +182,7 @@ fun Actions(component: CreateOrEditPageComponent) {
 
         items(
             items = uiAction,
-            key = { it.id }
+            key = { it.actionId }
         ) { itemPage ->
             CommonCard(
                 modifier = Modifier
