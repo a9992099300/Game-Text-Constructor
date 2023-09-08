@@ -79,21 +79,30 @@ sealed class ActionTypeUI {
     abstract val title: String
 
     data class Move(
-        override val title: String = MainRes.string.add_action,
+        override val title: String = MainRes.string.action_move,
         val startDestination: String = "",
-        val endDestination: String = "",
+        val endDestination:  List<ItemNavigation> = listOf(),
         override val selected: Boolean = false,
     ) : ActionTypeUI() {
         override fun mapToData(): ActionPage =
             ActionPage.Move(
                 startDestination = startDestination,
-                endDestination = endDestination
+                endDestination = "endDestination"
             )
     }
 
+    data class ItemNavigation(
+        val chapterId: String,
+        val chapterTitle: String,
+        val sceneId: String,
+        val sceneTitle: String,
+        val pageID: String,
+        val pageTitle: String,
+    )
+
 
     data class RandomMove(
-        override val title: String = MainRes.string.add_action,
+        override val title: String = MainRes.string.action_random_move,
         val startDestination: String = "",
         val endDestinations: List<String> = listOf(),
         override val selected: Boolean = false,
@@ -107,7 +116,7 @@ sealed class ActionTypeUI {
 
 
     data class ConditionMove(
-        override val title: String = MainRes.string.add_action,
+        override val title: String = MainRes.string.action_condition_move,
         val conditionMark: ConditionMark = ConditionMark.NOT_USE,
         val nameThing: String = "",
         val quantity: Int = 0,

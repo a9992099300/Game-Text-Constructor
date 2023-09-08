@@ -71,7 +71,7 @@ sealed class ActionPage {
         override fun mapToUi(): ActionTypeUI =
             ActionTypeUI.Move(
                 startDestination = startDestination,
-                endDestination = endDestination,
+                endDestination = listOf(),
                 selected = true
             )
     }

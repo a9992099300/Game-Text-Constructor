@@ -142,11 +142,11 @@ kotlin {
 android {
 
     namespace = "com.a9992099300.gameTextConstructor"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
 
         applicationId = "com.a9992099300.gameTextConstructor.androidApp"
         versionCode = 1

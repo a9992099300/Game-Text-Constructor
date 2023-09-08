@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,10 +14,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -40,6 +44,8 @@ import com.a9992099300.gameTextConstructor.ui.screen.models.ActionTypeUI
 import com.a9992099300.gameTextConstructor.ui.screen.models.TypeInventory
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonDialog
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonSnackBar
+import com.a9992099300.gameTextConstructor.ui.widgets.CommonText
+import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextClickable
 import com.a9992099300.gameTextConstructor.ui.widgets.CommonTextFieldOutline
 import com.a9992099300.gameTextConstructor.ui.widgets.HeaderText
 import compose.icons.FeatherIcons
@@ -114,7 +120,7 @@ fun HeadAction(
                 .padding(16.dp)
                 .size(24.dp)
                 .clickable {
-                  //  component.savePage()
+                    //  component.savePage()
                 },
             imageVector = FeatherIcons.Save,
             contentDescription = FeatherIcons.Save.name,
@@ -147,7 +153,7 @@ fun CreateActionContent(
         text = uiItemPageModel.description,
         hint = MainRes.string.description_page,
         onValueChanged = {
-          //  component.changeTitle(it)
+            //  component.changeTitle(it)
         },
     )
 
@@ -158,11 +164,81 @@ fun CreateActionContent(
     })
 
 
+
+}
+
+@Composable
+fun ItemNavigation() {
+
+    androidx.compose.material.Card(
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = MaterialTheme.colors.surface,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(8.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ItemChoose(MainRes.string.chapter, "aasa1211221", "Выберите главу") {
+
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ItemChoose(MainRes.string.scene, "aasa1211221", "Выберите сцены") {
+
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ItemChoose(MainRes.string.page, "aasa1211221", "Выберите страницу") {
+
+                }
+            }
+
+        }
+    }
+}
+
+
+@Composable
+fun ItemChoose(title: String, id: String, value: String, onClick: () -> Unit) {
+    CommonText(title)
+    Divider(modifier = Modifier.padding(0.dp, 4.dp))
+    CommonTextClickable(
+        value,
+        modifier = Modifier
+            .defaultMinSize(150.dp)
+    ) {
+        onClick()
+    }
+
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ActionType(component: CreateOrEditActionComponent, onClickCategory:(TypeInventory) -> Unit) {
+fun ActionType(component: CreateOrEditActionComponent, onClickCategory: (TypeInventory) -> Unit) {
     val stateType by component.actionType.collectAsState()
 
     Column {
@@ -173,7 +249,7 @@ fun ActionType(component: CreateOrEditActionComponent, onClickCategory:(TypeInve
             horizontalArrangement = Arrangement.Start,
         ) {
             stateType.forEach {
-                ActionFilterChip(it,onClickCategory)
+                ActionFilterChip(it, onClickCategory)
             }
         }
     }
@@ -186,7 +262,7 @@ fun ActionFilterChip(actionTypeUI: ActionTypeUI, onClick: (TypeInventory) -> Uni
         modifier = Modifier.padding(4.dp),
         selected = actionTypeUI.selected,
         onClick = {
-           // onClick.invoke(categoryUiModel.typeInventory)
+            // onClick.invoke(categoryUiModel.typeInventory)
         },
         label = { Text(actionTypeUI.title) },
         colors = FilterChipDefaults.filterChipColors(

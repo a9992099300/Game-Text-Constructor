@@ -45,6 +45,7 @@ class RootComponentImpl constructor(
                     output.onNext(LogInComponent.Login.Main)
                 },
                 openRootConstructor = {
+                  //  navigation.push(Configuration.Main)
                     output.onNext(LogInComponent.Login.RootConstructor)
                 }
             )

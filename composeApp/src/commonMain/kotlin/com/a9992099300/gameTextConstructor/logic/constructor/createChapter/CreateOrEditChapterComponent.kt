@@ -8,7 +8,7 @@ interface CreateOrEditChapterComponent: BaseComponent<Unit> {
 
     val chapterState: StateFlow<ChapterUIModel>
 
-    val editedChapterModel: ChapterUIModel
+    val editedChapterModel: String
 
     val chapterIds: StateFlow<List<String>>
 

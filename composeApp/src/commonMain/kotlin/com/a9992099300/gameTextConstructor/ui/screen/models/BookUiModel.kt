@@ -1,10 +1,8 @@
 package com.a9992099300.gameTextConstructor.ui.screen.models
 
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
-import com.arkivanov.essenty.parcelable.Parcelize
 
 
-@Parcelize
 data class BookUiModel(
     val bookId: String ="",
     val userIdOwner: String ="",

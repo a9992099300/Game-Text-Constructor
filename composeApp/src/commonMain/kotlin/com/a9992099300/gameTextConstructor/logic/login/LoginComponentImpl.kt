@@ -21,12 +21,13 @@ class LoginComponentImpl(
     private val registrationClicked: () -> Unit,
     private val openMain: () -> Unit,
     private val openRootConstructor: () -> Unit,
-) : ComponentContext by componentContext, LogInComponent {
     private val authRepository: AuthRepository = instance()
+) : ComponentContext by componentContext, LogInComponent {
 
     override val onBack: () -> Unit = {
 
     }
+
     override val stateUi: MutableStateFlow<StateUi<Unit>> =
         MutableStateFlow(StateUi.Initial)
 
@@ -34,8 +35,8 @@ class LoginComponentImpl(
 
     override val password = MutableStateFlow(Pair("", true))
 
-    private val signInRetainedInstance =
-        instanceKeeper.getOrCreate { SignInRetainedInstance(Dispatchers.Default) }
+    private val signInViewModel =
+        instanceKeeper.getOrCreate { SignInViewModel(Dispatchers.Default) }
 
     override fun onLoginChanged(login: String) {
         this.login.value = login
@@ -51,14 +52,14 @@ class LoginComponentImpl(
 
     override fun onSignInClick() {
         this.stateUi.value = StateUi.Loading
-        signInRetainedInstance.signIn()
+        signInViewModel.signIn()
     }
 
     override fun onRegistrationClick() {
         registrationClicked()
     }
 
-    inner class SignInRetainedInstance(mainContext: CoroutineContext) : InstanceKeeper.Instance {
+    inner class SignInViewModel(mainContext: CoroutineContext) : InstanceKeeper.Instance {
         // The scope survives Android configuration changes
         private val scope = CoroutineScope(mainContext + SupervisorJob())
 

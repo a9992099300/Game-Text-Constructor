@@ -12,14 +12,4 @@ actual fun CommonDialog(
     onCanceled: () -> Unit,
     ) {
 
- //  val openDialog = remember { mutableStateOf(true) }
-//
-//    Dialog(onDismissRequest = {
-//        openDialog.value = false
-//    }) {
-//        Card {
-//
-//
-//        }
-//    }
 }

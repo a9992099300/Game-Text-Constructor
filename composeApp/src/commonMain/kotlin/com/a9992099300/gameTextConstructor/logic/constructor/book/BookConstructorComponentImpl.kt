@@ -6,7 +6,6 @@ import com.a9992099300.gameTextConstructor.data.books.repository.scenes.ScenesRe
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
-import com.a9992099300.gameTextConstructor.ui.screen.models.BookUiModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.ChapterUIModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.PageUIModel
 import com.a9992099300.gameTextConstructor.ui.screen.models.SceneUIModel
@@ -23,12 +22,12 @@ import kotlin.coroutines.CoroutineContext
 
 class BookConstructorComponentImpl(
     componentContext: ComponentContext,
-    private val book: BookUiModel,
+    private val bookId: String,
     private val popBack: () -> (Unit),
     private val onCreateChapter: () -> (Unit),
-    private val onEditChapter: (ChapterUIModel) -> (Unit),
+    private val onEditChapter: (String) -> (Unit),
     private val onCreateScene: (String) -> (Unit),
-    private val onEditScene: (SceneUIModel) -> (Unit),
+    private val onEditScene: (String) -> (Unit),
     private val onOpenInventory: () -> (Unit),
     private val onCreateOrEditPage: (String, String, String) -> Unit,
     private val booksRepository: BooksRepository = Inject.instance(),
@@ -36,7 +35,7 @@ class BookConstructorComponentImpl(
     private val pagesRepository: PagesRepository = Inject.instance()
 ) : BookConstructorComponent, ComponentContext by componentContext {
 
-    override val title: MutableStateFlow<String> = MutableStateFlow(book.title)
+    override val title: MutableStateFlow<String> = MutableStateFlow(bookId)
 
     override val chapters: MutableStateFlow<StateUi<List<ChapterUIModel>>> =
         MutableStateFlow(StateUi.Initial)
@@ -90,7 +89,7 @@ class BookConstructorComponentImpl(
     }
 
     override fun onEditChapter(chapter: ChapterUIModel) {
-        this.onEditChapter.invoke(chapter)
+        this.onEditChapter.invoke(chapter.chapterId)
     }
 
     override fun onCreateScene() {
@@ -131,7 +130,7 @@ class BookConstructorComponentImpl(
     }
 
     override fun onEditScene(scene: SceneUIModel) {
-        this.onEditScene.invoke(scene)
+        this.onEditScene.invoke(scene.sceneId)
     }
 
     override fun refresh() {
@@ -165,7 +164,7 @@ class BookConstructorComponentImpl(
         fun loadChapters() {
             chapters.value = StateUi.Loading
             scope.launch {
-                val result = booksRepository.getChapters(book.bookId)
+                val result = booksRepository.getChapters(bookId)
                 when (result) {
                     is Result.Success -> chapters.value = StateUi.Success(
                         result.value.map {
@@ -183,7 +182,7 @@ class BookConstructorComponentImpl(
         fun loadScenes(chapterId: String) {
             scenes.value = StateUi.Loading
             scope.launch {
-                val result = scenesRepository.getScenes(book.bookId, chapterId)
+                val result = scenesRepository.getScenes(bookId, chapterId)
                 when (result) {
                     is Result.Success -> scenes.value = StateUi.Success(
                         result.value.map {
@@ -201,7 +200,7 @@ class BookConstructorComponentImpl(
         fun loadPages(chapterId: String, sceneId: String) {
             pages.value = StateUi.Loading
             scope.launch {
-                val result = pagesRepository.getPages(book.bookId, chapterId, sceneId)
+                val result = pagesRepository.getPages(bookId, chapterId, sceneId)
                 when (result) {
                     is Result.Success -> pages.value = StateUi.Success(
                         result.value.map {

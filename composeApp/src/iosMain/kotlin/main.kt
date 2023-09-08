@@ -22,6 +22,7 @@ import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.LocalImageLoader
 import com.seiko.imageloader.cache.memory.maxSizePercent
 import com.seiko.imageloader.component.setupDefaultComponents
+import kotlinx.cinterop.ExperimentalForeignApi
 import okio.Path.Companion.toPath
 import platform.Foundation.NSCachesDirectory
 import platform.Foundation.NSFileManager
@@ -94,6 +95,7 @@ private fun generateImageLoader(): ImageLoader {
     }
 }
 
+@OptIn(ExperimentalForeignApi::class)
 private fun getCacheDir(): String {
     return NSFileManager.defaultManager.URLForDirectory(
         NSCachesDirectory,

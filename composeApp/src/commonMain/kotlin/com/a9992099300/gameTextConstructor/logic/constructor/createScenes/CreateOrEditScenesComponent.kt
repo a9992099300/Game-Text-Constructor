@@ -8,7 +8,7 @@ interface CreateOrEditScenesComponent: BaseComponent<Unit> {
 
     val sceneState: StateFlow<SceneUIModel>
 
-    val editeSceneModel: SceneUIModel
+    val editeSceneModel: String
 
     val scenesIds: StateFlow<List<String>>
 

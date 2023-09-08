@@ -66,6 +66,9 @@
     <string name="inventory_def_quantity">Количество по умолчанию</string>
     <string name="inventory_description">Описание предмета/характеристики</string>
     <string name="chapter_number_v">Глава ${number}</string>
+    <string name="chapter">Глава</string>
+    <string name="scene">Сцена</string>
+    <string name="page">Страница</string>
     <string name="error_duplicate_inventory">Предмет/характеристика с таким именем уже существует!</string>
     <string name="add_inventory">Добавить предмет/характеристику</string>
     <string name="edit_inventory_1">Редактирование предмета/характеристики</string>
