@@ -1,5 +1,8 @@
 package com.a9992099300.gameTextConstructor.logic.root
 
+import com.a9992099300.gameTextConstructor.di.Inject
+import com.a9992099300.gameTextConstructor.di.Platform
+import com.a9992099300.gameTextConstructor.di.PlatformConfiguration
 import com.a9992099300.gameTextConstructor.logic.constructor.RootConstructorComponent
 import com.a9992099300.gameTextConstructor.logic.constructor.RootConstructorComponentImpl
 import com.a9992099300.gameTextConstructor.logic.login.LogInComponent
@@ -30,6 +33,7 @@ class RootComponentImpl constructor(
     private val splash: (ComponentContext, Consumer<SplashComponent.Splash>) -> SplashComponent,
     private val constructor: (ComponentContext, Consumer<MainComponent.Main>) -> RootConstructorComponent,
     private val registration: (ComponentContext, Consumer<RegistrationComponent.Registration>) -> RegistrationComponent,
+    private val platformConfiguration: PlatformConfiguration = Inject.instance()
 ) : RootComponent, ComponentContext by componentContext {
     constructor(
         componentContext: ComponentContext,
@@ -52,7 +56,10 @@ class RootComponentImpl constructor(
         },
         main = { childContext, output ->
             MainComponentImpl(
-                componentContext = childContext
+                componentContext = childContext,
+                onBack = {
+
+                }
             )
         },
         splash = { childContext, output ->
@@ -127,14 +134,25 @@ class RootComponentImpl constructor(
     private fun loginSuccess(output: LogInComponent.Login): Unit =
         when (output) {
             is LogInComponent.Login.Main -> navigation.push(Configuration.Main)
-            is LogInComponent.Login.RootConstructor -> navigation.replaceCurrent(Configuration.RootConstructor)
+            is LogInComponent.Login.RootConstructor ->
+                if (platformConfiguration.getName() == Platform.DESKTOP) {
+                    navigation.replaceCurrent(Configuration.RootConstructor)
+                } else {
+                    navigation.replaceCurrent(Configuration.Main)
+                }
             is LogInComponent.Login.Registration -> navigation.push(Configuration.Registration)
         }
 
     private fun splashFinished(output: SplashComponent.Splash): Unit =
         when (output) {
             is SplashComponent.Splash.Login -> navigation.replaceCurrent(Configuration.Login)
-            is SplashComponent.Splash.Main -> navigation.replaceCurrent(Configuration.RootConstructor)
+            is SplashComponent.Splash.Main -> {
+                if (platformConfiguration.getName() == Platform.DESKTOP) {
+                    navigation.replaceCurrent(Configuration.RootConstructor)
+                } else {
+                    navigation.replaceCurrent(Configuration.Main)
+                }
+            }
         }
 
     private fun <T> exit(output: T): Unit =
