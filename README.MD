@@ -11,8 +11,9 @@ Application for create books in desktop and view in mobile devices.
 - firebase api
 
 ## Screenshots:
-![Alt text]https://github.com/a9992099300/Game-Text-Constructor/blob/master/screenshots/Simulator%20Screenshot%20-%20iPhone%2014%20-%202023-09-23%20at%2021.32.12.png?raw=true
-![Alt text]https://github.com/a9992099300/Game-Text-Constructor/blob/master/screenshots/Снимок%20экрана%202023-09-23%20в%2021.27.01.png?raw=true
+![Screenshot](screenshots/Desctop.png)
+![Screenshot](screenshots/Simulator.png)
+
 
 ## Before running!
  - check your system with [KDoctor](https://github.com/Kotlin/kdoctor)
