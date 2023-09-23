@@ -1,5 +1,19 @@
 # Compose Multiplatform Application
 
+Application for create books in desktop and view in mobile devices.
+
+## Libs:
+- ktor
+- kotlinx-serializatio
+- decompose
+- kodein
+- kstore
+- firebase api
+
+## Screenshots:
+![](screenshots/Снимок экрана 2023-09-23 в 21.27.01.png)
+![](screenshots/Simulator Screenshot - iPhone 14 - 2023-09-23 at 21.32.12.png)
+
 ## Before running!
  - check your system with [KDoctor](https://github.com/Kotlin/kdoctor)
  - install JDK 8 on your machine

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class MainComponentImpl(
     componentContext: ComponentContext,
     override val onBack: () -> Unit,
+    val listBooksOpen: () -> Unit,
 ) : ComponentContext by componentContext, MainComponent {
 
     override val stateUi: MutableStateFlow<StateUi<Unit>> =

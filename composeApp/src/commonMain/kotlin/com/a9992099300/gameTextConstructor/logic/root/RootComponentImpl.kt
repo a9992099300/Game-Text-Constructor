@@ -59,6 +59,9 @@ class RootComponentImpl constructor(
                 componentContext = childContext,
                 onBack = {
 
+                },
+                listBooksOpen = {
+
                 }
             )
         },
