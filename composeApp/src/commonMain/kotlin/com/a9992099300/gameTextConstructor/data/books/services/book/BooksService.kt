@@ -1,8 +1,6 @@
 package com.a9992099300.gameTextConstructor.data.books.services.book
 
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel
 import io.ktor.client.statement.HttpResponse
 
 interface BooksService{
@@ -16,17 +14,7 @@ interface BooksService{
                          ,token: String
      ) : HttpResponse
 
-     suspend fun addChapter(userId: String, bookId: String, model: ChapterDataModel, token: String) : HttpResponse
-
      suspend fun editBook(userId: String, model: BookDataModel) : HttpResponse
 
      suspend fun deleteBook(userId: String, bookId: String, token: String): HttpResponse
-
-     suspend fun getChapters(userId: String, bookId: String): List<ChapterDataModel>
-
-     suspend fun getPages(userId: String, bookId: String, chapterId: String, sceneId: String) : List<PageDataModel>
-
-     suspend fun getChaptersId(userId: String, bookId: String): List<String>
-
-     suspend fun deleteChapter(userId: String, bookId: String, chapterId: String, token: String): HttpResponse
 }

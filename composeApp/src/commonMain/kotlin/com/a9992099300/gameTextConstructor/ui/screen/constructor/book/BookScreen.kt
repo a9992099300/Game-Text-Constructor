@@ -106,7 +106,7 @@ fun BookHeader(
         ) {
 
             HeaderText(
-                text = title,
+                text = "Название книги",
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
 

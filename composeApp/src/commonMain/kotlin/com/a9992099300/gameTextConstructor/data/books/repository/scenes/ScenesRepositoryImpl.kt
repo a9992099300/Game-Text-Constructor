@@ -34,6 +34,15 @@ class ScenesRepositoryImpl(
             }
         }
 
+    override suspend fun getScene(
+        bookId: String,
+        chapterId: String,
+        sceneId: String
+    ): Result<SceneDataModel> = request {
+        val userId = store.get()?.firstOrNull()?.localId
+        userId?.let { scenesService.getScene(it,  bookId, chapterId, sceneId) }
+    }
+
     override suspend fun getSceneIds(bookId: String, chapterId: String): Result<List<String>> = simpleRequest {
         val userId = store.get()?.firstOrNull()?.localId
         userId.allowRequest{

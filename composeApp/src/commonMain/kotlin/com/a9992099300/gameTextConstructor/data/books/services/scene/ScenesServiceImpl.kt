@@ -62,6 +62,17 @@ class ScenesServiceImpl(
         return scenes.toList()
     }
 
+    override suspend fun getScene(
+        userId: String,
+        bookId: String,
+        chapterId: String,
+        sceneId: String
+    ) = httpClient.addToken.get {
+        url {
+            path("users/${userId}/userScenes/books/${bookId}/chapters/${chapterId}/scenes/${sceneId}.json")
+        }
+    }
+
     override suspend fun getSceneIds(userId: String, bookId: String, chapterId: String): List<String> {
         val httpResponse: HttpResponse = httpClient.addToken.get {
             url {

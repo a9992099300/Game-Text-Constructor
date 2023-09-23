@@ -1,7 +1,7 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.createChapter
 
 import com.a9992099300.gameTextConstructor.MainRes
-import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
+import com.a9992099300.gameTextConstructor.data.books.repository.chapter.ChaptersRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.di.Inject
 import com.a9992099300.gameTextConstructor.logic.common.StateUi
@@ -30,15 +30,18 @@ class CreateOrEditChapterComponentImpl(
     private val bookId: String,
     private val onChapterEdited: () -> Unit,
     override val onBack: () -> Unit,
-    override val editedChapterModel: String
+    override val chapterId: String,
+    private val chapterRepository: ChaptersRepository = Inject.instance()
 ) : ComponentContext by componentContext, CreateOrEditChapterComponent {
 
-    private val booksRepository: BooksRepository = Inject.instance()
+    private val createChapterRetainedInstance =
+        instanceKeeper.getOrCreate { CreateBooksListRetainedInstance(Dispatchers.Default) }
+
     override val stateUi: MutableStateFlow<StateUi<Unit>> = MutableStateFlow(Initial)
     override val chapterState: MutableStateFlow<ChapterUIModel> =
         MutableStateFlow(
-            if (editedChapterModel.isNotBlank()) {
-              //  editedChapterModel
+            if (chapterId.isNotBlank()) {
+                createChapterRetainedInstance.getChapter(chapterId)
                 ChapterUIModel()
             } else {
                 ChapterUIModel()
@@ -90,7 +93,7 @@ class CreateOrEditChapterComponentImpl(
     }
 
     override fun addOrEditChapter() {
-        if (editedChapterModel.isBlank()) {
+        if (chapterId.isBlank()) {
             createChapterRetainedInstance.addChapter()
         } else {
             createChapterRetainedInstance.editChapters()
@@ -110,8 +113,7 @@ class CreateOrEditChapterComponentImpl(
     }
 
 
-    private val createChapterRetainedInstance =
-        instanceKeeper.getOrCreate { CreateBooksListRetainedInstance(Dispatchers.Default) }
+
 
     inner class CreateBooksListRetainedInstance(mainContext: CoroutineContext) :
         InstanceKeeper.Instance {
@@ -127,7 +129,7 @@ class CreateOrEditChapterComponentImpl(
                 stateUi.value = Loading
                 val id = chapterIds.value.lastOrNull().getLastPartId() ?: "0"
 
-                    val result = booksRepository.addChapter(
+                    val result = chapterRepository.addChapter(
                         chapterState.value.mapToData(
                             bookId,
                             id.toString()
@@ -149,7 +151,7 @@ class CreateOrEditChapterComponentImpl(
         fun editChapters() {
             scope.launch {
                 stateUi.value = Loading
-                val result = booksRepository.addChapter(
+                val result = chapterRepository.addChapter(
                     chapterState.value.mapToData()
                 )
                 when (result) {
@@ -168,9 +170,24 @@ class CreateOrEditChapterComponentImpl(
         private fun getChapters() {
             scope.launch {
                 stateUi.value = Loading
-                when (val result = booksRepository.getChaptersId(bookId)) {
+                when (val result = chapterRepository.getChaptersId(bookId)) {
                     is Result.Success -> {
                         chapterIds.value = result.value
+                        stateUi.value = Success(Unit)
+                    }
+
+                    is Result.Error -> stateUi.value = Error(result.error?.message ?: "")
+                }
+            }
+        }
+
+
+        fun getChapter(chapterId: String) {
+            scope.launch {
+                stateUi.value = Loading
+                when (val result = chapterRepository.getChapter(bookId, chapterId)) {
+                    is Result.Success -> {
+                        chapterState.value = result.value.mapToUI()
                         stateUi.value = Success(Unit)
                     }
 
@@ -182,7 +199,7 @@ class CreateOrEditChapterComponentImpl(
         fun deleteChapter() {
             scope.launch {
                 stateUi.value = Loading
-                when (val result = booksRepository
+                when (val result = chapterRepository
                     .deleteChapter(bookId, chapterState.value.chapterId)) {
 
                     is Result.Success -> {

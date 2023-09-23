@@ -13,6 +13,8 @@ interface ScenesService{
 
      suspend fun getScenes(userId: String, bookId: String, chapterId: String) : List<SceneDataModel>
 
+     suspend fun getScene(userId: String, bookId: String, chapterId: String, sceneId: String) : HttpResponse
+
      suspend fun getSceneIds(userId: String, bookId: String, chapterId: String): List<String>
 
      suspend fun deleteScene(userId: String, bookId: String, chapterId: String, sceneId: String,

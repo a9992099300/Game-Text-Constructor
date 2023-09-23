@@ -1,6 +1,7 @@
 package com.a9992099300.gameTextConstructor.logic.constructor.book
 
 import com.a9992099300.gameTextConstructor.data.books.repository.book.BooksRepository
+import com.a9992099300.gameTextConstructor.data.books.repository.chapter.ChaptersRepository
 import com.a9992099300.gameTextConstructor.data.books.repository.pages.PagesRepository
 import com.a9992099300.gameTextConstructor.data.books.repository.scenes.ScenesRepository
 import com.a9992099300.gameTextConstructor.data.common.Result
@@ -27,10 +28,11 @@ class BookConstructorComponentImpl(
     private val onCreateChapter: () -> (Unit),
     private val onEditChapter: (String) -> (Unit),
     private val onCreateScene: (String) -> (Unit),
-    private val onEditScene: (String) -> (Unit),
+    private val onEditScene: (String, String) -> (Unit),
     private val onOpenInventory: () -> (Unit),
     private val onCreateOrEditPage: (String, String, String) -> Unit,
     private val booksRepository: BooksRepository = Inject.instance(),
+    private val chapterRepository: ChaptersRepository = Inject.instance(),
     private val scenesRepository: ScenesRepository = Inject.instance(),
     private val pagesRepository: PagesRepository = Inject.instance()
 ) : BookConstructorComponent, ComponentContext by componentContext {
@@ -130,7 +132,7 @@ class BookConstructorComponentImpl(
     }
 
     override fun onEditScene(scene: SceneUIModel) {
-        this.onEditScene.invoke(scene.sceneId)
+        this.onEditScene.invoke(scene.chapterId, scene.sceneId)
     }
 
     override fun refresh() {
@@ -164,7 +166,7 @@ class BookConstructorComponentImpl(
         fun loadChapters() {
             chapters.value = StateUi.Loading
             scope.launch {
-                val result = booksRepository.getChapters(bookId)
+                val result = chapterRepository.getChapters(bookId)
                 when (result) {
                     is Result.Success -> chapters.value = StateUi.Success(
                         result.value.map {

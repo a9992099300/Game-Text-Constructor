@@ -1,8 +1,6 @@
 package com.a9992099300.gameTextConstructor.data.books.repository.book
 
 import com.a9992099300.gameTextConstructor.data.books.models.BookDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.ChapterDataModel
-import com.a9992099300.gameTextConstructor.data.books.models.PageDataModel
 import com.a9992099300.gameTextConstructor.data.books.services.book.BooksService
 import com.a9992099300.gameTextConstructor.data.common.Result
 import com.a9992099300.gameTextConstructor.data.common.SavedAuth
@@ -61,14 +59,6 @@ class BooksRepositoryImpl(
         }
     }
 
-    override suspend fun addChapter(model: ChapterDataModel) : Result<ChapterDataModel> = request {
-        val userId = store.get()?.firstOrNull()?.localId
-        val token = store.get()?.firstOrNull()?.idToken
-        userId?.let {
-            bookListBooksService.addChapter(it, model.bookId, model,token ?: "")
-        }
-    }
-
     private suspend fun getBooksSize(userId: String): String {
         val result = simpleRequest {
             bookListBooksService.getBooksListSize(userId)
@@ -100,36 +90,6 @@ class BooksRepositoryImpl(
                 bookId = bookId,
                 token = token
             )
-        }
-    }
-
-    override suspend fun getChapters(bookId: String): Result<List<ChapterDataModel>> = simpleRequest {
-        val userId = store.get()?.firstOrNull()?.localId
-        userId?.let { bookListBooksService.getChapters(it, bookId) }
-    }
-
-    override suspend fun getPages(
-        bookId: String,
-        chapterId: String,
-        sceneId: String
-    ): Result<List<PageDataModel>> = simpleRequest {
-        val userId = store.get()?.firstOrNull()?.localId
-        userId?.let { bookListBooksService.getPages(it,  bookId, chapterId, sceneId) }
-    }
-
-    override suspend fun getChaptersId(bookId: String): Result<List<String>> = simpleRequest {
-        val userId = store.get()?.firstOrNull()?.localId
-        userId.allowRequest{
-            bookListBooksService.getChaptersId(it, bookId)
-        }
-    }
-
-    override suspend fun deleteChapter(bookId: String, chapterId: String): Result<Unit> = request{
-        val userId = store.get()?.firstOrNull()?.localId
-        val token = store.get()?.firstOrNull()?.idToken ?: ""
-
-        userId.allowRequest{
-            bookListBooksService.deleteChapter(it, bookId, chapterId, token)
         }
     }
 }

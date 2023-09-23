@@ -29,29 +29,24 @@ class CreateOrEditScenesComponentImpl(
     private val componentContext: ComponentContext,
     private val bookId: String,
     private val chapterId: String,
+    private val sceneId: String,
     private val onSceneEdited: () -> Unit,
     override val onBack: () -> Unit,
-    override val editeSceneModel: String
-) : ComponentContext by componentContext, CreateOrEditScenesComponent {
-
     private val scenesRepository: ScenesRepository = Inject.instance()
+) : ComponentContext by componentContext, CreateOrEditScenesComponent {
 
     override val stateUi: MutableStateFlow<StateUi<Unit>> = MutableStateFlow(Initial)
     override val sceneState: MutableStateFlow<SceneUIModel> =
-        MutableStateFlow(
-            if (editeSceneModel.isNotBlank()) {
-               // editeSceneModel
-                SceneUIModel()
-            } else {
-                SceneUIModel()
-            }
-        )
+        MutableStateFlow(SceneUIModel())
 
     override val scenesIds: MutableStateFlow<List<String>> =
         MutableStateFlow(listOf())
 
     override val snackBar: MutableStateFlow<String> =
         MutableStateFlow("")
+
+    private val sceneViewModel =
+        instanceKeeper.getOrCreate { CreateBooksListRetainedInstance(Dispatchers.Default) }
 
 
     override fun changeTitle(title: String) {
@@ -92,10 +87,10 @@ class CreateOrEditScenesComponentImpl(
     }
 
     override fun addOrEditScene() {
-        if (editeSceneModel.isBlank()) {
-            createChapterRetainedInstance.addScene()
+        if (sceneId.isBlank()) {
+            sceneViewModel.addScene()
         } else {
-            createChapterRetainedInstance.editScene()
+            sceneViewModel.editScene()
         }
     }
 
@@ -105,15 +100,11 @@ class CreateOrEditScenesComponentImpl(
 
     override fun deleteScene() {
         if (sceneState.value.deletable) {
-            createChapterRetainedInstance.deleteScene()
+            sceneViewModel.deleteScene()
         } else {
             stateUi.value = Error(MainRes.string.prohibit_delete_book)
         }
     }
-
-
-    private val createChapterRetainedInstance =
-        instanceKeeper.getOrCreate { CreateBooksListRetainedInstance(Dispatchers.Default) }
 
     inner class CreateBooksListRetainedInstance(mainContext: CoroutineContext) :
         InstanceKeeper.Instance {
@@ -122,6 +113,7 @@ class CreateOrEditScenesComponentImpl(
 
         init {
             getSceneIds()
+            if (sceneId.isNotBlank()) getScene()
         }
 
         fun addScene() {
@@ -173,7 +165,20 @@ class CreateOrEditScenesComponentImpl(
                 stateUi.value = Loading
                 when (val result = scenesRepository.getSceneIds(bookId, chapterId)) {
                     is Result.Success -> {
-                        scenesIds.value = result.value
+                        scenesIds.emit(result.value)
+                        stateUi.value = Success(Unit)
+                    }
+                    is Result.Error -> stateUi.value = Error(result.error?.message ?: "")
+                }
+            }
+        }
+
+        private fun getScene() {
+            scope.launch {
+                stateUi.value = Loading
+                when (val result = scenesRepository.getScene(bookId, chapterId, sceneId)) {
+                    is Result.Success -> {
+                        sceneState.emit(result.value.mapToUI())
                         stateUi.value = Success(Unit)
                     }
                     is Result.Error -> stateUi.value = Error(result.error?.message ?: "")

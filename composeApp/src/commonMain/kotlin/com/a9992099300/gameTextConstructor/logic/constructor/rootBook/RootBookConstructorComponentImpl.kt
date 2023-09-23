@@ -51,11 +51,11 @@ class RootBookConstructorComponentImpl(
                     )
                 )
             },
-            onEditScene = {
+            onEditScene = { chapter , scene ->
                 navigation.push(
                     Configuration.CreateOrEditScene(
-                        sceneId = it,
-                        chapterId = it
+                        sceneId = scene,
+                        chapterId = chapter
                     )
                 )
             },
@@ -91,7 +91,7 @@ class RootBookConstructorComponentImpl(
             onBack = {
                 navigation.pop()
             },
-            editedChapterModel = chapterId
+            chapterId = chapterId
         )
 
     private fun createScene(
@@ -112,7 +112,7 @@ class RootBookConstructorComponentImpl(
             onBack = {
                 navigation.pop()
             },
-            editeSceneModel = sceneId
+            sceneId = sceneId
         )
 
     private fun createInventory(
