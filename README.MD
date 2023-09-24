@@ -11,7 +11,10 @@ Application for create books in desktop and view in mobile devices.
 - firebase api
 
 ## Screenshots:
+Desktop
 ![Screenshot](screenshots/Desctop.png)
+
+Mobile
 ![Screenshot](screenshots/Simulator.png)
 
 
