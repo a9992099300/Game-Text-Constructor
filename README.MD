@@ -1,6 +1,6 @@
 # Compose Multiplatform Application
 
-Application for create books in desktop and view in mobile devices.
+Application for create books in desktop and view on mobile devices.
 
 ## Libs:
 - ktor
