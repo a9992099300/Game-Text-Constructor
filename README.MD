@@ -14,7 +14,7 @@ Application for create books in desktop and view on mobile devices.
 Desktop
 ![Screenshot](screenshots/Desctop.png)
 
-Mobile
+Mobile (Android, IOS)
 ![Screenshot](screenshots/Simulator.png)
 
 
